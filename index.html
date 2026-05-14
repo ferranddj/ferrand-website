@@ -38,34 +38,10 @@
     font-family: var(--font-body);
     font-weight: 300;
     overflow-x: hidden;
-    cursor: none;
   }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 8px;
-    height: 8px;
-    background: var(--red);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-    mix-blend-mode: normal;
-  }
-
-  .cursor-ring {
-    position: fixed;
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(218, 12, 26, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-  }
+  /* CUSTOM CURSOR - DISABLED */
+  .cursor, .cursor-ring { display: none; }
 
   /* NAV */
   nav {
@@ -961,8 +937,8 @@
   <div class="reveal-name"><span class="reveal-name-text">FERRAND</span></div>
 </div></div>
 <div class="site-vignette"></div>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+
+
 
 <!-- NAV -->
 <nav>
@@ -972,6 +948,7 @@
     <li><a href="#music">Music</a></li>
     <li><a href="#socials">Connect</a></li>
     <li><a href="#booking">Booking</a></li>
+    <li><a href="#impressum">Impressum</a></li>
   </ul>
 </nav>
 
@@ -1124,52 +1101,28 @@
   <a href="mailto:info.ferrand@gmail.com" class="booking-email reveal reveal-delay-2">info.ferrand@gmail.com</a>
 </section>
 
+
+<!-- IMPRESSUM -->
+<section id="impressum" style="padding: 80px 48px; border-top: 1px solid rgba(240,237,232,0.05);">
+  <p class="section-label">Impressum</p>
+  <div style="max-width: 480px; margin-top: 32px;">
+    <p style="font-family: var(--font-cond); font-size: 13px; letter-spacing: 0.1em; color: rgba(240,237,232,0.4); line-height: 2.2; text-transform: uppercase;">
+      Knud Huckert<br>
+      Alteburgerstraße 288<br>
+      50968 Köln<br>
+      Deutschland<br><br>
+      <a href="mailto:info.ferrand@gmail.com" style="color: rgba(240,237,232,0.4); text-decoration: none; transition: color 0.3s;">info.ferrand@gmail.com</a>
+    </p>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 Ferrand — <span>All rights reserved</span></p>
+  <p>© <span id="year"></span> Knud Huckert — <span>All rights reserved</span></p>
   <p>Cologne, Germany</p>
 </footer>
 
 <script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  const cursorRing = document.getElementById('cursorRing');
-  let mouseX = 0, mouseY = 0;
-  let ringX = 0, ringY = 0;
-
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
-  });
-
-  function animateRing() {
-    ringX += (mouseX - ringX) * 0.12;
-    ringY += (mouseY - ringY) * 0.12;
-    cursorRing.style.left = ringX + 'px';
-    cursorRing.style.top = ringY + 'px';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '14px';
-      cursor.style.height = '14px';
-      cursorRing.style.width = '50px';
-      cursorRing.style.height = '50px';
-      cursorRing.style.borderColor = 'rgba(218, 12, 26, 0.8)';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '8px';
-      cursor.style.height = '8px';
-      cursorRing.style.width = '32px';
-      cursorRing.style.height = '32px';
-      cursorRing.style.borderColor = 'rgba(218, 12, 26, 0.5)';
-    });
-  });
-
   // Reveal on scroll
   const revealEls = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
@@ -1180,7 +1133,6 @@
       }
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
   revealEls.forEach(el => observer.observe(el));
 
   // Nav transparency on scroll
@@ -1197,24 +1149,22 @@
 
   // Parallax on gallery images
   const galleryImgs = document.querySelectorAll('.gallery-hero img, .gallery-item img, .gallery-full img');
-
   function updateParallax() {
     galleryImgs.forEach(img => {
       const rect = img.parentElement.getBoundingClientRect();
       const vh = window.innerHeight;
       const progress = (vh - rect.top) / (vh + rect.height);
       const shift = (progress - 0.5) * 40;
-      img.style.transform = img.style.transform
-        ? img.style.transform.replace(/translateY\([^)]*\)/, '') + ` translateY(${shift}px)`
-        : `translateY(${shift}px)`;
+      img.style.transform = `translateY(${shift}px)`;
     });
   }
-
   window.addEventListener('scroll', updateParallax, { passive: true });
   updateParallax();
 
+  // Auto year
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Simple split reveal
+  // Page reveal
   setTimeout(() => {
     document.getElementById('pageReveal').classList.add('open');
   }, 600);
@@ -1222,7 +1172,6 @@
     const pr = document.getElementById('pageReveal');
     if (pr) pr.style.display = 'none';
   }, 1800);
-
 </script>
 </body>
 </html>
