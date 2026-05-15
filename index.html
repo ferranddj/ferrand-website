@@ -952,109 +952,10 @@
   
 
 
-  /* ── MOBILE FULLSCREEN MENU ── */
-  .menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-family: var(--font-cond);
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--white-dim);
-    transition: color 0.3s;
-  }
-  .menu-btn:hover { color: var(--white); }
-
-  .fullscreen-menu {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 8000;
-    background: rgba(5,5,5,0.97);
-    backdrop-filter: blur(20px);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .fullscreen-menu.open {
-    opacity: 1;
-  }
-
-  .fullscreen-menu-close {
-    position: absolute;
-    top: 28px;
-    right: 24px;
-    background: none;
-    border: none;
-    font-family: var(--font-cond);
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--white-dim);
-    cursor: pointer;
-    transition: color 0.3s;
-  }
-  .fullscreen-menu-close:hover { color: var(--white); }
-
-  .fullscreen-menu nav {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    position: static;
-    background: none;
-    padding: 0;
-  }
-
-  .fullscreen-menu nav a {
-    font-family: var(--font-display);
-    font-size: clamp(42px, 12vw, 72px);
-    color: rgba(240,237,232,0.15);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    line-height: 1.1;
-    transition: color 0.3s ease;
-    transform: translateY(20px);
-    opacity: 0;
-    transition: color 0.3s, transform 0.5s ease, opacity 0.5s ease;
-  }
-  .fullscreen-menu.open nav a {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  .fullscreen-menu.open nav a:nth-child(1) { transition-delay: 0.05s; }
-  .fullscreen-menu.open nav a:nth-child(2) { transition-delay: 0.10s; }
-  .fullscreen-menu.open nav a:nth-child(3) { transition-delay: 0.15s; }
-  .fullscreen-menu.open nav a:nth-child(4) { transition-delay: 0.20s; }
-  .fullscreen-menu.open nav a:nth-child(5) { transition-delay: 0.25s; }
-
-  .fullscreen-menu nav a:hover { color: var(--white); }
-  .fullscreen-menu nav a:hover::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 1px;
-    background: var(--red);
-    margin-top: 2px;
-  }
-
-  .fullscreen-menu-bottom {
-    position: absolute;
-    bottom: 40px;
-    font-family: var(--font-cond);
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    color: rgba(240,237,232,0.15);
-    text-transform: uppercase;
-  }
+  
 
   @media (max-width: 700px) {
-    .menu-btn { display: block; }
+  
     .fullscreen-menu { display: flex; }
   }
 
@@ -1156,6 +1057,85 @@
     }
   }
 
+
+  /* ====== MOBILE MENU ====== */
+  #mob-btn {
+    display: none;
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 10000;
+    background: none;
+    border: 1px solid rgba(240,237,232,0.15);
+    color: rgba(240,237,232,0.7);
+    font-family: var(--font-cond);
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  #mob-btn:hover { color: var(--white); border-color: rgba(240,237,232,0.4); }
+
+  #mob-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9500;
+    background: rgba(5,5,5,0.97);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  #mob-overlay.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  #mob-overlay a {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 13vw, 80px);
+    color: rgba(240,237,232,0.18);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    transition: color 0.25s ease;
+    transform: translateY(16px);
+    opacity: 0;
+    transition: color 0.25s, transform 0.45s ease, opacity 0.45s ease;
+  }
+  #mob-overlay.is-open a {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  #mob-overlay.is-open a:nth-child(1) { transition-delay: 0.04s; }
+  #mob-overlay.is-open a:nth-child(2) { transition-delay: 0.08s; }
+  #mob-overlay.is-open a:nth-child(3) { transition-delay: 0.12s; }
+  #mob-overlay.is-open a:nth-child(4) { transition-delay: 0.16s; }
+  #mob-overlay.is-open a:nth-child(5) { transition-delay: 0.20s; }
+  #mob-overlay a:hover  { color: var(--white); }
+  #mob-overlay a:active { color: var(--red); }
+
+  #mob-overlay-foot {
+    position: absolute;
+    bottom: 36px;
+    font-family: var(--font-cond);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(240,237,232,0.12);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 700px) {
+    #mob-btn     { display: block; }
+    #mob-overlay { display: flex; }
+  }
+  /* ====== END MOBILE MENU ====== */
 </style>
 </head>
 <body>
@@ -1172,7 +1152,6 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Ferrand</a>
-  <button class="menu-btn" id="menuBtn" aria-label="Open menu">Menu</button>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#music">Music</a></li>
@@ -1389,8 +1368,6 @@
     }
   }, { passive: true });
 
-
-
   // Auto year
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1403,29 +1380,6 @@
     if (pr) pr.style.display = 'none';
   }, 1800);
 
-  // Fullscreen mobile menu
-  const menuBtn = document.getElementById('menuBtn');
-  const menuClose = document.getElementById('menuClose');
-  const fullscreenMenu = document.getElementById('fullscreenMenu');
-  const menuLinks = document.querySelectorAll('.menu-link');
-
-  function openMenu() {
-    fullscreenMenu.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMenu() {
-    fullscreenMenu.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  if (menuBtn) menuBtn.addEventListener('click', openMenu);
-  if (menuClose) menuClose.addEventListener('click', closeMenu);
-  menuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      closeMenu();
-    });
-  });
-
   // Swipe gallery dots
   const swipe = document.getElementById('gallerySwipe');
   const dots = document.querySelectorAll('#swipeDots span');
@@ -1436,20 +1390,53 @@
     }, { passive: true });
   }
 
+  // Mobile menu
+  (function () {
+    var btn     = document.getElementById('mob-btn');
+    var overlay = document.getElementById('mob-overlay');
+    if (!btn || !overlay) return;
+    var links = overlay.querySelectorAll('a');
+    var open  = false;
+
+    function openMenu() {
+      open = true;
+      overlay.classList.add('is-open');
+      btn.textContent = 'Close';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      open = false;
+      overlay.classList.remove('is-open');
+      btn.textContent = 'Menu';
+      document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', function () {
+      open ? closeMenu() : openMenu();
+    });
+
+    links.forEach(function (link) {
+      link.addEventListener('click', function () {
+        closeMenu();
+      });
+    });
+  })();
 </script>
 
 
-<div class="fullscreen-menu" id="fullscreenMenu">
-  <button class="fullscreen-menu-close" id="menuClose">Close</button>
-  <nav>
-    <a href="#about" class="menu-link">About</a>
-    <a href="#music" class="menu-link">Music</a>
-    <a href="#socials" class="menu-link">Links</a>
-    <a href="#booking" class="menu-link">Booking</a>
-    <a href="#impressum" class="menu-link">Impressum</a>
-  </nav>
-  <div class="fullscreen-menu-bottom">Ferrand · Cologne</div>
 </div>
+
+
+<!-- MOBILE OVERLAY MENU -->
+<div id="mob-overlay">
+  <a href="#about">About</a>
+  <a href="#music">Music</a>
+  <a href="#socials">Links</a>
+  <a href="#booking">Booking</a>
+  <a href="#impressum">Impressum</a>
+  <div id="mob-overlay-foot">Ferrand &middot; Cologne</div>
+</div>
+<button id="mob-btn" aria-label="Toggle menu">Menu</button>
 
 </body>
 </html>
