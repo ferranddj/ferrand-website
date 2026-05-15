@@ -945,8 +945,17 @@
       width: 100%;
       text-align: center;
       border-bottom: 1px solid rgba(240,237,232,0.06);
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: none;
     }
     .socials-list a::after { display: none; }
+    .socials-list a:hover { color: rgba(240, 237, 232, 0.8); }
+    .socials-list a:active {
+      color: #DA0C1A;
+      text-decoration: underline;
+      text-underline-offset: 6px;
+    }
   }
 
 </style>
