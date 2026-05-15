@@ -288,12 +288,7 @@
     height: 100%;
     object-fit: cover;
     filter: grayscale(20%) contrast(1.1);
-    transition: transform 8s ease, filter 0.6s ease;
-  }
-
-  .gallery-hero:hover img {
-    transform: scale(1.03);
-    filter: grayscale(0%) contrast(1.1);
+    transition: filter 0.6s ease;
   }
 
   .gallery-grid {
@@ -314,12 +309,7 @@
     height: 100%;
     object-fit: cover;
     filter: grayscale(30%) contrast(1.1);
-    transition: transform 6s ease, filter 0.6s ease;
-  }
-
-  .gallery-item:hover img {
-    transform: scale(1.05);
-    filter: grayscale(0%) contrast(1.05);
+    transition: filter 0.6s ease;
   }
 
   .gallery-full {
@@ -335,12 +325,7 @@
     object-fit: cover;
     object-position: center center;
     filter: grayscale(10%) contrast(1.05);
-    transition: transform 8s ease, filter 0.6s ease;
-  }
-
-  .gallery-full:hover img {
-    transform: scale(1.02);
-    filter: grayscale(0%) contrast(1.1);
+    transition: filter 0.6s ease;
   }
 
   /* ABOUT */
@@ -944,6 +929,26 @@
 
   
 
+
+  @media (max-width: 700px) {
+    .socials-list {
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .socials-list li::after { display: none; }
+    .socials-list a {
+      font-size: clamp(28px, 9vw, 48px);
+      color: rgba(240, 237, 232, 0.8);
+      padding: 14px 24px;
+      display: block;
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid rgba(240,237,232,0.06);
+    }
+    .socials-list a::after { display: none; }
+  }
+
 </style>
 </head>
 <body>
@@ -1164,19 +1169,7 @@
     }
   }, { passive: true });
 
-  // Parallax on gallery images
-  const galleryImgs = document.querySelectorAll('.gallery-hero img, .gallery-item img, .gallery-full img');
-  function updateParallax() {
-    galleryImgs.forEach(img => {
-      const rect = img.parentElement.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const progress = (vh - rect.top) / (vh + rect.height);
-      const shift = (progress - 0.5) * 40;
-      img.style.transform = `translateY(${shift}px)`;
-    });
-  }
-  window.addEventListener('scroll', updateParallax, { passive: true });
-  updateParallax();
+
 
   // Auto year
   document.getElementById('year').textContent = new Date().getFullYear();
