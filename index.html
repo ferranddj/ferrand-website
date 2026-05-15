@@ -396,6 +396,22 @@
 
   .about-right {}
 
+  .about-portrait {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 260px;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+  }
+
+  @media (max-width: 700px) {
+    .about-portrait {
+      max-width: 180px;
+      aspect-ratio: 3/4;
+      margin-top: 32px;
+    }
+  }
+
   .about-text {
     font-size: 17px;
     line-height: 1.8;
@@ -1005,7 +1021,7 @@
       height: 100%;
       left: 0;
       top: 0;
-      transform: rotate(90deg) scale(1.8);
+      transform: none;
     }
 
     /* About section */
@@ -1126,6 +1142,9 @@
         Trance<br>
         Hard House<br>
         Hard Dance
+      </div>
+      <div class="about-portrait reveal reveal-delay-3">
+        <img src="https://raw.githubusercontent.com/ferranddj/ferrand-website/main/IMG_8829(1).jpeg" alt="Ferrand" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
       </div>
     </div>
     <div class="about-right">
