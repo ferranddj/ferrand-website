@@ -726,61 +726,28 @@
 
   /* MOBILE */
   @media (max-width: 768px) {
-    nav {
-      padding: 20px 24px;
-    }
-
-    .nav-links {
-      display: none;
-    }
-
-    .gallery-hero,
-    .gallery-item,
-    .gallery-full {
+    nav { padding: 20px 24px; }
+    .nav-links { display: none; }
+    section, #about, #music { padding: 80px 24px; }
+    #hero { padding: 0 24px 48px; }
+    .about-grid { grid-template-columns: 1fr; gap: 48px; }
+    .about-left { position: static; }
+    .tracks-grid { grid-template-columns: 1fr; }
+    #socials { padding: 80px 24px; }
+    .socials-list { flex-direction: column; align-items: center; gap: 0; }
+    .socials-list li::after { display: none; }
+    .socials-list a {
+      font-size: clamp(28px, 9vw, 48px);
+      color: rgba(240, 237, 232, 0.75);
+      padding: 10px 24px;
       display: block;
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid rgba(240,237,232,0.05);
     }
-
-    .gallery-item {
-      height: 80vw;
-      max-height: none;
-    }
-
-    
-
-    section, #about, #music {
-      padding: 80px 24px;
-    }
-
-    #hero {
-      padding: 0 24px 48px;
-    }
-
-    #images {
-      padding: 0 0 80px;
-    }
-
-    .about-grid {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-
-    .about-left {
-      position: static;
-    }
-
-    .tracks-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .gallery-hero {
-      height: 50vh;
-    }
-
-    .gallery-item {
-    overflow: hidden;
-    position: relative;
-    height: 50vw;
-    max-height: 600px;
+    footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+    .hero-scroll { right: 24px; bottom: 48px; }
+    .booking-heading { font-size: clamp(60px, 18vw, 180px); }
   }
 
     .gallery-full {
@@ -820,17 +787,7 @@
     }
   }
 
-  @media (max-width: 480px) {
-    .gallery-grid {
-      grid-template-columns: 1fr;
-    }
 
-    .gallery-item {
-    overflow: hidden;
-    position: relative;
-    height: 50vw;
-    max-height: 600px;
-  }
   }
 
   /* PAGE REVEAL - FERRAND SPLIT */
@@ -1030,21 +987,25 @@
     #images::-webkit-scrollbar { display: none; }
 
     .gallery-hero {
-      flex: 0 0 100vw; width: 100vw;
-      height: 60vw; max-height: 60vh;
-      margin-bottom: 0; scroll-snap-align: start;
+      flex: 0 0 100vw !important; width: 100vw !important;
+      height: 56vw !important; max-height: 60vh !important;
+      margin-bottom: 0 !important; scroll-snap-align: start !important;
+      display: block !important;
     }
     .gallery-grid {
       display: flex !important; flex-direction: row !important;
-      flex: 0 0 200vw; height: 60vw; max-height: 60vh; gap: 0;
+      flex: 0 0 200vw !important; height: 56vw !important;
+      max-height: 60vh !important; gap: 0 !important;
     }
     .gallery-item {
-      flex: 0 0 100vw; height: 100%;
-      max-height: none; scroll-snap-align: start;
+      flex: 0 0 100vw !important; height: 100% !important;
+      max-height: none !important; scroll-snap-align: start !important;
+      display: block !important;
     }
     .gallery-full {
-      flex: 0 0 100vw; width: 100vw;
-      height: 60vw; max-height: 60vh; scroll-snap-align: start;
+      flex: 0 0 100vw !important; width: 100vw !important;
+      height: 56vw !important; max-height: 60vh !important;
+      scroll-snap-align: start !important; display: block !important;
     }
   }
   /* ===== END MOBILE ===== */
