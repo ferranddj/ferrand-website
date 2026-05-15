@@ -992,53 +992,56 @@
     }
   }
 
+
+
+
   /* ===== MOBILE SWIPE GALLERY ===== */
-  #mobileGallery {
-    display: none;
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background: #050505;
-  }
-
-  #mobileTrack {
-    display: flex;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  #mobileTrack::-webkit-scrollbar { display: none; }
-
-  .mSlide {
-    flex: 0 0 100vw;
-    width: 100vw;
-  }
-  .mSlide img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-  }
-
-  #mobileDots {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 0 6px;
-  }
-  .mDot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: rgba(240,237,232,0.2);
-    transition: background 0.3s;
-  }
-  .mDot.active { background: #DA0C1A; }
+  #mobileGallery { display: none; }
 
   @media (max-width: 700px) {
-    #mobileGallery { display: block; }
+    /* Hide desktop gallery */
     #images { display: none !important; }
+
+    /* Show mobile gallery */
+    #mobileGallery {
+      display: block;
+      position: relative;
+      width: 100%;
+      background: #050505;
+    }
+    #mobileTrack {
+      display: flex;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #mobileTrack::-webkit-scrollbar { display: none; }
+    .mSlide {
+      flex: 0 0 100vw;
+      scroll-snap-align: start;
+    }
+    .mSlide img {
+      width: 100%;
+      height: 70vw;
+      max-height: 75vh;
+      display: block;
+      object-fit: cover;
+      object-position: center center;
+    }
+    #mobileDots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 0 8px;
+    }
+    .mDot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(240,237,232,0.2);
+      transition: background 0.3s;
+    }
+    .mDot.active { background: #DA0C1A; }
   }
   /* ===== END MOBILE SWIPE GALLERY ===== */
 
@@ -1104,21 +1107,6 @@
 </div>
 
 
-<!-- MOBILE SWIPE GALLERY -->
-<div id="mobileGallery">
-  <div id="mobileTrack">
-    <div class="mSlide"><img src="https://ferranddj.github.io/ferrand-website/Screenshot_20260409-162315_2.jpeg" alt="Ferrand live" loading="lazy"></div>
-    <div class="mSlide"><img src="https://ferranddj.github.io/ferrand-website/Screenshot_20260409-160715_2.jpeg" alt="Ferrand club" loading="lazy"></div>
-    <div class="mSlide"><img src="https://ferranddj.github.io/ferrand-website/IMG_8829(1).jpeg" alt="Ferrand" loading="lazy"></div>
-    <div class="mSlide"><img src="https://ferranddj.github.io/ferrand-website/IMG_8834.jpeg" alt="Ferrand" loading="lazy"></div>
-  </div>
-  <div id="mobileDots">
-    <div class="mDot active"></div>
-    <div class="mDot"></div>
-    <div class="mDot"></div>
-    <div class="mDot"></div>
-  </div>
-</div>
 
 <div class="h-rule"></div>
 
@@ -1293,14 +1281,16 @@
     if (pr) pr.style.display = 'none';
   }, 1800);
 
-  // Mobile swipe gallery dots
+
+
+  // Mobile swipe dots
   (function(){
     var track = document.getElementById('mobileTrack');
-    var dots  = document.querySelectorAll('.mDot');
+    var dots = document.querySelectorAll('.mDot');
     if (!track || !dots.length) return;
     track.addEventListener('scroll', function(){
       var idx = Math.round(track.scrollLeft / track.offsetWidth);
-      dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+      dots.forEach(function(d,i){ d.classList.toggle('active', i===idx); });
     }, { passive: true });
   })();
 
