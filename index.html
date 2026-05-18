@@ -534,6 +534,36 @@
     padding: 120px 48px;
     max-width: 1400px;
     margin: 0 auto;
+    position: relative;
+  }
+
+  .music-bg-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    max-width: 1400px;
+  }
+
+  .music-bg-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    filter: grayscale(40%) contrast(1.05);
+    display: block;
+    opacity: 0.35;
+  }
+
+  .music-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(5,5,5,0.6) 0%,
+      rgba(5,5,5,0.3) 50%,
+      rgba(5,5,5,0.7) 100%
+    );
   }
 
   .tracks-grid {
@@ -547,11 +577,12 @@
     text-decoration: none;
     position: relative;
     padding: 36px 40px;
-    background: var(--white-faint);
-    border: 1px solid rgba(240, 237, 232, 0.05);
+    background: rgba(5, 5, 5, 0.55);
+    border: 1px solid rgba(240, 237, 232, 0.07);
     transition: background 0.4s ease, border-color 0.4s ease;
     overflow: hidden;
     cursor: none;
+    backdrop-filter: blur(4px);
   }
 
   .track-card::before {
@@ -644,6 +675,29 @@
     text-align: center;
     border-top: 1px solid rgba(240, 237, 232, 0.05);
     border-bottom: 1px solid rgba(240, 237, 232, 0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .socials-image-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .socials-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    filter: grayscale(30%) contrast(1.05);
+    display: block;
+  }
+
+  .socials-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.5);
   }
 
   .socials-list {
@@ -681,7 +735,7 @@
   }
 
   @media (min-width: 701px) {
-    .socials-list a { color: rgba(240, 237, 232, 0.35); }
+    .socials-list a { color: rgba(240, 237, 232, 0.75); }
   }
 
   .socials-list a::after {
@@ -1234,15 +1288,16 @@
   /* Editorial break between socials and booking */
   .editorial-break {
     width: 100%;
-    max-width: 100%;
+    aspect-ratio: 3 / 1;
     overflow: hidden;
     position: relative;
   }
   .editorial-break img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
-    object-fit: unset;
+    object-fit: cover;
+    object-position: center 60%;
     filter: grayscale(20%) contrast(1.05);
   }
     .editorial-break { height: 60vw; }
@@ -1297,16 +1352,19 @@
     }
 
     /* Portrait 2: Editorial break */
+    #music-image {
+      padding: 0 24px !important;
+    }
     .editorial-break {
       width: 100% !important;
-      max-width: 100% !important;
+      aspect-ratio: 3 / 1 !important;
       height: auto !important;
-      overflow: hidden !important;
     }
     .editorial-break img {
       width: 100% !important;
-      height: auto !important;
-      object-fit: unset !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center 60% !important;
       display: block !important;
     }
 
@@ -1385,8 +1443,8 @@
 
 
 
-<!-- IMAGES -->
-<div id="images">
+<!-- IMAGES - hidden -->
+<div id="images" style="display:none;">
   <div class="gallery-hero reveal">
     <img src="images/image_002.jpg" alt="Ferrand live" loading="lazy">
   </div>
@@ -1435,8 +1493,12 @@
 
 <!-- MUSIC -->
 <div id="music">
-  <p class="section-label reveal">Music</p>
-  <div class="tracks-grid">
+  <div class="music-bg-wrap">
+    <img src="images/image_002.jpg" alt="" aria-hidden="true">
+    <div class="music-bg-overlay"></div>
+  </div>
+  <p class="section-label reveal" style="position:relative;z-index:2;">Music</p>
+  <div class="tracks-grid" style="position:relative;z-index:2;">
 
     <a class="track-card reveal" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank" rel="noopener">
       <div class="track-num">
@@ -1491,14 +1553,19 @@
     </a>
 
   </div>
+
 </div>
 
 <div class="h-rule"></div>
 
 <!-- SOCIALS -->
 <section id="socials">
-  <p class="section-label reveal" style="justify-content: center;">Connect</p>
-  <ul class="socials-list reveal reveal-delay-1">
+  <div class="socials-image-wrap">
+    <img src="images/image_006.jpg" alt="Ferrand">
+    <div class="socials-image-overlay"></div>
+  </div>
+  <p class="section-label reveal" style="justify-content: center; position: relative; z-index: 2;">Connect</p>
+  <ul class="socials-list reveal reveal-delay-1" style="position: relative; z-index: 2;">
     <li><a href="https://www.instagram.com/ferrand.dj/" target="_blank" rel="noopener">Instagram</a></li>
     <li><a href="https://soundcloud.com/ferrand_ferrari" target="_blank" rel="noopener">SoundCloud</a></li>
     <li><a href="https://open.spotify.com/intl-de/artist/7kmof3cSe8IMOpTNQQEHwt?si=ECQvI7t_QDem3b0hFZ5Dfw" target="_blank" rel="noopener">Spotify</a></li>
@@ -1507,12 +1574,7 @@
   </ul>
 </section>
 
-
 <div class="h-rule"></div>
-
-<div class="editorial-break">
-  <img style="width:100%;height:auto;display:block;" src="images/image_005.jpg" alt="Ferrand" loading="lazy">
-</div>
 
 <!-- BOOKING -->
 <section id="booking">
