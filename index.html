@@ -357,96 +357,134 @@
 
   .about-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 80px;
-    align-items: start;
+    grid-template-columns: 420px 1fr;
+    gap: 0;
+    align-items: stretch;
+    min-height: 600px;
   }
 
+  /* LEFT: portrait with overlay */
   .about-left {
-    position: sticky;
-    top: 120px;
-  }
-
-  .about-heading {
-    font-family: var(--font-display);
-    font-size: clamp(60px, 8vw, 120px);
-    line-height: 0.9;
-    color: var(--white);
-    margin-bottom: 32px;
-  }
-
-  .about-location {
-    font-family: var(--font-cond);
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 28px;
-    margin-top: -8px;
-  }
-
-  .about-sub {
-    font-family: var(--font-cond);
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--white-dim);
-    line-height: 2;
-  }
-
-  .about-sub span {
-    color: var(--red);
-  }
-
-  .about-right {}
-
-  .about-portrait-block {
-    display: none;
+    position: relative;
+    overflow: hidden;
   }
 
   .about-left-portrait {
-    margin-top: 40px;
-    width: 100%;
-    overflow: hidden;
+    position: absolute;
+    inset: 0;
   }
 
   .about-left-portrait img {
     width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-    object-position: center top;
-    filter: grayscale(15%) contrast(1.05);
-  }
-
-  /* Editorial image in about */
-  .about-editorial {
-    width: 100%;
-    max-width: 500px;
-    aspect-ratio: 3/4;
-    overflow: hidden;
-    margin-bottom: 48px;
-  }
-
-  .about-editorial img {
-    width: 100%;
     height: 100%;
+    display: block;
     object-fit: cover;
     object-position: center top;
-    filter: grayscale(15%) contrast(1.05);
+    filter: grayscale(20%) contrast(1.08);
+  }
+
+  .about-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(5,5,5,0.97) 0%,
+      rgba(5,5,5,0.5) 45%,
+      rgba(5,5,5,0.1) 100%
+    );
+  }
+
+  .about-img-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 36px 36px;
+  }
+
+  .about-location {
+    font-family: var(--font-cond);
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+
+  .about-heading {
+    font-family: var(--font-display);
+    font-size: clamp(56px, 6vw, 96px);
+    line-height: 0.88;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .about-sub {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .about-sub-item {
+    font-family: var(--font-cond);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.35);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .about-sub-item::before {
+    content: '';
     display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--red);
+    opacity: 0.7;
+    flex-shrink: 0;
+  }
+
+  .about-sub-item.label {
+    color: rgba(240, 237, 232, 0.55);
+    margin-bottom: 4px;
+  }
+
+  .about-sub-item.label::before {
+    display: none;
+  }
+
+  /* RIGHT: text content */
+  .about-right {
+    padding: 52px 56px;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid rgba(240, 237, 232, 0.05);
+  }
+
+  .about-pull {
+    font-family: var(--font-body);
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.45;
+    color: rgba(240, 237, 232, 0.88);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(240, 237, 232, 0.07);
   }
 
   .about-text {
-    font-size: 17px;
-    line-height: 1.8;
-    color: rgba(240, 237, 232, 0.75);
+    font-size: 15px;
+    line-height: 1.85;
+    color: rgba(240, 237, 232, 0.45);
     font-weight: 300;
-    max-width: 680px;
+    flex: 1;
   }
 
   .about-text p {
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
 
   .about-text p:last-child {
@@ -454,13 +492,47 @@
   }
 
   .about-text strong {
-    color: var(--white);
+    color: rgba(240, 237, 232, 0.75);
     font-weight: 400;
   }
 
   .about-text .highlight {
     color: var(--red);
     font-style: italic;
+  }
+
+  .about-venues {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(240, 237, 232, 0.06);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .about-venues-label {
+    font-family: var(--font-cond);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(218, 12, 26, 0.6);
+  }
+
+  .about-venue {
+    font-family: var(--font-cond);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.22);
+  }
+
+  /* hide old portrait-block */
+  .about-portrait-block {
+    display: none;
+  }
+  .about-editorial {
+    display: none;
   }
 
   /* MUSIC */
@@ -743,6 +815,100 @@
     opacity: 0.6;
   }
 
+  .footer-legal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-cond);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(240, 237, 232, 0.2);
+    text-transform: uppercase;
+    margin-left: 14px;
+    padding: 0;
+    transition: color 0.25s ease;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  .footer-legal-btn svg {
+    opacity: 0.6;
+    transition: opacity 0.25s ease;
+  }
+
+  .footer-legal-btn:hover {
+    color: rgba(240, 237, 232, 0.55);
+  }
+
+  .footer-legal-btn:hover svg {
+    opacity: 1;
+  }
+
+  /* LEGAL MODALS */
+  .legal-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .legal-modal.active {
+    display: flex;
+  }
+
+  .legal-modal-inner {
+    background: #0f0f0f;
+    border-top: 1px solid rgba(240, 237, 232, 0.07);
+    width: 100%;
+    max-width: 580px;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 40px 48px 48px;
+    position: relative;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+
+  .legal-modal-title {
+    font-family: var(--font-cond);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.35);
+    margin-bottom: 28px;
+  }
+
+  .legal-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(240, 237, 232, 0.25);
+    padding: 4px;
+    transition: color 0.2s ease;
+    line-height: 0;
+  }
+
+  .legal-modal-close:hover {
+    color: rgba(240, 237, 232, 0.6);
+  }
+
   /* REVEAL ANIMATIONS */
   .reveal {
     opacity: 0;
@@ -877,11 +1043,19 @@
 
     .about-grid {
       grid-template-columns: 1fr;
-      gap: 48px;
+      gap: 0;
+      min-height: auto;
     }
 
     .about-left {
-      position: static;
+      position: relative;
+      min-height: 420px;
+    }
+
+    .about-right {
+      padding: 40px 32px;
+      border-left: none;
+      border-top: 1px solid rgba(240, 237, 232, 0.05);
     }
 
     .tracks-grid {
@@ -1063,26 +1237,6 @@
   
 
 
-  /* Editorial image in about */
-  .about-editorial {
-    width: 100%;
-    max-width: 500px;
-    aspect-ratio: 3/4;
-    overflow: hidden;
-    margin-bottom: 48px;
-  }
-
-  .about-editorial img {
-    max-width: 100%;
-  }
-  .about-editorial img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    filter: grayscale(15%) contrast(1.05);
-  }
-
   /* Editorial break between socials and booking */
   .editorial-break {
     width: 100%;
@@ -1124,45 +1278,24 @@
     /* About section */
     .about-grid {
       grid-template-columns: 1fr;
-      gap: 40px;
+      gap: 0;
+      min-height: auto;
     }
-    #about { padding: 80px 24px; }
-
-    /* Portrait 1: About editorial */
-    .about-editorial {
-      width: 100% !important;
-      max-width: 100% !important;
-      height: 75vw !important;
-      max-height: 65vh !important;
-      aspect-ratio: unset !important;
-      overflow: hidden !important;
+    #about { padding: 60px 24px; }
+    .about-left {
+      min-height: 380px;
     }
-    .about-editorial img {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      object-position: center top !important;
-      display: block !important;
+    .about-right {
+      padding: 32px 0 0;
+      border-left: none;
+      border-top: 1px solid rgba(240,237,232,0.05);
     }
-
-    /* Portrait in about section - mobile only */
-    .about-left-portrait {
-      display: none;
+    .about-img-content {
+      padding: 24px 24px;
     }
-    .about-body-desktop {
-      display: block;
+    .about-pull {
+      font-size: 17px;
     }
-    .about-body-desktop .about-editorial {
-      width: 100%;
-      max-width: 100%;
-      margin-bottom: 32px;
-    }
-    .about-portrait-block {
-      display: block;
-      width: 100%;
-      margin-top: 32px;
-    }
-    .about-portrait-block img {
       width: 100%;
       height: auto;
       display: block;
@@ -1271,35 +1404,45 @@
 <!-- ABOUT -->
 <div id="about">
   <div class="about-grid">
-    <div class="about-left">
-      <p class="section-label reveal">About</p>
-      <h2 class="about-heading reveal reveal-delay-1">Ferrand</h2>
-      <div class="about-sub reveal reveal-delay-2">
-        <span>DJ · Producer</span><br><br>
-        Trance<br>
-        Hard House<br>
-        Hard Dance
-      </div>
-      <div class="about-left-portrait reveal reveal-delay-3">
+
+    <!-- LEFT: Portrait with overlay -->
+    <div class="about-left reveal">
+      <div class="about-left-portrait">
         <img src="images/image_003.jpg" alt="Ferrand">
       </div>
-    </div>
-    <div class="about-right">
-      
-        <div class="about-text reveal">
-        <p>Ferrand didn't choose music. Music chose him.</p>
-        <p>It started with the Tomorrowland 2012 aftermovie. Watched it more times than he can remember. Something about it, the scale, the feeling that music could actually do something to people, got under his skin. He was fourteen. A controller appeared under the Christmas tree. He started messing around with music software, not really knowing what he was doing.</p>
-        <p>By sixteen he was on the floors himself. Illegal raves in the woods, coloured lights and lasers through the trees, getting in with a fake stamp on your wrist. Dancing until it was light outside. Not thinking about making music. Just needing to be there.</p>
-        <p>The making part came later, quietly. One day he finished an edit of C'est Beau La Bourgeoisie, uploaded it without overthinking it. Just the excitement of putting something out, a small hope that maybe someone would hear it. People did. Then more people. Then hundreds of thousands of plays, without a label, without a plan.</p>
-        <p>He took detours through house and hip-hop before the new trance wave arrived and something clicked. Old Loveparade synths and pads, the rawness of early hard house, euphoria and grit in the same bar. Without really trying, he'd ended up exactly where he was always going.</p>
-        <p>His records have been picked up by <strong>Marlon Hoffstadt, KiKi, Armin van Buuren, Hannah Laing, Mischluft, 2Hot2Play</strong> and many more. He's played <strong>Lokschuppen Berlin, Grelle Forelle Vienna, Odonien</strong> and <strong>Artheater Cologne</strong>. Behind the decks he's not just playing bangers. He's building something. Tension, release, space to breathe. A journey that leaves the room wanting more.</p>
-        <p>He's not chasing anything. He's just making music for floors that didn't know they were waiting for it.</p>
+      <div class="about-img-overlay"></div>
+      <div class="about-img-content">
+        <div class="about-location">Cologne · DE</div>
+        <h2 class="about-heading">Ferrand</h2>
+        <div class="about-sub">
+          <div class="about-sub-item label">DJ · Producer</div>
+          <div class="about-sub-item">Trance</div>
+          <div class="about-sub-item">Hard House</div>
+          <div class="about-sub-item">Hard Dance</div>
         </div>
       </div>
-      <div class="about-portrait-block">
-        <img src="images/image_004.jpg" alt="Ferrand">
+    </div>
+
+    <!-- RIGHT: Text -->
+    <div class="about-right">
+      <p class="about-pull reveal">Ferrand didn't choose music.<br>Music chose him.</p>
+      <div class="about-text reveal reveal-delay-1">
+        <p>It started with the Tomorrowland 2012 aftermovie. Watched it more times than he can remember. Something about it, the scale, the feeling that music could actually do something to people, got under his skin. He was fourteen. A controller appeared under the Christmas tree. He started messing around with music software, not really knowing what he was doing.</p>
+        <p>By sixteen he was on the floors himself. Illegal raves in the woods, coloured lights and lasers through the trees, getting in with a fake stamp on your wrist. Dancing until it was light outside. Not thinking about making music. Just needing to be there.</p>
+        <p>The making part came later, quietly. One day he finished an edit of C'est Beau La Bourgeoisie, uploaded it without overthinking it. People did. Then more people. Then hundreds of thousands of plays, without a label, without a plan.</p>
+        <p>He took detours through house and hip-hop before the new trance wave arrived and something clicked. Old Loveparade synths and pads, the rawness of early hard house, euphoria and grit in the same bar. Without really trying, he'd ended up exactly where he was always going.</p>
+        <p>His records have been picked up by <strong>Marlon Hoffstadt, KiKi, Armin van Buuren, Hannah Laing, Mischluft, 2Hot2Play</strong> and many more. Behind the decks he's not just playing bangers. He's building something. Tension, release, space to breathe. A journey that leaves the room wanting more.</p>
+        <p>He's not chasing anything. He's just making music for floors that didn't know they were waiting for it.</p>
+      </div>
+      <div class="about-venues reveal reveal-delay-2">
+        <span class="about-venues-label">Played</span>
+        <span class="about-venue">Lokschuppen Berlin</span>
+        <span class="about-venue">Grelle Forelle Vienna</span>
+        <span class="about-venue">Odonien</span>
+        <span class="about-venue">Artheater Cologne</span>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -1395,63 +1538,69 @@
 </section>
 
 
-<!-- IMPRESSUM -->
-<section id="impressum" style="border-top: 1px solid rgba(240,237,232,0.05);">
-  <button class="accordion-toggle" onclick="toggleAccordion('impressum-body', this)" style="width:100%;padding:48px 48px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;">
-    <p class="section-label" style="margin:0;">Impressum</p>
-    <span class="accordion-arrow" style="font-family:var(--font-cond);font-size:11px;letter-spacing:0.15em;color:rgba(240,237,232,0.3);text-transform:uppercase;transition:transform 0.3s;">&#x25BC;</span>
-  </button>
-  <div id="impressum-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;">
-    <div style="padding: 0 48px 64px; max-width: 480px;">
-      <p style="font-family: var(--font-cond); font-size: 13px; letter-spacing: 0.1em; color: rgba(240,237,232,0.4); line-height: 2.2; text-transform: uppercase;">
-        Knud Huckert<br>
-        Alteburgerstraße 288<br>
-        50968 Köln<br>
-        Deutschland<br><br>
-        <a href="mailto:info.ferrand@gmail.com" style="color: rgba(240,237,232,0.4); text-decoration: none;">info.ferrand@gmail.com</a>
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- DATENSCHUTZ -->
-<section id="datenschutz" style="border-top: 1px solid rgba(240,237,232,0.05);">
-  <button class="accordion-toggle" onclick="toggleAccordion('datenschutz-body', this)" style="width:100%;padding:48px 48px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;">
-    <p class="section-label" style="margin:0;">Datenschutz</p>
-    <span class="accordion-arrow" style="font-family:var(--font-cond);font-size:11px;letter-spacing:0.15em;color:rgba(240,237,232,0.3);text-transform:uppercase;transition:transform 0.3s;">&#x25BC;</span>
-  </button>
-  <div id="datenschutz-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;">
-    <div style="padding: 0 48px 64px; max-width: 680px; font-family: var(--font-body); font-size: 14px; color: rgba(240,237,232,0.45); line-height: 1.9;">
-      <p style="margin-bottom: 24px;"><strong style="color: rgba(240,237,232,0.7); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px;">1. Verantwortlicher</strong><br>
-      Knud Huckert<br>Alteburgerstraße 288<br>50968 Köln<br>Deutschland<br>
-      E-Mail: <a href="mailto:info.ferrand@gmail.com" style="color:rgba(240,237,232,0.45);text-decoration:none;">info.ferrand@gmail.com</a></p>
-
-      <p style="margin-bottom: 24px;"><strong style="color: rgba(240,237,232,0.7); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px;">2. Hosting</strong><br>
-      Diese Website wird über GitHub Pages (GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA) gehostet. Beim Aufruf der Website werden automatisch Server-Logfiles erfasst, die Ihr Browser übermittelt (z.B. IP-Adresse, Browsertyp, Datum und Uhrzeit). Weitere Informationen: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener" style="color:rgba(240,237,232,0.45);">Datenschutzerklärung GitHub</a>.</p>
-
-      <p style="margin-bottom: 24px;"><strong style="color: rgba(240,237,232,0.7); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px;">3. Cookies</strong><br>
-      Diese Website setzt keine eigenen Cookies und verwendet kein Tracking oder Analyse-Tools. GitHub Pages kann im Rahmen des Hostings technisch notwendige Verbindungsdaten verarbeiten.</p>
-
-      <p style="margin-bottom: 24px;"><strong style="color: rgba(240,237,232,0.7); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px;">4. Externe Links</strong><br>
-      Diese Website enthält Links zu externen Plattformen (SoundCloud, Spotify, Instagram, YouTube u.a.). Für die Inhalte und Datenschutzpraktiken dieser Seiten sind die jeweiligen Anbieter verantwortlich.</p>
-
-      <p style="margin-bottom: 24px;"><strong style="color: rgba(240,237,232,0.7); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px;">5. Deine Rechte</strong><br>
-      Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner personenbezogenen Daten sowie das Recht auf Datenübertragbarkeit. Kontakt: <a href="mailto:info.ferrand@gmail.com" style="color:rgba(240,237,232,0.45);">info.ferrand@gmail.com</a>. Du hast außerdem das Recht, dich bei einer Datenschutzaufsichtsbehörde zu beschweren.</p>
-
-      <p><strong style="color: rgba(240,237,232,0.7); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 11px;">6. Kontakt</strong><br>
-      Bei Fragen zum Datenschutz: <a href="mailto:info.ferrand@gmail.com" style="color:rgba(240,237,232,0.45);">info.ferrand@gmail.com</a></p>
-    </div>
-  </div>
-</section>
-
-
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <p>© <span id="year"></span> Knud Huckert — <span>All rights reserved</span></p>
+  <p>© <span id="year"></span> Knud Huckert — <span>All rights reserved</span>
+    <button class="footer-legal-btn" onclick="openModal('impressum-modal')" title="Impressum">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+      Impressum
+    </button>
+    <button class="footer-legal-btn" onclick="openModal('datenschutz-modal')" title="Datenschutz">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Datenschutz
+    </button>
+  </p>
   <p>Cologne, Germany</p>
 </footer>
+
+<!-- IMPRESSUM MODAL -->
+<div id="impressum-modal" class="legal-modal" onclick="if(event.target===this)closeModal('impressum-modal')">
+  <div class="legal-modal-inner">
+    <button class="legal-modal-close" onclick="closeModal('impressum-modal')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <p class="legal-modal-title">Impressum</p>
+    <p style="font-family: var(--font-cond); font-size: 13px; letter-spacing: 0.1em; color: rgba(240,237,232,0.5); line-height: 2.2; text-transform: uppercase;">
+      Knud Huckert<br>
+      Alteburgerstraße 288<br>
+      50968 Köln<br>
+      Deutschland<br><br>
+      <a href="mailto:info.ferrand@gmail.com" style="color: rgba(240,237,232,0.4); text-decoration: none;">info.ferrand@gmail.com</a>
+    </p>
+  </div>
+</div>
+
+<!-- DATENSCHUTZ MODAL -->
+<div id="datenschutz-modal" class="legal-modal" onclick="if(event.target===this)closeModal('datenschutz-modal')">
+  <div class="legal-modal-inner">
+    <button class="legal-modal-close" onclick="closeModal('datenschutz-modal')">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <p class="legal-modal-title">Datenschutz</p>
+    <div style="font-family: var(--font-body); font-size: 13px; color: rgba(240,237,232,0.45); line-height: 1.9;">
+      <p style="margin-bottom: 20px;"><strong style="color: rgba(240,237,232,0.65); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px;">1. Verantwortlicher</strong><br>
+      Knud Huckert<br>Alteburgerstraße 288<br>50968 Köln<br>Deutschland<br>
+      E-Mail: <a href="mailto:info.ferrand@gmail.com" style="color:rgba(240,237,232,0.45);text-decoration:none;">info.ferrand@gmail.com</a></p>
+
+      <p style="margin-bottom: 20px;"><strong style="color: rgba(240,237,232,0.65); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px;">2. Hosting</strong><br>
+      Diese Website wird über GitHub Pages (GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA) gehostet. Beim Aufruf der Website werden automatisch Server-Logfiles erfasst, die Ihr Browser übermittelt (z.B. IP-Adresse, Browsertyp, Datum und Uhrzeit). Weitere Informationen: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener" style="color:rgba(240,237,232,0.45);">Datenschutzerklärung GitHub</a>.</p>
+
+      <p style="margin-bottom: 20px;"><strong style="color: rgba(240,237,232,0.65); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px;">3. Cookies</strong><br>
+      Diese Website setzt keine eigenen Cookies und verwendet kein Tracking oder Analyse-Tools. GitHub Pages kann im Rahmen des Hostings technisch notwendige Verbindungsdaten verarbeiten.</p>
+
+      <p style="margin-bottom: 20px;"><strong style="color: rgba(240,237,232,0.65); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px;">4. Externe Links</strong><br>
+      Diese Website enthält Links zu externen Plattformen (SoundCloud, Spotify, Instagram, YouTube u.a.). Für die Inhalte und Datenschutzpraktiken dieser Seiten sind die jeweiligen Anbieter verantwortlich.</p>
+
+      <p style="margin-bottom: 20px;"><strong style="color: rgba(240,237,232,0.65); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px;">5. Deine Rechte</strong><br>
+      Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner personenbezogenen Daten sowie das Recht auf Datenübertragbarkeit. Kontakt: <a href="mailto:info.ferrand@gmail.com" style="color:rgba(240,237,232,0.45);">info.ferrand@gmail.com</a>. Du hast außerdem das Recht, dich bei einer Datenschutzaufsichtsbehörde zu beschweren.</p>
+
+      <p><strong style="color: rgba(240,237,232,0.65); font-family: var(--font-cond); letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px;">6. Kontakt</strong><br>
+      Bei Fragen zum Datenschutz: <a href="mailto:info.ferrand@gmail.com" style="color:rgba(240,237,232,0.45);">info.ferrand@gmail.com</a></p>
+    </div>
+  </div>
+</div>
 
 <script>
   // Mobile Menu
@@ -1504,6 +1653,24 @@
   }, { passive: true });
 
 
+
+  // Legal modals
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeModal('impressum-modal');
+      closeModal('datenschutz-modal');
+    }
+  });
 
   // Auto year
   document.getElementById('year').textContent = new Date().getFullYear();
