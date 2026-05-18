@@ -534,36 +534,6 @@
     padding: 120px 48px;
     max-width: 1400px;
     margin: 0 auto;
-    position: relative;
-  }
-
-  .music-bg-wrap {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    max-width: 1400px;
-  }
-
-  .music-bg-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    filter: grayscale(40%) contrast(1.05);
-    display: block;
-    opacity: 0.35;
-  }
-
-  .music-bg-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(5,5,5,0.6) 0%,
-      rgba(5,5,5,0.3) 50%,
-      rgba(5,5,5,0.7) 100%
-    );
   }
 
   .tracks-grid {
@@ -577,30 +547,56 @@
     text-decoration: none;
     position: relative;
     padding: 36px 40px;
-    background: rgba(5, 5, 5, 0.55);
-    border: 1px solid rgba(240, 237, 232, 0.07);
-    transition: background 0.4s ease, border-color 0.4s ease;
+    border: 1px solid rgba(240, 237, 232, 0.05);
     overflow: hidden;
     cursor: none;
-    backdrop-filter: blur(4px);
+    background-color: var(--black);
   }
 
-  .track-card::before {
-    content: '';
+  .track-card-bg {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, var(--red-dim) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px) brightness(0.35);
+    transform: scale(1.2);
+    z-index: 0;
+  }
+
+  .track-card-cover {
+    position: absolute;
+    inset: 0;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(12px) brightness(0.5);
+    transition: filter 0.6s ease;
+    z-index: 1;
+  }
+
+  .track-card:hover .track-card-cover {
+    filter: blur(0px) brightness(0.9);
+  }
+
+  .track-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(5,5,5,0.15) 0%, rgba(5,5,5,0.6) 100%);
+    z-index: 2;
+    transition: opacity 0.6s ease;
+  }
+
+  .track-card:hover .track-card-overlay {
+    opacity: 0.5;
+  }
+
+  .track-card > *:not(.track-card-bg):not(.track-card-cover):not(.track-card-overlay) {
+    position: relative;
+    z-index: 3;
   }
 
   .track-card:hover {
-    background: rgba(218, 12, 26, 0.06);
     border-color: rgba(218, 12, 26, 0.2);
-  }
-
-  .track-card:hover::before {
-    opacity: 1;
   }
 
   .track-num {
@@ -671,7 +667,7 @@
 
   /* SOCIALS */
   #socials {
-    padding: 100px 48px;
+    padding: 140px 48px;
     text-align: center;
     border-top: 1px solid rgba(240, 237, 232, 0.05);
     border-bottom: 1px solid rgba(240, 237, 232, 0.05);
@@ -689,15 +685,15 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center;
-    filter: grayscale(30%) contrast(1.05);
+    object-position: center 25%;
+    filter: grayscale(25%) contrast(1.08) brightness(0.95);
     display: block;
   }
 
   .socials-image-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(5, 5, 5, 0.5);
+    background: rgba(5, 5, 5, 0.7);
   }
 
   .socials-list {
@@ -735,7 +731,7 @@
   }
 
   @media (min-width: 701px) {
-    .socials-list a { color: rgba(240, 237, 232, 0.75); }
+    .socials-list a { color: rgba(240, 237, 232, 1); }
   }
 
   .socials-list a::after {
@@ -1431,7 +1427,7 @@
   <div class="hero-noise"></div>
   <div class="hero-content">
     <h1 class="hero-name">Ferrand</h1>
-    <p class="hero-location">Cologne, Germany</p>
+    <p class="hero-location">DJ · Producer</p>
   </div>
   <div class="hero-scroll">
     <span>Scroll</span>
@@ -1443,17 +1439,9 @@
 
 
 
-<!-- IMAGES - hidden -->
-<div id="images" style="display:none;">
-  <div class="gallery-hero reveal">
-    <img src="images/image_002.jpg" alt="Ferrand live" loading="lazy">
-  </div>
-</div>
-
-<div class="h-rule"></div>
-
 <!-- ABOUT -->
 <div id="about">
+  <p class="section-label reveal">About</p>
   <div class="about-grid">
 
     <!-- LEFT: Portrait with overlay -->
@@ -1463,14 +1451,7 @@
       </div>
       <div class="about-img-overlay"></div>
       <div class="about-img-content">
-        <div class="about-location">Cologne · DE</div>
-        <h2 class="about-heading">Ferrand</h2>
-        <div class="about-sub">
-          <div class="about-sub-item label">DJ · Producer</div>
-          <div class="about-sub-item">Trance</div>
-          <div class="about-sub-item">Hard House</div>
-          <div class="about-sub-item">Hard Dance</div>
-        </div>
+        <p style="font-family: var(--font-cond); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(240,237,232,0.35); margin-top: 20px;">Cologne, Germany</p>
       </div>
     </div>
 
@@ -1493,14 +1474,13 @@
 
 <!-- MUSIC -->
 <div id="music">
-  <div class="music-bg-wrap">
-    <img src="images/image_002.jpg" alt="" aria-hidden="true">
-    <div class="music-bg-overlay"></div>
-  </div>
-  <p class="section-label reveal" style="position:relative;z-index:2;">Music</p>
-  <div class="tracks-grid" style="position:relative;z-index:2;">
+  <p class="section-label reveal">Music</p>
+  <div class="tracks-grid">
 
-    <a class="track-card reveal" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank" rel="noopener">
+    <a class="track-card reveal" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank" rel="noopener" style="background-color: #0a0a0a;">
+      <div class="track-card-bg" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
+      <div class="track-card-cover" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
+      <div class="track-card-overlay"></div>
       <div class="track-num">
         <span>01</span>
         <span class="track-platform">SoundCloud</span>
@@ -1513,7 +1493,10 @@
       </div>
     </a>
 
-    <a class="track-card reveal reveal-delay-1" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl?si=1d9d46d86dc8421d" target="_blank" rel="noopener">
+    <a class="track-card reveal reveal-delay-1" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl?si=1d9d46d86dc8421d" target="_blank" rel="noopener" style="background-color: #1a1500;">
+      <div class="track-card-bg" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
+      <div class="track-card-cover" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
+      <div class="track-card-overlay"></div>
       <div class="track-num">
         <span>02</span>
         <span class="track-platform">Spotify</span>
@@ -1526,7 +1509,10 @@
       </div>
     </a>
 
-    <a class="track-card reveal reveal-delay-2" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank" rel="noopener">
+    <a class="track-card reveal reveal-delay-2" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank" rel="noopener" style="background-color: #120a1a;">
+      <div class="track-card-bg" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
+      <div class="track-card-cover" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
+      <div class="track-card-overlay"></div>
       <div class="track-num">
         <span>03</span>
         <span class="track-platform">SoundCloud</span>
@@ -1539,7 +1525,10 @@
       </div>
     </a>
 
-    <a class="track-card reveal reveal-delay-3" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW?si=5fb2106a995a46cb" target="_blank" rel="noopener">
+    <a class="track-card reveal reveal-delay-3" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW?si=5fb2106a995a46cb" target="_blank" rel="noopener" style="background-color: #0a0f1a;">
+      <div class="track-card-bg" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
+      <div class="track-card-cover" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
+      <div class="track-card-overlay"></div>
       <div class="track-num">
         <span>04</span>
         <span class="track-platform">Spotify</span>
@@ -1561,7 +1550,7 @@
 <!-- SOCIALS -->
 <section id="socials">
   <div class="socials-image-wrap">
-    <img src="images/image_006.jpg" alt="Ferrand">
+    <img src="images/image_002.jpg" alt="Ferrand">
     <div class="socials-image-overlay"></div>
   </div>
   <p class="section-label reveal" style="justify-content: center; position: relative; z-index: 2;">Connect</p>
@@ -1590,14 +1579,8 @@
 <!-- FOOTER -->
 <footer>
   <p>© <span id="year"></span> Knud Huckert — <span>All rights reserved</span>
-    <button class="footer-legal-btn" onclick="openModal('impressum-modal')" title="Impressum">
-      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
-      Impressum
-    </button>
-    <button class="footer-legal-btn" onclick="openModal('datenschutz-modal')" title="Datenschutz">
-      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Datenschutz
-    </button>
+    <button class="footer-legal-btn" onclick="openModal('impressum-modal')" title="Impressum">Impressum</button>
+    <button class="footer-legal-btn" onclick="openModal('datenschutz-modal')" title="Datenschutz">Datenschutz</button>
   </p>
   <p>Cologne, Germany</p>
 </footer>
