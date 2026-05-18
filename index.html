@@ -1235,15 +1235,14 @@
   .editorial-break {
     width: 100%;
     max-width: 100%;
-    height: 70vh;
     overflow: hidden;
     position: relative;
   }
   .editorial-break img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
+    height: auto;
+    display: block;
+    object-fit: unset;
     filter: grayscale(20%) contrast(1.05);
   }
     .editorial-break { height: 60vw; }
@@ -1301,13 +1300,13 @@
     .editorial-break {
       width: 100% !important;
       max-width: 100% !important;
-      height: 60vw !important;
+      height: auto !important;
       overflow: hidden !important;
     }
     .editorial-break img {
       width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
+      height: auto !important;
+      object-fit: unset !important;
       display: block !important;
     }
 
@@ -1511,8 +1510,8 @@
 
 <div class="h-rule"></div>
 
-<div class="editorial-break" style="width:100%;max-width:100%;overflow:hidden;">
-  <img style="width:100%;height:100%;object-fit:cover;display:block;" src="images/image_005.jpg" alt="Ferrand" loading="lazy">
+<div class="editorial-break">
+  <img style="width:100%;height:auto;display:block;" src="images/image_005.jpg" alt="Ferrand" loading="lazy">
 </div>
 
 <!-- BOOKING -->
