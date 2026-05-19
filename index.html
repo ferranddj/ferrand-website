@@ -150,7 +150,7 @@
     width: 150%;
     height: 150%;
     object-fit: cover;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -40%);
     filter: grayscale(25%) contrast(1.08) brightness(0.95);
     z-index: 0;
   }
@@ -673,38 +673,16 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 120px 48px;
+    text-align: center;
   }
 
   .socials-inner {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .socials-img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    object-position: center 25%;
-    filter: grayscale(25%) contrast(1.08) brightness(0.95);
-    display: block;
-  }
-
-  .socials-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(5, 5, 5, 0.65);
-  }
-
-  .socials-content {
-    position: absolute;
-    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
   }
 
-  .socials-image-wrap, .socials-image-overlay { display: none; }
+  .socials-image-wrap, .socials-image-overlay, .socials-img, .socials-overlay, .socials-content { display: contents; }
 
   .socials-list {
     display: flex;
@@ -767,15 +745,37 @@
 
   /* BOOKING */
   #booking {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 120px 48px;
+  }
+
+  .booking-inner {
+    position: relative;
+    overflow: hidden;
     min-height: 60vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 120px 48px;
-    position: relative;
-    overflow: hidden;
+  }
+
+  .booking-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    filter: grayscale(25%) contrast(1.08) brightness(0.95);
+    display: block;
+  }
+
+  .booking-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.75);
   }
 
   .booking-bg {
@@ -792,9 +792,11 @@
     text-transform: uppercase;
     color: var(--red);
     margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
   }
 
-  .booking-heading {
+  .booking-heading { z-index: 2;
     font-family: var(--font-display);
     font-size: clamp(80px, 14vw, 180px);
     line-height: 0.9;
@@ -813,7 +815,7 @@
     z-index: -1;
   }
 
-  .booking-email {
+  .booking-email { z-index: 2;
     display: inline-block;
     font-family: var(--font-cond);
     font-size: clamp(14px, 2vw, 20px);
@@ -1224,8 +1226,21 @@
       bottom: 48px;
     }
 
-    .booking-heading {
+    .booking-heading { z-index: 2;
       font-size: clamp(60px, 18vw, 180px);
+    }
+
+    .booking-bg {
+      background: radial-gradient(ellipse 120% 80% at 50% 50%, rgba(218, 12, 26, 0.12) 0%, transparent 70%);
+    }
+
+    .section-label {
+      justify-content: center;
+    }
+
+    .booking-label {
+      text-align: center;
+      display: block;
     }
   }
 
@@ -1494,7 +1509,7 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg"><img class="hero-bg-img" src="images/image_001.jpg" alt="" fetchpriority="high"></div>
+  <div class="hero-bg"><img class="hero-bg-img" src="images/image_002.jpg" alt="" fetchpriority="high"></div>
   <div class="hero-noise"></div>
   <div class="hero-content">
     <h1 class="hero-name">Ferrand</h1>
@@ -1618,10 +1633,8 @@
 <!-- SOCIALS -->
 <section id="socials">
   <div class="socials-inner">
-    <img class="socials-img" src="images/image_002.jpg" alt="Ferrand" loading="lazy">
-    <div class="socials-overlay"></div>
-    <div class="socials-content">
-      <p class="section-label reveal" style="justify-content: center;">Connect</p>
+    <div class="socials-content" style="position:relative;">
+      <p class="section-label reveal">Connect</p>
       <ul class="socials-list reveal reveal-delay-1">
         <li><a href="https://www.instagram.com/ferrand.dj/" target="_blank" rel="noopener">Instagram</a></li>
         <li><a href="https://soundcloud.com/ferrand_ferrari" target="_blank" rel="noopener">SoundCloud</a></li>
@@ -1637,10 +1650,14 @@
 
 <!-- BOOKING -->
 <section id="booking">
-  <div class="booking-bg"></div>
-  <p class="booking-label reveal">Get in Touch</p>
-  <h2 class="booking-heading reveal reveal-delay-1">Booking</h2>
-  <a href="mailto:info.ferrand@gmail.com" class="booking-email reveal reveal-delay-2">info.ferrand@gmail.com</a>
+  <div class="booking-inner">
+    <img class="booking-img" src="images/image_001.jpg" alt="Ferrand" loading="lazy">
+    <div class="booking-img-overlay"></div>
+    <div class="booking-bg"></div>
+    <p class="booking-label reveal">Get in Touch</p>
+    <h2 class="booking-heading reveal reveal-delay-1">Booking</h2>
+    <a href="mailto:info.ferrand@gmail.com" class="booking-email reveal reveal-delay-2">info.ferrand@gmail.com</a>
+  </div>
 </section>
 
 
