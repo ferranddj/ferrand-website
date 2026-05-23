@@ -223,6 +223,11 @@
 
   .nav-links a:hover { opacity: 0.5; }
 
+  @keyframes kenburns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.08); }
+  }
+
   .hero-img {
     position: absolute;
     inset: 0;
@@ -232,6 +237,16 @@
     object-position: center bottom;
     filter: grayscale(15%) contrast(1.1);
     display: block;
+    animation: kenburns 12s ease-in-out infinite alternate;
+    transform-origin: center bottom;
+  }
+
+  .hero-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(5,5,5,0.7) 100%);
+    z-index: 1;
+    pointer-events: none;
   }
 
   .hero-overlay {
@@ -734,6 +749,7 @@
 <!-- HERO -->
 <section id="hero">
   <img class="hero-img" src="images/image_002.jpg" alt="Ferrand">
+  <div class="hero-vignette"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="hero-name">Ferrand</h1>
