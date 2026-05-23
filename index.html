@@ -19,7 +19,10 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    height: 100%;
+  }
 
   body {
     background: var(--white);
@@ -27,7 +30,16 @@
     font-family: var(--font-body);
     font-weight: 300;
     overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-snap-type: y proximity;
+    height: 100svh;
   }
+
+  #hero, #about, #music, #socials, #booking {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+
 
   /* PAGE REVEAL */
   .page-reveal {
@@ -121,16 +133,17 @@
   /* Rounded page like Hive */
   #hero {
     width: 100%;
-    height: 100vh;
+    height: 100svh;
     position: relative;
     overflow: hidden;
   }
 
   #about {
+    overflow: hidden;
     background: var(--white);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    min-height: 100vh;
+    height: 100svh;
     
     overflow: hidden;
     
@@ -142,80 +155,42 @@
     background: var(--black);
     padding: 120px 0;
     overflow: hidden;
-    
-    
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
     z-index: 2;
   }
 
   #socials {
-    background: var(--black);
+    overflow: hidden;
+    background: var(--white);
     padding: 160px 48px;
     border-top: none;
+    height: 100svh;
+    display: flex;
+    align-items: center;
     position: relative;
     z-index: 3;
-    overflow: hidden;
-  }
-
-  .socials-bg {
-    position: absolute;
-    inset: 0;
-    background-image: url('images/image_001.jpg');
-    background-size: cover;
-    background-position: center;
-    filter: grayscale(25%) contrast(1.08) brightness(0.4);
-  }
-
-  .socials-inner {
-    position: relative;
-    z-index: 2;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .socials-label {
-    color: var(--red);
-  }
-
-  .socials-list a {
-    color: var(--white);
-  }
-
-  .socials-list li {
-    border-top: 1px solid rgba(245,242,237,0.1);
-  }
-
-  .socials-list li:last-child {
-    border-bottom: 1px solid rgba(245,242,237,0.1);
   }
 
   #booking {
     background: var(--black);
-    min-height: 70vh;
+    height: 100svh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 120px 48px;
+    padding: 160px 48px;
     position: relative;
     overflow: hidden;
-    
-    
     z-index: 4;
   }
 
   footer {
-    background: var(--white);
-    padding: 32px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--light-gray);
-    
-    
-    position: relative;
-    z-index: 5;
+    display: none;
   }
 
   .nav-logo {
@@ -252,7 +227,7 @@
     inset: 0;
     background-image: url('images/image_002.jpg');
     background-size: cover;
-    background-position: center 65%;
+    background-position: center 30%;
     filter: grayscale(15%) contrast(1.1);
   }
 
@@ -652,7 +627,7 @@
     background-size: cover;
     background-position: center 25%;
     filter: grayscale(25%) contrast(1.08) brightness(0.95);
-    opacity: 0.4;
+    opacity: 0.6;
   }
 
   .booking-overlay {
@@ -879,7 +854,6 @@
 
 <!-- CONNECT -->
 <section id="socials">
-  <div class="socials-bg"></div>
   <div class="socials-inner">
     <p class="socials-label">Connect</p>
     <ul class="socials-list">
@@ -899,15 +873,16 @@
   <p class="booking-label">Get in Touch</p>
   <h2 class="booking-heading">Booking</h2>
   <a href="mailto:info.ferrand@gmail.com" class="booking-email">info.ferrand@gmail.com</a>
+  <div style="position:absolute; bottom:32px; left:48px; right:48px; display:flex; justify-content:space-between; align-items:center; z-index:2;">
+    <p style="font-family:var(--font-cond); font-size:10px; letter-spacing:0.2em; color:rgba(245,242,237,0.25); text-transform:uppercase;">© <span id="year"></span> Knud Huckert</p>
+    <p>
+      <button class="footer-legal-btn" style="color:rgba(245,242,237,0.25);">Impressum</button>
+      <button class="footer-legal-btn" style="color:rgba(245,242,237,0.25);">Datenschutz</button>
+    </p>
+  </div>
 </section>
 
-<footer>
-  <p>© <span id="year"></span> Knud Huckert</p>
-  <p>
-    <button class="footer-legal-btn">Impressum</button>
-    <button class="footer-legal-btn">Datenschutz</button>
-  </p>
-</footer>
+<footer style="display:none;"></footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -919,7 +894,56 @@
     }, 300);
   });
 
-  // Nav
+
+  // Fullpage scroll
+  const sectionIds = ['hero', 'about', 'music', 'socials', 'booking'];
+  let current = 0;
+  let isScrolling = false;
+
+  function goTo(index) {
+    if (index < 0 || index >= sectionIds.length || isScrolling) return;
+    current = index;
+    isScrolling = true;
+    document.getElementById(sectionIds[current]).scrollIntoView({ behavior: 'smooth' });
+    nav.classList.toggle('visible', current > 0);
+    setTimeout(() => { isScrolling = false; }, 1000);
+  }
+
+  window.addEventListener('wheel', (e) => {
+    // ignore if scrolling inside carousel
+    if (e.target.closest('#carouselWrap')) return;
+    e.preventDefault();
+    if (e.deltaY > 0) goTo(current + 1);
+    else goTo(current - 1);
+  }, { passive: false });
+
+  // Touch
+  let touchStartY = 0;
+  window.addEventListener('touchstart', e => {
+    if (e.target.closest('#carouselWrap')) return;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchend', e => {
+    if (e.target.closest('#carouselWrap')) return;
+    const diff = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goTo(current + 1);
+      else goTo(current - 1);
+    }
+  }, { passive: true });
+
+  // Nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const id = a.getAttribute('href').replace('#', '');
+      const idx = sectionIds.indexOf(id);
+      if (idx !== -1) goTo(idx);
+    });
+  });
+
+  // Nav visibility
   const nav = document.getElementById('mainNav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('visible', window.scrollY > 100);
