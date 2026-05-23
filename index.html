@@ -109,8 +109,8 @@
     line-height: 0.85;
     letter-spacing: 2px;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1.8s ease, transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(80px);
+    transition: opacity 3s ease, transform 3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .hero-name.visible {
@@ -124,7 +124,6 @@
     height: 100vh;
     position: relative;
     overflow: hidden;
-    border-radius: 0 0 24px 24px;
   }
 
   #about {
@@ -132,9 +131,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: 100vh;
-    border-radius: 24px;
+    
     overflow: hidden;
-    margin-top: -24px;
+    
     position: relative;
     z-index: 1;
   }
@@ -143,8 +142,8 @@
     background: var(--black);
     padding: 120px 0;
     overflow: hidden;
-    border-radius: 24px;
-    margin-top: -24px;
+    
+    
     position: relative;
     z-index: 2;
   }
@@ -153,8 +152,8 @@
     background: var(--white);
     padding: 160px 48px;
     border-top: none;
-    border-radius: 24px;
-    margin-top: -24px;
+    
+    
     position: relative;
     z-index: 3;
   }
@@ -170,8 +169,8 @@
     padding: 120px 48px;
     position: relative;
     overflow: hidden;
-    border-radius: 24px;
-    margin-top: -24px;
+    
+    
     z-index: 4;
   }
 
@@ -182,8 +181,8 @@
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid var(--light-gray);
-    border-radius: 24px 24px 0 0;
-    margin-top: -24px;
+    
+    
     position: relative;
     z-index: 5;
   }
@@ -349,13 +348,10 @@
     color: #aaa;
   }
 
-  /* MUSIC */
+  /* MUSIC SCROLL — Hive style */
   .music-header {
     padding: 0 48px;
     margin-bottom: 64px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
   }
 
   .music-label {
@@ -385,135 +381,78 @@
     line-height: 0.9;
   }
 
-  .music-nav {
-    display: flex;
-    gap: 16px;
-    padding-bottom: 8px;
-  }
-
-  .music-nav button {
-    width: 44px;
-    height: 44px;
-    border: 1px solid rgba(245,242,237,0.2);
-    background: none;
-    color: var(--white);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-  }
-
-  .music-nav button:hover {
-    background: var(--white);
-    color: var(--black);
-  }
-
-  .music-nav svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  /* CAROUSEL */
   .carousel-wrap {
-    overflow: hidden;
-    padding: 0 48px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 48px 48px;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+
+  .carousel-wrap::-webkit-scrollbar { display: none; }
+  .carousel-wrap.dragging { cursor: grabbing; }
 
   .carousel {
     display: flex;
-    gap: 2px;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    gap: 16px;
+    width: max-content;
   }
 
   .track-slide {
-    flex: 0 0 calc(25% - 1.5px);
+    flex: 0 0 320px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
-    aspect-ratio: 1;
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
   }
 
-  .track-cover {
-    width: 100%;
-    height: 100%;
-    background-size: contain;
+  .track-cover-img {
+    width: 320px;
+    height: 320px;
+    background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    background-color: var(--black);
+    display: block;
     transition: transform 0.6s ease;
   }
 
-  .track-cover-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    filter: blur(20px) brightness(0.3);
-    transform: scale(1.1);
-  }
-
-  .track-slide:hover .track-cover { transform: scale(1.03); }
+  .track-slide:hover .track-cover-img { transform: scale(1.03); }
 
   .track-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 40px 28px 28px;
-    background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, transparent 100%);
-    z-index: 2;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.4s ease;
-  }
-
-  .track-slide:hover .track-info {
-    opacity: 1;
-    transform: translateY(0);
+    padding: 16px 0 0;
   }
 
   .track-num {
     font-family: var(--font-cond);
     font-size: 10px;
     letter-spacing: 0.3em;
-    color: var(--red);
-    margin-bottom: 8px;
+    color: rgba(245,242,237,0.4);
+    margin-bottom: 6px;
   }
 
   .track-name {
     font-family: var(--font-display);
-    font-size: 32px;
+    font-size: 28px;
     color: var(--white);
     line-height: 1;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
   }
 
   .track-artist {
     font-family: var(--font-cond);
     font-size: 11px;
     letter-spacing: 0.2em;
-    color: rgba(245,242,237,0.5);
+    color: rgba(245,242,237,0.4);
     text-transform: uppercase;
-    margin-bottom: 16px;
   }
 
   .track-listen {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-cond);
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(245,242,237,0.3);
-    padding-bottom: 4px;
-    transition: border-color 0.3s ease;
+    display: none;
   }
-
-  .track-listen:hover { border-color: var(--white); }
 
   /* CONNECT */
   .socials-inner {
@@ -687,12 +626,6 @@
 </head>
 <body>
 
-<div class="page-reveal" id="pageReveal">
-  <div class="reveal-top"></div>
-  <div class="reveal-bottom"></div>
-  <div class="reveal-name"><span class="reveal-name-text">FERRAND</span></div>
-</div>
-
 <nav id="mainNav">
   <a href="#" class="nav-logo">Ferrand</a>
   <ul class="nav-links">
@@ -731,66 +664,48 @@
 <!-- MUSIC -->
 <section id="music">
   <div class="music-header">
-    <div>
-      <p class="music-label">Music</p>
-      <h2 class="music-title">Releases</h2>
-    </div>
-    <div class="music-nav">
-      <button id="prevBtn" onclick="slide(-1)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/></svg>
-      </button>
-      <button id="nextBtn" onclick="slide(1)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </button>
-    </div>
+    <p class="music-label">Music</p>
+    <h2 class="music-title">Releases</h2>
   </div>
 
-  <div class="carousel-wrap">
+  <div class="carousel-wrap" id="carouselWrap">
     <div class="carousel" id="carousel">
 
-      <div class="track-slide">
-        <div class="track-cover-bg" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
-        <div class="track-cover" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
+      <a class="track-slide" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank">
+        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
         <div class="track-info">
           <p class="track-num">01 · SoundCloud</p>
-          <h3 class="track-name">C'est Beau La<br>Bourgeoisie</h3>
+          <h3 class="track-name">C'est Beau La Bourgeoisie</h3>
           <p class="track-artist">Ferrand</p>
-          <a class="track-listen" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank">Listen →</a>
         </div>
-      </div>
+      </a>
 
-      <div class="track-slide">
-        <div class="track-cover-bg" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
-        <div class="track-cover" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
+      <a class="track-slide" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl" target="_blank">
+        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
         <div class="track-info">
           <p class="track-num">02 · Spotify</p>
           <h3 class="track-name">Get Up</h3>
           <p class="track-artist">Ferrand, Armin Hermann</p>
-          <a class="track-listen" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl" target="_blank">Listen →</a>
         </div>
-      </div>
+      </a>
 
-      <div class="track-slide">
-        <div class="track-cover-bg" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
-        <div class="track-cover" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
+      <a class="track-slide" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank">
+        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
         <div class="track-info">
           <p class="track-num">03 · SoundCloud</p>
           <h3 class="track-name">Rock Right Now!</h3>
           <p class="track-artist">Ferrand, Sasuma</p>
-          <a class="track-listen" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank">Listen →</a>
         </div>
-      </div>
+      </a>
 
-      <div class="track-slide">
-        <div class="track-cover-bg" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
-        <div class="track-cover" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
+      <a class="track-slide" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW" target="_blank">
+        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
         <div class="track-info">
           <p class="track-num">04 · Spotify</p>
           <h3 class="track-name">RWTB</h3>
           <p class="track-artist">Ferrand, Sasuma</p>
-          <a class="track-listen" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW" target="_blank">Listen →</a>
         </div>
-      </div>
+      </a>
 
     </div>
   </div>
@@ -830,39 +745,48 @@
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Page reveal
+  // Hero name appears on load
   window.addEventListener('load', () => {
     setTimeout(() => {
-      document.getElementById('pageReveal').classList.add('done');
-      // Ferrand erscheint langsam nach dem Reveal
-      setTimeout(() => {
-        document.querySelector('.hero-name').classList.add('visible');
-      }, 600);
-    }, 400);
+      document.querySelector('.hero-name').classList.add('visible');
+    }, 300);
   });
 
-  // Nav appears after just a tiny scroll (100px)
+  // Nav
   const nav = document.getElementById('mainNav');
-
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 100) {
-      nav.classList.add('visible');
-    } else {
-      nav.classList.remove('visible');
-    }
+    nav.classList.toggle('visible', window.scrollY > 100);
   }, { passive: true });
 
-  // Carousel
-  let current = 0;
-  const carousel = document.getElementById('carousel');
-  const slides = carousel.querySelectorAll('.track-slide');
-  const total = slides.length;
+  // Drag scroll — Mouse + Touch
+  const wrap = document.getElementById('carouselWrap');
+  let isDown = false, startX, scrollLeft;
 
-  function slide(dir) {
-    current = Math.max(0, Math.min(current + dir, total - 4));
-    const slideWidth = slides[0].offsetWidth + 2;
-    carousel.style.transform = `translateX(-${current * slideWidth}px)`;
-  }
+  // Mouse
+  wrap.addEventListener('mousedown', e => {
+    isDown = true;
+    wrap.classList.add('dragging');
+    startX = e.pageX - wrap.offsetLeft;
+    scrollLeft = wrap.scrollLeft;
+  });
+  wrap.addEventListener('mouseleave', () => { isDown = false; wrap.classList.remove('dragging'); });
+  wrap.addEventListener('mouseup', () => { isDown = false; wrap.classList.remove('dragging'); });
+  wrap.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - wrap.offsetLeft;
+    wrap.scrollLeft = scrollLeft - (x - startX) * 1.5;
+  });
+
+  // Touch
+  wrap.addEventListener('touchstart', e => {
+    startX = e.touches[0].pageX - wrap.offsetLeft;
+    scrollLeft = wrap.scrollLeft;
+  }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    const x = e.touches[0].pageX - wrap.offsetLeft;
+    wrap.scrollLeft = scrollLeft - (x - startX);
+  }, { passive: true });
 </script>
 </body>
 </html>
