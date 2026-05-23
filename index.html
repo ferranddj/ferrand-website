@@ -348,10 +348,10 @@
     color: #aaa;
   }
 
-  /* MUSIC SCROLL — Hive style */
+  /* MUSIC SCROLL — refined */
   .music-header {
     padding: 0 48px;
-    margin-bottom: 64px;
+    margin-bottom: 80px;
   }
 
   .music-label {
@@ -360,7 +360,7 @@
     letter-spacing: 0.5em;
     text-transform: uppercase;
     color: var(--red);
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -379,12 +379,13 @@
     font-size: clamp(60px, 10vw, 120px);
     color: var(--white);
     line-height: 0.9;
+    letter-spacing: 2px;
   }
 
   .carousel-wrap {
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 0 48px 48px;
+    padding: 0 48px 80px;
     cursor: grab;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -395,64 +396,149 @@
 
   .carousel {
     display: flex;
-    gap: 16px;
+    gap: 24px;
     width: max-content;
   }
 
+  /* FLIP CARD */
   .track-slide {
-    flex: 0 0 320px;
-    position: relative;
+    flex: 0 0 300px;
     cursor: pointer;
-    overflow: hidden;
-    border-radius: 4px;
     text-decoration: none;
     color: inherit;
     display: block;
+    perspective: 1000px;
+    align-self: flex-start;
   }
 
-  .track-cover-img {
-    width: 320px;
-    height: 320px;
+  .track-card-inner {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+
+  .track-slide.flipped .track-card-inner {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+  }
+
+  .track-card-front,
+  .track-card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .track-card-front {
     background-size: cover;
     background-position: center;
-    display: block;
-    transition: transform 0.6s ease;
   }
 
-  .track-slide:hover .track-cover-img { transform: scale(1.03); }
+  .track-card-back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px;
+    gap: 12px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+
+  .track-card-back-blur {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(18px) brightness(0.3);
+    transform: scale(1.1);
+    z-index: 0;
+  }
+
+  .track-card-back > *:not(.track-card-back-blur) {
+    position: relative;
+    z-index: 1;
+  }
+
+  .back-num {
+    font-family: var(--font-cond);
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--red);
+    text-transform: uppercase;
+  }
+
+  .back-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .back-artist {
+    font-family: var(--font-cond);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: rgba(245,242,237,0.4);
+    text-transform: uppercase;
+  }
+
+  .back-link {
+    margin-top: 16px;
+    font-family: var(--font-cond);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(245,242,237,0.3);
+    padding-bottom: 4px;
+    transition: border-color 0.3s ease;
+  }
+
+  .back-link:hover { border-color: var(--white); }
 
   .track-info {
-    padding: 16px 0 0;
+    padding: 20px 0 0;
+    border-top: 1px solid rgba(245,242,237,0.1);
+    min-height: 90px;
   }
 
   .track-num {
     font-family: var(--font-cond);
     font-size: 10px;
-    letter-spacing: 0.3em;
-    color: rgba(245,242,237,0.4);
-    margin-bottom: 6px;
+    letter-spacing: 0.4em;
+    color: var(--red);
+    margin-bottom: 10px;
+    text-transform: uppercase;
   }
 
   .track-name {
     font-family: var(--font-display);
-    font-size: 28px;
+    font-size: 30px;
     color: var(--white);
     line-height: 1;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     letter-spacing: 1px;
   }
 
   .track-artist {
     font-family: var(--font-cond);
     font-size: 11px;
-    letter-spacing: 0.2em;
-    color: rgba(245,242,237,0.4);
+    letter-spacing: 0.25em;
+    color: rgba(245,242,237,0.35);
     text-transform: uppercase;
+    font-weight: 300;
   }
 
-  .track-listen {
-    display: none;
-  }
+  .track-listen { display: none; }
 
   /* CONNECT */
   .socials-inner {
@@ -671,41 +757,90 @@
   <div class="carousel-wrap" id="carouselWrap">
     <div class="carousel" id="carousel">
 
-      <a class="track-slide" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank">
-        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
+      <div class="track-slide" onclick="flipCard(this)">
+        <div class="track-card-inner">
+          <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
+          <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg');"></div>
+            <p class="back-num">01</p>
+            <h3 class="back-title">C'est Beau La Bourgeoisie</h3>
+            <p class="back-artist">Ferrand</p>
+            <a class="back-link" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank" onclick="event.stopPropagation()">Listen on SoundCloud →</a>
+          </div>
+        </div>
         <div class="track-info">
-          <p class="track-num">01 · SoundCloud</p>
+          <p class="track-num">01</p>
           <h3 class="track-name">C'est Beau La Bourgeoisie</h3>
           <p class="track-artist">Ferrand</p>
         </div>
-      </a>
+      </div>
 
-      <a class="track-slide" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl" target="_blank">
-        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
+      <div class="track-slide" onclick="flipCard(this)">
+        <div class="track-card-inner">
+          <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
+          <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png');"></div>
+            <p class="back-num">02</p>
+            <h3 class="back-title">Get Up</h3>
+            <p class="back-artist">Ferrand, Armin Hermann</p>
+            <a class="back-link" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl" target="_blank" onclick="event.stopPropagation()">Listen on Spotify →</a>
+          </div>
+        </div>
         <div class="track-info">
-          <p class="track-num">02 · Spotify</p>
+          <p class="track-num">02</p>
           <h3 class="track-name">Get Up</h3>
           <p class="track-artist">Ferrand, Armin Hermann</p>
         </div>
-      </a>
+      </div>
 
-      <a class="track-slide" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank">
-        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
+      <div class="track-slide" onclick="flipCard(this)">
+        <div class="track-card-inner">
+          <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
+          <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png');"></div>
+            <p class="back-num">03</p>
+            <h3 class="back-title">Rock Right Now!</h3>
+            <p class="back-artist">Ferrand, Sasuma</p>
+            <a class="back-link" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank" onclick="event.stopPropagation()">Listen on SoundCloud →</a>
+          </div>
+        </div>
         <div class="track-info">
-          <p class="track-num">03 · SoundCloud</p>
+          <p class="track-num">03</p>
           <h3 class="track-name">Rock Right Now!</h3>
           <p class="track-artist">Ferrand, Sasuma</p>
         </div>
-      </a>
+      </div>
 
-      <a class="track-slide" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW" target="_blank">
-        <div class="track-cover-img" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
+      <div class="track-slide" onclick="flipCard(this)">
+        <div class="track-card-inner">
+          <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
+          <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg');"></div>
+            <p class="back-num">04</p>
+            <h3 class="back-title">RWTB</h3>
+            <p class="back-artist">Ferrand, Sasuma</p>
+            <a class="back-link" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW" target="_blank" onclick="event.stopPropagation()">Listen on Spotify →</a>
+          </div>
+        </div>
         <div class="track-info">
-          <p class="track-num">04 · Spotify</p>
+          <p class="track-num">04</p>
           <h3 class="track-name">RWTB</h3>
           <p class="track-artist">Ferrand, Sasuma</p>
         </div>
-      </a>
+      </div>
+
+      <div class="track-slide" onclick="flipCard(this)">
+        <div class="track-card-inner">
+          <div class="track-card-front" style="background-image: url('https://i.scdn.co/image/ab67616d0000b273ff67756608f568454966e51f')"></div>
+          <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i.scdn.co/image/ab67616d0000b273ff67756608f568454966e51f');"></div>
+            <p class="back-num">05</p>
+            <h3 class="back-title">Jump (Radio Mix)</h3>
+            <p class="back-artist">Ferrand</p>
+            <a class="back-link" href="https://open.spotify.com/track/2HwciPTpQUirOjYKgC5Wzw" target="_blank" onclick="event.stopPropagation()">Listen on Spotify →</a>
+          </div>
+        </div>
+        <div class="track-info">
+          <p class="track-num">05</p>
+          <h3 class="track-name">Jump (Radio Mix)</h3>
+          <p class="track-artist">Ferrand</p>
+        </div>
+      </div>
 
     </div>
   </div>
@@ -758,7 +893,13 @@
     nav.classList.toggle('visible', window.scrollY > 100);
   }, { passive: true });
 
-  // Drag scroll — Mouse + Touch
+  // Flip card on hover
+  document.querySelectorAll('.track-slide').forEach(card => {
+    card.addEventListener('mouseenter', () => card.classList.add('flipped'));
+    card.addEventListener('mouseleave', () => card.classList.remove('flipped'));
+  });
+
+  function flipCard(el) {} // keep for backwards compat
   const wrap = document.getElementById('carouselWrap');
   let isDown = false, startX, scrollLeft;
 
