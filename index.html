@@ -226,12 +226,12 @@
   .hero-img {
     position: absolute;
     inset: 0;
-    background-image: url('images/image_002.jpg');
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #080808;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
     filter: grayscale(15%) contrast(1.1);
+    display: block;
   }
 
   .hero-overlay {
@@ -733,7 +733,7 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-img"></div>
+  <img class="hero-img" src="images/image_002.jpg" alt="Ferrand">
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="hero-name">Ferrand</h1>
