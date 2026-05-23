@@ -149,13 +149,44 @@
   }
 
   #socials {
-    background: var(--white);
+    background: var(--black);
     padding: 160px 48px;
     border-top: none;
-    
-    
     position: relative;
     z-index: 3;
+    overflow: hidden;
+  }
+
+  .socials-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('images/image_001.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(25%) contrast(1.08) brightness(0.4);
+  }
+
+  .socials-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .socials-label {
+    color: var(--red);
+  }
+
+  .socials-list a {
+    color: var(--white);
+  }
+
+  .socials-list li {
+    border-top: 1px solid rgba(245,242,237,0.1);
+  }
+
+  .socials-list li:last-child {
+    border-bottom: 1px solid rgba(245,242,237,0.1);
   }
 
   #booking {
@@ -221,7 +252,7 @@
     inset: 0;
     background-image: url('images/image_002.jpg');
     background-size: cover;
-    background-position: center 30%;
+    background-position: center 65%;
     filter: grayscale(15%) contrast(1.1);
   }
 
@@ -848,6 +879,7 @@
 
 <!-- CONNECT -->
 <section id="socials">
+  <div class="socials-bg"></div>
   <div class="socials-inner">
     <p class="socials-label">Connect</p>
     <ul class="socials-list">
