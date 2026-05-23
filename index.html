@@ -227,7 +227,7 @@
     inset: 0;
     background-image: url('images/image_002.jpg');
     background-size: cover;
-    background-position: center 50%;
+    background-position: center 40%;
     filter: grayscale(15%) contrast(1.1);
   }
 
@@ -895,29 +895,41 @@
   });
 
 
-  // Fullpage scroll
+  // Fullpage scroll — robust version
   const sectionIds = ['hero', 'about', 'music', 'socials', 'booking'];
   let current = 0;
   let isScrolling = false;
+
+  // Track current section with IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+        current = sectionIds.indexOf(entry.target.id);
+        nav.classList.toggle('visible', current > 0);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
 
   function goTo(index) {
     if (index < 0 || index >= sectionIds.length || isScrolling) return;
     current = index;
     isScrolling = true;
     document.getElementById(sectionIds[current]).scrollIntoView({ behavior: 'smooth' });
-    nav.classList.toggle('visible', current > 0);
     setTimeout(() => { isScrolling = false; }, 1000);
   }
 
   window.addEventListener('wheel', (e) => {
-    // ignore if scrolling inside carousel
     if (e.target.closest('#carouselWrap')) return;
     e.preventDefault();
-    if (e.deltaY > 0) goTo(current + 1);
-    else goTo(current - 1);
+    if (e.deltaY > 50) goTo(current + 1);
+    else if (e.deltaY < -50) goTo(current - 1);
   }, { passive: false });
 
-  // Touch
   let touchStartY = 0;
   window.addEventListener('touchstart', e => {
     if (e.target.closest('#carouselWrap')) return;
@@ -927,13 +939,12 @@
   window.addEventListener('touchend', e => {
     if (e.target.closest('#carouselWrap')) return;
     const diff = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(diff) > 50) {
+    if (Math.abs(diff) > 60) {
       if (diff > 0) goTo(current + 1);
       else goTo(current - 1);
     }
   }, { passive: true });
 
-  // Nav links
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
