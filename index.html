@@ -763,10 +763,11 @@
     #hero, #about, #music, #socials, #booking { height: auto !important; min-height: 100svh; scroll-snap-align: none; }
 
     /* Nav — show hamburger */
+    .booking-legal { display: none !important; }
     nav { padding: 20px 24px; opacity: 1 !important; transform: none !important; pointer-events: all !important; mix-blend-mode: normal !important; }
     .mob-menu-btn span { background: var(--white); }
     .nav-links { display: none; }
-    .mob-menu-wrap { display: block; }
+    .mob-menu-wrap { display: block !important; }
 
     /* Hero */
     .hero-content { left: 24px; right: 24px; bottom: 60px; }
@@ -1036,7 +1037,7 @@
   <p class="booking-label">Get in Touch</p>
   <h2 class="booking-heading">Booking</h2>
   <a href="mailto:info.ferrand@gmail.com" class="booking-email">info.ferrand@gmail.com</a>
-  <div style="position:absolute; bottom:32px; left:48px; right:48px; display:flex; justify-content:space-between; align-items:center; z-index:2;">
+  <div class="booking-legal" style="position:absolute; bottom:32px; left:48px; right:48px; display:flex; justify-content:space-between; align-items:center; z-index:2;">
     <p style="font-family:var(--font-cond); font-size:10px; letter-spacing:0.2em; color:rgba(245,242,237,0.25); text-transform:uppercase;">© <span id="year"></span> Knud Huckert</p>
     <p>
       <button class="footer-legal-btn" style="color:rgba(245,242,237,0.25);">Impressum</button>
