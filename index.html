@@ -763,7 +763,8 @@
     #hero, #about, #music, #socials, #booking { height: auto !important; min-height: 100svh; scroll-snap-align: none; }
 
     /* Nav — show hamburger */
-    nav { padding: 20px 24px; }
+    nav { padding: 20px 24px; opacity: 1 !important; transform: none !important; pointer-events: all !important; mix-blend-mode: normal !important; }
+    .mob-menu-btn span { background: var(--white); }
     .nav-links { display: none; }
     .mob-menu-wrap { display: block; }
 
@@ -793,10 +794,10 @@
     /* Booking */
     #booking { padding: 80px 24px; }
 
-    /* Footer — clear separator */
+    /* Footer on mobile */
     footer {
       display: flex !important;
-      padding: 24px;
+      padding: 32px 24px;
       flex-direction: column;
       gap: 12px;
       text-align: center;
@@ -1044,10 +1045,17 @@
   </div>
 </section>
 
-<footer style="display:none;"></footer>
+<footer>
+  <p>© <span class="year-mob"></span> Knud Huckert</p>
+  <p>
+    <button class="footer-legal-btn">Impressum</button>
+    <button class="footer-legal-btn">Datenschutz</button>
+  </p>
+</footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+  document.querySelectorAll('.year-mob').forEach(el => el.textContent = new Date().getFullYear());
 
   // Hero name appears on load
   window.addEventListener('load', () => {
