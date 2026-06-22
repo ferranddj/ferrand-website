@@ -792,8 +792,8 @@
 
     /* About — full width image on top */
     #about { grid-template-columns: 1fr; height: auto !important; }
-    .about-img { height: 50vh; }
-    .about-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; display: block; }
+    .about-img { height: 70vh; }
+    .about-img img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; display: block; }
     .about-content { padding: 60px 24px; border-left: none; border-top: 1px solid var(--light-gray); }
 
     /* Music — tighter carousel */
@@ -821,6 +821,25 @@
       text-align: center;
       border-top: 2px solid var(--light-gray);
       background: var(--white);
+    }
+  }
+
+  /* Landscape phones — two-column about so image isn't a short wide strip */
+  @media (max-height: 500px) and (orientation: landscape) {
+    #about {
+      grid-template-columns: 1fr 1fr;
+      min-height: 100svh;
+    }
+    .about-img {
+      height: auto;
+    }
+    .about-img img {
+      object-position: center 20%;
+    }
+    .about-content {
+      border-top: none;
+      border-left: 1px solid var(--light-gray);
+      padding: 48px 32px;
     }
   }
 
