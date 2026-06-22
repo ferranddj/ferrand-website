@@ -99,18 +99,34 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 48px;
-    mix-blend-mode: difference;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-
-  nav.visible {
+    padding: 0 48px;
+    height: 56px;
+    background: rgba(5,5,5,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     opacity: 1;
     pointer-events: all;
-    transform: translateY(0);
+  }
+
+  nav.visible { opacity: 1; }
+
+  .nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-cond);
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.35);
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a.active {
+    color: rgba(240,237,232,1) !important;
+    opacity: 1;
+    border-bottom: 1px solid rgba(240,237,232,0.6);
+    padding-bottom: 2px;
   }
 
   /* HERO NAME — reveals on scroll */
@@ -757,18 +773,17 @@
   .footer-legal-btn:hover { color: var(--black); }
 
   /* MOBILE */
-  @media (max-width: 700px) {
+  @media (max-width: 700px), (max-height: 500px) and (orientation: landscape) {
     /* Disable fullpage scroll on mobile */
     body { overflow-y: auto !important; scroll-snap-type: none !important; }
     #hero, #about, #music, #socials, #booking { height: auto !important; min-height: 100svh; scroll-snap-align: none; }
 
-    /* Nav — show hamburger */
+    /* Nav — show hamburger, header bar is already dark */
     .booking-legal { display: none !important; }
-    nav { padding: 20px 24px; opacity: 1 !important; transform: none !important; pointer-events: all !important; mix-blend-mode: normal !important; }
-    .mob-menu-btn span { background: var(--white); }
+    nav { padding: 0 24px; height: 52px; }
     .nav-links { display: none; }
     .mob-menu-wrap { display: block !important; }
-    .mob-menu-btn { background: rgba(5,5,5,0.75) !important; border-radius: 6px; padding: 8px 10px; border: none; }
+    .mob-menu-btn { background: none !important; border: none; padding: 4px; }
     .mob-menu-btn span { background: #f0ede8 !important; }
 
     /* Hero */
@@ -856,17 +871,64 @@
     font-size: 24px;
     color: var(--black);
   }
+  .legal-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .legal-modal.open { display: flex; }
+  .legal-modal-inner {
+    background: var(--white);
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 48px;
+    position: relative;
+  }
+  .legal-modal-inner h2 {
+    font-family: var(--font-display);
+    font-size: 36px;
+    color: var(--black);
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+  }
+  .legal-modal-inner p {
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    margin-bottom: 16px;
+  }
+  .legal-modal-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--black);
+  }
 </style>
 </head>
 <body>
 
 <nav id="mainNav">
   <a href="#" class="nav-logo">Ferrand</a>
+  <span class="nav-center" id="navCenter" style="display:none;"></span>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#music">Music</a></li>
-    <li><a href="#socials">Connect</a></li>
-    <li><a href="#booking">Booking</a></li>
+    <li><a href="#about" data-section="about">About</a></li>
+    <li><a href="#music" data-section="music">Music</a></li>
+    <li><a href="#socials" data-section="socials">Connect</a></li>
+    <li><a href="#booking" data-section="booking">Booking</a></li>
   </ul>
   <div class="mob-menu-wrap">
     <button class="mob-menu-btn" onclick="document.getElementById('mobMenu').classList.toggle('open')">
@@ -1039,26 +1101,56 @@
   <p class="booking-label">Get in Touch</p>
   <h2 class="booking-heading">Booking</h2>
   <a href="mailto:info.ferrand@gmail.com" class="booking-email">info.ferrand@gmail.com</a>
-  <div class="booking-legal" style="position:absolute; bottom:32px; left:48px; right:48px; display:flex; justify-content:space-between; align-items:center; z-index:2;">
-    <p style="font-family:var(--font-cond); font-size:10px; letter-spacing:0.2em; color:rgba(245,242,237,0.25); text-transform:uppercase;">© <span id="year"></span> Knud Huckert</p>
+  <div class="booking-legal" style="position:absolute; bottom:32px; left:48px; right:48px; display:flex; justify-content:center; align-items:center; z-index:2;">
     <p>
-      <button class="footer-legal-btn" style="color:rgba(245,242,237,0.25);">Impressum</button>
-      <button class="footer-legal-btn" style="color:rgba(245,242,237,0.25);">Datenschutz</button>
+      <button class="footer-legal-btn" style="color:rgba(245,242,237,0.4);" onclick="openModal('impressum')">Impressum</button>
+      <button class="footer-legal-btn" style="color:rgba(245,242,237,0.4);" onclick="openModal('datenschutz')">Datenschutz</button>
     </p>
   </div>
 </section>
 
+<!-- LEGAL MODALS -->
+<div class="legal-modal" id="impressum">
+  <div class="legal-modal-inner">
+    <button class="legal-modal-close" onclick="closeModal('impressum')">✕</button>
+    <h2>Impressum</h2>
+    <p>Angaben gemäß § 5 TMG</p>
+    <p>Knud Huckert<br>Köln, Deutschland</p>
+    <p>Kontakt:<br>E-Mail: info.ferrand@gmail.com</p>
+    <p>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:<br>Knud Huckert</p>
+  </div>
+</div>
+
+<div class="legal-modal" id="datenschutz">
+  <div class="legal-modal-inner">
+    <button class="legal-modal-close" onclick="closeModal('datenschutz')">✕</button>
+    <h2>Datenschutzerklärung</h2>
+    <p>Diese Website verarbeitet keine personenbezogenen Daten über das Kontaktformular hinaus. Bei Kontaktaufnahme per E-Mail werden Ihre Angaben zur Bearbeitung der Anfrage gespeichert.</p>
+    <p>Diese Seite wird über GitHub Pages gehostet. GitHub kann technische Zugriffsdaten (IP-Adresse, Browser) erheben. Details unter github.com/privacy.</p>
+    <p>Externe Links zu SoundCloud, Spotify, Instagram, TikTok und Resident Advisor unterliegen deren eigenen Datenschutzrichtlinien.</p>
+  </div>
+</div>
+
 <footer>
-  <p>© <span class="year-mob"></span> Knud Huckert</p>
   <p>
-    <button class="footer-legal-btn">Impressum</button>
-    <button class="footer-legal-btn">Datenschutz</button>
+    <button class="footer-legal-btn" onclick="openModal('impressum')">Impressum</button>
+    <button class="footer-legal-btn" onclick="openModal('datenschutz')">Datenschutz</button>
   </p>
 </footer>
 
 <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-  document.querySelectorAll('.year-mob').forEach(el => el.textContent = new Date().getFullYear());
+  // Legal modals
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+  document.querySelectorAll('.legal-modal').forEach(m => {
+    m.addEventListener('click', e => {
+      if (e.target === m) m.classList.remove('open');
+    });
+  });
 
   // Hero name appears on load
   window.addEventListener('load', () => {
@@ -1068,25 +1160,53 @@
   });
 
 
-  // Fullpage scroll — desktop only
-  if (window.innerWidth > 700) {
+  // Nav + active section highlighting — all devices
+  const nav = document.getElementById('mainNav');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  function updateActiveSection(sectionId) {
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.dataset.section === sectionId);
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('visible', window.scrollY > 10);
+  }, { passive: true });
+
+  // Active section highlighting — all devices
+  const allSectionIds = ['hero', 'about', 'music', 'socials', 'booking'];
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+        updateActiveSection(entry.target.id);
+      }
+    });
+  }, { threshold: 0.5 });
+  allSectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) navObserver.observe(el);
+  });
+
+  // Fullpage scroll — desktop only (no touch devices)
+  const isDesktop = window.innerWidth > 700 && !('ontouchstart' in window);
   const sectionIds = ['hero', 'about', 'music', 'socials', 'booking'];
+
+  if (isDesktop) {
   let current = 0;
   let isScrolling = false;
 
-  // Track current section with IntersectionObserver
-  const observer = new IntersectionObserver((entries) => {
+  const observer2 = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
         current = sectionIds.indexOf(entry.target.id);
-        nav.classList.toggle('visible', current > 0);
       }
     });
   }, { threshold: 0.5 });
 
   sectionIds.forEach(id => {
     const el = document.getElementById(id);
-    if (el) observer.observe(el);
+    if (el) observer2.observe(el);
   });
 
   function goTo(index) {
@@ -1103,21 +1223,6 @@
     else if (e.deltaY < -30) goTo(current - 1);
   }, { passive: false });
 
-  let touchStartY = 0;
-  window.addEventListener('touchstart', e => {
-    if (e.target.closest('#carouselWrap')) return;
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
-
-  window.addEventListener('touchend', e => {
-    if (e.target.closest('#carouselWrap')) return;
-    const diff = touchStartY - e.changedTouches[0].clientY;
-    if (Math.abs(diff) > 60) {
-      if (diff > 0) goTo(current + 1);
-      else goTo(current - 1);
-    }
-  }, { passive: true });
-
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -1129,11 +1234,19 @@
 
   } // end desktop only fullpage scroll
 
-  // Nav visibility
-  const nav = document.getElementById('mainNav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('visible', window.scrollY > 100);
-  }, { passive: true });
+  // Smooth scroll for nav links on mobile/touch
+  if (!isDesktop) {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          e.preventDefault();
+          const el = document.querySelector(id);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  }
 
   // Flip card on hover
   document.querySelectorAll('.track-slide').forEach(card => {
