@@ -105,11 +105,28 @@
 
   nav.visible { opacity: 1; }
 
+  .nav-links a {
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -4px;
+    height: 1px;
+    background: rgba(240,237,232,0.6);
+    transition: right 0.3s ease;
+  }
+
   .nav-links a.active {
     color: rgba(240,237,232,1) !important;
     opacity: 1;
-    border-bottom: 1px solid rgba(240,237,232,0.6);
-    padding-bottom: 2px;
+  }
+
+  .nav-links a.active::after {
+    right: 0;
   }
 
   /* HERO NAME — reveals on scroll */
@@ -121,7 +138,7 @@
     letter-spacing: 2px;
     opacity: 0;
     transform: translateY(80px);
-    transition: opacity 3s ease, transform 3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 1.4s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .hero-name.visible {
@@ -129,7 +146,7 @@
     transform: translateY(0);
   }
 
-  /* Rounded page like Hive */
+  /* HERO */
   #hero {
     width: 100%;
     height: 100svh;
@@ -280,14 +297,6 @@
     z-index: 2;
   }
 
-  .hero-name {
-    font-family: var(--font-display);
-    font-size: clamp(80px, 15vw, 220px);
-    color: var(--white);
-    line-height: 0.85;
-    letter-spacing: 2px;
-  }
-
   /* ABOUT */
   .about-img {
     position: relative;
@@ -420,6 +429,18 @@
   }
 
   .carousel-wrap::-webkit-scrollbar { display: none; }
+
+  #music::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 90px;
+    background: linear-gradient(to left, var(--black) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
   .carousel-wrap.dragging { cursor: grabbing; }
 
   .carousel {
@@ -469,15 +490,35 @@
   .track-card-back {
     transform: rotateY(180deg);
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    padding: 32px;
-    gap: 12px;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     overflow: hidden;
   }
+
+  .back-listen {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-display);
+    font-size: 40px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: gap 0.3s ease;
+  }
+
+  .back-listen-arrow {
+    font-family: var(--font-cond);
+    font-weight: 300;
+    transition: transform 0.3s ease;
+  }
+
+  .back-listen:hover { gap: 22px; }
 
   .track-card-back-blur {
     position: absolute;
@@ -494,44 +535,10 @@
     z-index: 1;
   }
 
-  .back-num {
-    font-family: var(--font-cond);
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: var(--red);
-    text-transform: uppercase;
-  }
 
-  .back-title {
-    font-family: var(--font-display);
-    font-size: 22px;
-    color: var(--white);
-    line-height: 1;
-    letter-spacing: 1px;
-  }
 
-  .back-artist {
-    font-family: var(--font-cond);
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: rgba(245,242,237,0.4);
-    text-transform: uppercase;
-  }
 
-  .back-link {
-    margin-top: 16px;
-    font-family: var(--font-cond);
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    color: var(--white);
-    text-decoration: none;
-    text-transform: uppercase;
-    border-bottom: 1px solid rgba(245,242,237,0.3);
-    padding-bottom: 4px;
-    transition: border-color 0.3s ease;
-  }
 
-  .back-link:hover { border-color: var(--white); }
 
   .track-info {
     padding: 20px 0 0;
@@ -629,8 +636,8 @@
   }
 
   .platform-icon {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
     opacity: 0.4;
     transition: opacity 0.3s ease;
@@ -638,8 +645,8 @@
   }
 
   .platform-icon-img {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
     opacity: 0.4;
     transition: opacity 0.3s ease;
@@ -699,20 +706,21 @@
 
   .booking-email {
     font-family: var(--font-cond);
-    font-size: clamp(14px, 2vw, 20px);
+    font-size: clamp(18px, 2.5vw, 26px);
     letter-spacing: 0.15em;
-    color: rgba(245,242,237,0.6);
+    color: var(--white);
     text-decoration: none;
     text-transform: lowercase;
     position: relative;
     z-index: 2;
-    border-bottom: 1px solid rgba(245,242,237,0.2);
-    padding-bottom: 4px;
+    border: 1px solid rgba(245,242,237,0.35);
+    padding: 18px 40px;
     transition: all 0.3s ease;
   }
 
   .booking-email:hover {
-    color: var(--white);
+    background: var(--white);
+    color: var(--black);
     border-color: var(--white);
   }
 
@@ -770,8 +778,8 @@
     .track-slide { flex: 0 0 200px; }
     .track-cover-img { width: 200px; height: 200px; }
     .track-card-inner { width: 200px; height: 200px; }
-    .track-card-back { padding: 20px; }
-    .back-title { font-size: 18px; }
+    .back-listen { font-size: 26px; }
+    #music::after { width: 48px; }
 
     /* Socials */
     #socials { padding: 60px 24px; }
@@ -948,7 +956,7 @@
   </div>
   <div class="about-content">
     <p class="about-label">About</p>
-    <p class="about-pull">„Supported by Marlon Hoffstadt, Armin van Buuren, KI/KI &amp; Hannah Laing."</p>
+    <p class="about-pull">"Supported by Marlon Hoffstadt, Armin van Buuren, KI/KI &amp; Hannah Laing."</p>
     <div class="about-text">
       <p>Ferrand is a <strong>Cologne DJ and producer</strong> making <strong>trance and hard dance</strong> built for peak time. Loveparade synths and hard house weight pulled into something that belongs right now, not in 1998.</p>
       <p>He gets played by <strong>Marlon Hoffstadt, KI/KI, Armin van Buuren</strong> and <strong>Hannah Laing</strong>, from <strong>Grelle Forelle</strong> in Vienna to <strong>Odonien</strong> at home.</p>
@@ -971,10 +979,7 @@
         <div class="track-card-inner">
           <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg')"></div>
           <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-OaZVW9Jr5v6uQOia-eGyXbA-t500x500.jpg');"></div>
-            <p class="back-num">01</p>
-            <h3 class="back-title">C'est Beau La Bourgeoisie</h3>
-            <p class="back-artist">Ferrand</p>
-            <a class="back-link" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank" onclick="event.stopPropagation()">Listen on SoundCloud →</a>
+            <a class="back-listen" href="https://soundcloud.com/ferrand_ferrari/cest-beau-la-bourgeoisie-edit" target="_blank" rel="noopener" onclick="event.stopPropagation()">Listen<span class="back-listen-arrow">→</span></a>
           </div>
         </div>
         <div class="track-info">
@@ -988,10 +993,7 @@
         <div class="track-card-inner">
           <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png')"></div>
           <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-tckYBk9BxnsDLITo-gK8J8A-t500x500.png');"></div>
-            <p class="back-num">02</p>
-            <h3 class="back-title">Get Up</h3>
-            <p class="back-artist">Ferrand, Armin Hermann</p>
-            <a class="back-link" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl" target="_blank" onclick="event.stopPropagation()">Listen on Spotify →</a>
+            <a class="back-listen" href="https://open.spotify.com/intl-de/track/2D7LiOLqxCCCcQRDZdwUCl" target="_blank" rel="noopener" onclick="event.stopPropagation()">Listen<span class="back-listen-arrow">→</span></a>
           </div>
         </div>
         <div class="track-info">
@@ -1005,10 +1007,7 @@
         <div class="track-card-inner">
           <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png')"></div>
           <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-yPAXVyV0lccEg5LD-wCVrJA-t500x500.png');"></div>
-            <p class="back-num">03</p>
-            <h3 class="back-title">Rock Right Now!</h3>
-            <p class="back-artist">Ferrand, Sasuma</p>
-            <a class="back-link" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank" onclick="event.stopPropagation()">Listen on SoundCloud →</a>
+            <a class="back-listen" href="https://soundcloud.com/connected-radio-610173472/ferrand-x-sasuma-rock-right-now-1" target="_blank" rel="noopener" onclick="event.stopPropagation()">Listen<span class="back-listen-arrow">→</span></a>
           </div>
         </div>
         <div class="track-info">
@@ -1022,10 +1021,7 @@
         <div class="track-card-inner">
           <div class="track-card-front" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg')"></div>
           <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i1.sndcdn.com/artworks-rlpMjTNybVJFyEzV-vUI3dw-t500x500.jpg');"></div>
-            <p class="back-num">04</p>
-            <h3 class="back-title">RWTB</h3>
-            <p class="back-artist">Ferrand, Sasuma</p>
-            <a class="back-link" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW" target="_blank" onclick="event.stopPropagation()">Listen on Spotify →</a>
+            <a class="back-listen" href="https://open.spotify.com/intl-de/track/4w4w9QWhdP0tB0ywyCPdjW" target="_blank" rel="noopener" onclick="event.stopPropagation()">Listen<span class="back-listen-arrow">→</span></a>
           </div>
         </div>
         <div class="track-info">
@@ -1039,10 +1035,7 @@
         <div class="track-card-inner">
           <div class="track-card-front" style="background-image: url('https://i.scdn.co/image/ab67616d0000b273ff67756608f568454966e51f')"></div>
           <div class="track-card-back"><div class="track-card-back-blur" style="background-image: url('https://i.scdn.co/image/ab67616d0000b273ff67756608f568454966e51f');"></div>
-            <p class="back-num">05</p>
-            <h3 class="back-title">Jump (Radio Mix)</h3>
-            <p class="back-artist">Ferrand</p>
-            <a class="back-link" href="https://open.spotify.com/track/2HwciPTpQUirOjYKgC5Wzw" target="_blank" onclick="event.stopPropagation()">Listen on Spotify →</a>
+            <a class="back-listen" href="https://open.spotify.com/track/2HwciPTpQUirOjYKgC5Wzw" target="_blank" rel="noopener" onclick="event.stopPropagation()">Listen<span class="back-listen-arrow">→</span></a>
           </div>
         </div>
         <div class="track-info">
