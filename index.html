@@ -102,6 +102,57 @@
 
 
   /* NAV — hidden on hero, appears fast on first scroll */
+  /* PAGE REVEAL */
+  .page-reveal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .reveal-top, .reveal-bottom {
+    position: absolute;
+    left: 0; right: 0;
+    height: 50%;
+    background: #050505;
+    transition: transform 1s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .reveal-top { top: 0; }
+  .reveal-bottom { bottom: 0; }
+
+  .reveal-lockup {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .page-reveal.show .reveal-lockup { opacity: 1; }
+
+  .reveal-name {
+    font-family: var(--font-brand);
+    font-size: clamp(40px, 7vw, 88px);
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .reveal-fly {
+    height: clamp(34px, 5.5vw, 68px);
+    width: auto;
+    display: block;
+  }
+
+  .page-reveal.done .reveal-top { transform: translateY(-100%); }
+  .page-reveal.done .reveal-bottom { transform: translateY(100%); }
+  .page-reveal.done .reveal-lockup { opacity: 0; transition: opacity 0.35s ease; }
+
   nav {
     position: fixed;
     top: 0;
@@ -989,8 +1040,17 @@
 </head>
 <body>
 
+<div class="page-reveal" id="pageReveal">
+  <div class="reveal-top"></div>
+  <div class="reveal-bottom"></div>
+  <div class="reveal-lockup">
+    <span class="reveal-name">Ferrand</span>
+    <img src="images/dragonfly-white.png" alt="" class="reveal-fly">
+  </div>
+</div>
+
 <nav id="mainNav">
-  <a href="#" class="nav-logo"><img src="images/dragonfly-white.png" alt="" class="nav-fly">Ferrand</a>
+  <a href="#" class="nav-logo">Ferrand<img src="images/dragonfly-white.png" alt="" class="nav-fly"></a>
   <ul class="nav-links">
     <li><a href="#about" data-section="about">About</a></li>
     <li><a href="#music" data-section="music">Music</a></li>
@@ -1213,11 +1273,15 @@
     }
   });
 
-  // Hero name appears on load
+  // Page reveal, then hero name
   window.addEventListener('load', () => {
+    const reveal = document.getElementById('pageReveal');
+    setTimeout(() => reveal.classList.add('show'), 150);
+    setTimeout(() => reveal.classList.add('done'), 1400);
     setTimeout(() => {
       document.querySelector('.hero-name').classList.add('visible');
-    }, 300);
+      reveal.style.display = 'none';
+    }, 2500);
   });
 
 
