@@ -8,6 +8,8 @@
 <meta name="keywords" content="Ferrand, Ferrand DJ, Ferrand Cologne, Ferrand Köln, Ferrand producer, Ferrand trance, Ferrand hard dance, Ferrand hard house, trance, hard dance, hard house, eurodance revival, Cologne DJ, Köln DJ, ferrand_ferrari, Knud Huckert, Ferrand booking">
 <meta name="author" content="Ferrand">
 <link rel="canonical" href="https://ferrand.dj/">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/favicon-180.png">
 
 <!-- Open Graph -->
 <meta property="og:type" content="profile">
@@ -49,6 +51,20 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;1,300&family=Barlow:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: 'Evaco';
+    src: url('fonts/Evaco-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Magios';
+    src: url('fonts/Magios.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+</style>
+<style>
   :root {
     --black: #0a0a0a;
     --white: #f5f2ed;
@@ -56,6 +72,7 @@
     --gray: #888;
     --light-gray: #e8e4de;
     --font-display: 'Bebas Neue', sans-serif;
+    --font-brand: 'Evaco', 'Bebas Neue', sans-serif;
     --font-cond: 'Barlow Condensed', sans-serif;
     --font-body: 'Barlow', sans-serif;
   }
@@ -94,11 +111,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 48px;
-    height: 56px;
-    background: rgba(5,5,5,0.88);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    padding: 0 56px;
+    height: 64px;
+    background: rgba(5,5,5,0.82);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border-bottom: 1px solid rgba(240,237,232,0.07);
     opacity: 1;
     pointer-events: all;
   }
@@ -114,10 +132,10 @@
     position: absolute;
     left: 0;
     right: 100%;
-    bottom: -4px;
+    bottom: -7px;
     height: 1px;
-    background: rgba(240,237,232,0.6);
-    transition: right 0.3s ease;
+    background: var(--red);
+    transition: right 0.35s ease;
   }
 
   .nav-links a.active {
@@ -131,11 +149,12 @@
 
   /* HERO NAME — reveals on scroll */
   .hero-name {
-    font-family: var(--font-display);
-    font-size: clamp(80px, 15vw, 220px);
+    font-family: var(--font-brand);
+    font-size: clamp(64px, 12vw, 175px);
     color: var(--white);
     line-height: 0.85;
-    letter-spacing: 2px;
+    letter-spacing: -2px;
+    text-transform: uppercase;
     opacity: 0;
     transform: translateY(80px);
     transition: opacity 1.4s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -211,13 +230,21 @@
   }
 
   .nav-logo {
-    font-family: var(--font-cond);
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.25em;
+    font-family: var(--font-brand);
+    font-size: 17px;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--white);
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-fly {
+    height: 22px;
+    width: auto;
+    display: block;
   }
 
   .nav-links {
@@ -229,15 +256,15 @@
   .nav-links a {
     font-family: var(--font-cond);
     font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    font-size: 10px;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: var(--white);
+    color: rgba(240,237,232,0.45);
     text-decoration: none;
-    transition: opacity 0.3s ease;
+    transition: color 0.4s ease;
   }
 
-  .nav-links a:hover { opacity: 0.5; }
+  .nav-links a:hover { color: rgba(240,237,232,1); }
 
   @keyframes kenburns {
     0% { transform: scale(1); }
@@ -269,6 +296,50 @@
     display: block;
     animation: kenburns 12s ease-in-out infinite alternate;
     transform-origin: center bottom;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+  }
+
+  .scroll-hint span {
+    font-family: var(--font-cond);
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(240,237,232,0.5);
+  }
+
+  .scroll-hint-line {
+    width: 1px;
+    height: 34px;
+    background: rgba(240,237,232,0.35);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scroll-hint-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    animation: scrollhint 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  @keyframes scrollhint {
+    0% { top: -100%; }
+    55%, 100% { top: 100%; }
   }
 
   .hero-vignette {
@@ -756,7 +827,9 @@
 
     /* Nav — show hamburger, header bar is already dark */
     .booking-legal { display: none !important; }
-    nav { padding: 0 24px; height: 52px; }
+    nav { padding: 0 24px; height: 56px; }
+    .nav-logo { font-size: 16px; letter-spacing: 0.3em; }
+    .scroll-hint { bottom: 40px; }
     .nav-links { display: none; }
     .mob-menu-wrap { display: block !important; }
     .mob-menu-btn { background: none !important; border: none; padding: 4px; }
@@ -917,7 +990,7 @@
 <body>
 
 <nav id="mainNav">
-  <a href="#" class="nav-logo">Ferrand</a>
+  <a href="#" class="nav-logo"><img src="images/dragonfly-white.png" alt="" class="nav-fly">Ferrand</a>
   <ul class="nav-links">
     <li><a href="#about" data-section="about">About</a></li>
     <li><a href="#music" data-section="music">Music</a></li>
@@ -943,6 +1016,10 @@
 <section id="hero">
   <img class="hero-img" src="images/image_002.jpg" alt="Ferrand">
   <div class="hero-vignette"></div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="scroll-hint-line"></div>
+  </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="hero-name">Ferrand</h1>
