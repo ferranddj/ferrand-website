@@ -63,6 +63,18 @@
     font-weight: normal;
     font-style: normal;
   }
+  @font-face {
+    font-family: 'NYXERIN';
+    src: url('fonts/NYXERIN.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'NUKLEAR';
+    src: url('fonts/NUKLEAR.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
 </style>
 <style>
   :root {
@@ -72,7 +84,7 @@
     --gray: #888;
     --light-gray: #e8e4de;
     --font-display: 'Bebas Neue', sans-serif;
-    --font-brand: 'Evaco', 'Bebas Neue', sans-serif;
+    --font-brand: 'NUKLEAR', 'NYXERIN', 'Bebas Neue', sans-serif;
     --font-cond: 'Barlow Condensed', sans-serif;
     --font-body: 'Barlow', sans-serif;
   }
@@ -135,7 +147,7 @@
   .page-reveal.show .reveal-lockup { opacity: 1; }
 
   .reveal-fly {
-    height: clamp(64px, 12vw, 130px);
+    height: clamp(120px, 20vw, 240px);
     width: auto;
     display: block;
   }
@@ -192,10 +204,10 @@
   /* HERO NAME — reveals on scroll */
   .hero-name {
     font-family: var(--font-brand);
-    font-size: clamp(64px, 12vw, 175px);
+    font-size: clamp(68px, 12vw, 185px);
     color: var(--white);
     line-height: 0.85;
-    letter-spacing: -2px;
+    letter-spacing: 2px;
     text-transform: uppercase;
     opacity: 0;
     transform: translateY(80px);
@@ -273,8 +285,8 @@
 
   .nav-logo {
     font-family: var(--font-brand);
-    font-size: 17px;
-    letter-spacing: 0.15em;
+    font-size: 16px;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--white);
     text-decoration: none;
@@ -879,7 +891,7 @@
 
     /* Hero */
     .hero-content { left: 24px; right: 24px; bottom: 96px; }
-    .hero-name { font-size: 14.5vw; letter-spacing: -1px; }
+    .hero-name { font-size: 14.5vw; letter-spacing: 1px; }
     .hero-img, .about-img img, .booking-img { animation: none !important; }
 
     /* About — full width image on top */
@@ -1041,7 +1053,7 @@
 </div>
 
 <nav id="mainNav">
-  <a href="#" class="nav-logo">Ferrand<img src="images/dragonfly-white.png" alt="" class="nav-fly"></a>
+  <a href="#" class="nav-logo">Ferrand</a>
   <ul class="nav-links">
     <li><a href="#about" data-section="about">About</a></li>
     <li><a href="#music" data-section="music">Music</a></li>
