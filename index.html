@@ -287,12 +287,6 @@
     }
   }
 
-  .hero-slide {
-    opacity: 0;
-    transition: opacity 1.8s ease;
-  }
-  .hero-slide.active { opacity: 1; }
-
   .hero-img {
     position: absolute;
     inset: 0;
@@ -1003,8 +997,10 @@
 
 <!-- HERO -->
 <section id="hero">
-  <img class="hero-img hero-slide active" src="images/image_002.jpg" alt="Ferrand">
-  <img class="hero-img hero-slide" src="images/image_001.jpg" alt="">
+  <picture>
+    <source media="(max-width: 700px)" srcset="images/image_002.jpg">
+    <img class="hero-img" src="images/image_001.jpg" alt="Ferrand">
+  </picture>
   <div class="hero-vignette"></div>
   <div class="scroll-hint" aria-hidden="true">
     <span>Scroll</span>
@@ -1201,17 +1197,6 @@
       document.querySelectorAll('.legal-modal.open').forEach(m => m.classList.remove('open'));
     }
   });
-
-  // Hero slideshow
-  const slides = document.querySelectorAll('.hero-slide');
-  if (slides.length > 1) {
-    let cur = 0;
-    setInterval(() => {
-      slides[cur].classList.remove('active');
-      cur = (cur + 1) % slides.length;
-      slides[cur].classList.add('active');
-    }, 6000);
-  }
 
   // Hero name fade-in on load
   window.addEventListener('load', () => {
