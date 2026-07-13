@@ -52,18 +52,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;1,300&family=Barlow:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <style>
   @font-face {
-    font-family: 'Evaco';
-    src: url('fonts/Evaco-Regular.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Magios';
-    src: url('fonts/Magios.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  @font-face {
     font-family: 'NYXERIN';
     src: url('fonts/NYXERIN.otf') format('opentype');
     font-weight: normal;
@@ -91,6 +79,13 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  ::selection { background: var(--red); color: var(--white); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+  }
+
   html {
     scroll-behavior: smooth;
     height: 100%;
@@ -114,48 +109,6 @@
 
 
   /* NAV — hidden on hero, appears fast on first scroll */
-  /* PAGE REVEAL */
-  .page-reveal {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    pointer-events: none;
-  }
-
-  .reveal-top, .reveal-bottom {
-    position: absolute;
-    left: 0; right: 0;
-    height: 50%;
-    background: #050505;
-    transition: transform 1s cubic-bezier(0.76, 0, 0.24, 1);
-  }
-  .reveal-top { top: 0; }
-  .reveal-bottom { bottom: 0; }
-
-  .reveal-lockup {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    z-index: 2;
-    opacity: 0;
-    transition: opacity 0.6s ease;
-  }
-
-  .page-reveal.show .reveal-lockup { opacity: 1; }
-
-  .reveal-fly {
-    height: clamp(120px, 20vw, 240px);
-    width: auto;
-    display: block;
-  }
-
-  .page-reveal.done .reveal-top { transform: translateY(-100%); }
-  .page-reveal.done .reveal-bottom { transform: translateY(100%); }
-  .page-reveal.done .reveal-lockup { opacity: 0; transition: opacity 0.35s ease; }
-
   nav {
     position: fixed;
     top: 0;
@@ -204,7 +157,7 @@
   /* HERO NAME — reveals on scroll */
   .hero-name {
     font-family: var(--font-brand);
-    font-size: clamp(68px, 12vw, 185px);
+    font-size: clamp(56px, 10vw, 150px);
     color: var(--white);
     line-height: 0.85;
     letter-spacing: 2px;
@@ -285,7 +238,7 @@
 
   .nav-logo {
     font-family: var(--font-brand);
-    font-size: 16px;
+    font-size: 13px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--white);
@@ -295,11 +248,6 @@
     gap: 12px;
   }
 
-  .nav-fly {
-    height: 22px;
-    width: auto;
-    display: block;
-  }
 
   .nav-links {
     display: flex;
@@ -1044,14 +992,6 @@
 </head>
 <body>
 
-<div class="page-reveal" id="pageReveal">
-  <div class="reveal-top"></div>
-  <div class="reveal-bottom"></div>
-  <div class="reveal-lockup">
-    <img src="images/dragonfly-white.png" alt="" class="reveal-fly">
-  </div>
-</div>
-
 <nav id="mainNav">
   <a href="#" class="nav-logo">Ferrand</a>
   <ul class="nav-links">
@@ -1276,15 +1216,9 @@
     }
   });
 
-  // Page reveal, then hero name
+  // Hero name fade-in on load
   window.addEventListener('load', () => {
-    const reveal = document.getElementById('pageReveal');
-    setTimeout(() => reveal.classList.add('show'), 150);
-    setTimeout(() => reveal.classList.add('done'), 1400);
-    setTimeout(() => {
-      document.querySelector('.hero-name').classList.add('visible');
-      reveal.style.display = 'none';
-    }, 2500);
+    setTimeout(() => document.querySelector('.hero-name').classList.add('visible'), 300);
   });
 
 
