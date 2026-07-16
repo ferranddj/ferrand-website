@@ -20,7 +20,7 @@
 <h2>Mini-Test: model-viewer + GLB</h2>
 
 <model-viewer id="mv"
-  src="models/dragonfly-holo.glb"
+  src="models/dragonfly-v2.glb"
   alt="Test"
   camera-controls
   auto-rotate
@@ -51,7 +51,7 @@ try {
 }
 
 // 2. Can we fetch the GLB?
-fetch('models/dragonfly-holo.glb', { method: 'HEAD' })
+fetch('models/dragonfly-v2.glb', { method: 'HEAD' })
   .then(r => set('s2', r.ok, '2. GLB-Datei: HTTP ' + r.status + (r.ok ? ' — gefunden' : ' — NICHT gefunden')))
   .catch(e => set('s2', false, '2. GLB-Datei: Fehler — ' + e.message));
 
@@ -70,11 +70,40 @@ setTimeout(() => {
 // 3. Model load events
 const mv = document.getElementById('mv');
 mv.addEventListener('load',  () => set('s3', true,  '3. Modell laden: erfolgreich gerendert'));
-mv.addEventListener('error', e => set('s3', false, '3. Modell laden: FEHLER — ' + (e.detail?.type || 'unbekannt')));
+mv.addEventListener('error', e => {
+  const d = e.detail || {};
+  const inner = d.sourceError ? (d.sourceError.message || String(d.sourceError)) : '';
+  set('s3', false, '3. Modell laden: FEHLER — ' + (d.type || '?') +
+      (inner ? ' :: ' + inner : ' :: (kein Detail)'));
+  console.error('model-viewer error detail:', d, d.sourceError);
+});
 setTimeout(() => {
   const el = document.getElementById('s3');
   if (el.className === 'wait') set('s3', false, '3. Modell laden: Timeout — kein load/error Event nach 15s');
 }, 15000);
+
+// 5. Read the first bytes of the GLB — proves WHICH file the server actually sends
+fetch('models/dragonfly-v2.glb')
+  .then(r => r.arrayBuffer())
+  .then(buf => {
+    const v = new DataView(buf);
+    const magic = String.fromCharCode(v.getUint8(0), v.getUint8(1), v.getUint8(2), v.getUint8(3));
+    const jsonLen = v.getUint32(12, true);
+    const json = new TextDecoder().decode(new Uint8Array(buf, 20, Math.min(jsonLen, 4000)));
+    const hasMeshopt = json.includes('EXT_meshopt_compression');
+    const el = document.createElement('div');
+    el.className = hasMeshopt ? 'bad' : 'ok';
+    el.textContent = (hasMeshopt ? '❌ ' : '✅ ') +
+      '5. Gelieferte Datei: ' + (buf.byteLength/1024).toFixed(0) + ' KB, magic="' + magic + '", meshopt=' +
+      (hasMeshopt ? 'JA (alte Datei aus dem Cache!)' : 'nein (richtige Datei)');
+    document.getElementById('log').appendChild(el);
+  })
+  .catch(e => {
+    const el = document.createElement('div');
+    el.className = 'bad';
+    el.textContent = '❌ 5. Gelieferte Datei: Fehler — ' + e.message;
+    document.getElementById('log').appendChild(el);
+  });
 </script>
 
 </body>
