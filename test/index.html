@@ -49,6 +49,62 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Who is Ferrand?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ferrand is a DJ and producer based in Cologne, Germany, making trance and hard dance built for peak time — Loveparade synths and hard house weight pulled into something that belongs right now, not in 1998."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What genres does Ferrand play?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Trance, hard dance and eurodance revival, played at around 150–155 BPM."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which DJs play Ferrand's tracks?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ferrand's music has been supported by Marlon Hoffstadt, Armin van Buuren, KI/KI and Hannah Laing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where has Ferrand played?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "From Grelle Forelle in Vienna to Odonien in Cologne."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I listen to Ferrand?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On Spotify and SoundCloud. Tour dates are listed on Resident Advisor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I book Ferrand?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Booking enquiries go to info.ferrand@gmail.com."
+      }
+    }
+  ]
+}
+</script>
 <meta name="robots" content="noindex, nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;1,300&family=Barlow:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 
@@ -190,8 +246,8 @@
   .hero-dragonfly.visible { opacity: 1; transform: scale(1); }
 
   .hero-wordmark {
-    width: min(440px, 56vw);
-    height: min(64px, 8vw);
+    width: min(520px, 64vw);
+    height: calc(min(520px, 64vw) / 11);
     display: block;
     background: transparent;
     --poster-color: transparent;
@@ -207,23 +263,12 @@
     transform: translateY(0);
   }
 
-  .hero-tagline {
-    z-index: 1;
-    font-family: var(--font-cond);
-    font-size: 11px;
-    letter-spacing: 0.44em;
-    text-transform: uppercase;
-    color: rgba(245,242,237,0.34);
-    opacity: 0;
-    transition: opacity 1.2s ease 1.1s;
-  }
 
-  .hero-tagline.visible { opacity: 1; }
 
   /* nav wordmark — same letterforms as the hero */
   .nav-logo-3d {
-    width: 132px;
-    height: 20px;
+    width: 150px;
+    height: 14px;
     display: block;
     background: transparent;
     --poster-color: transparent;
@@ -273,6 +318,96 @@
     letter-spacing: 0.42em;
     text-transform: uppercase;
     color: rgba(245,242,237,0.5);
+  }
+
+  /* ---- FAQ — compact accordion, fact-dense for search & AI crawlers ---- */
+  #faq {
+    background: var(--white);
+    color: var(--black);
+    padding: 96px 48px 104px;
+    position: relative;
+  }
+
+  .faq-inner { max-width: 780px; margin: 0 auto; }
+
+  .faq-label {
+    font-family: var(--font-cond);
+    font-size: 11px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .faq-label::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: var(--red);
+  }
+
+  .faq-item { border-top: 1px solid rgba(10,10,10,0.12); }
+  .faq-item:last-child { border-bottom: 1px solid rgba(10,10,10,0.12); }
+
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: 0;
+    text-align: left;
+    padding: 22px 36px 22px 0;
+    font-family: var(--font-cond);
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--black);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.25s ease;
+  }
+
+  .faq-q:hover { color: var(--red); }
+
+  .faq-q::after {
+    content: '';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-70%) rotate(45deg);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .faq-item.open .faq-q::after { transform: translateY(-30%) rotate(225deg); }
+  .faq-item.open .faq-q { color: var(--red); }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .faq-a p {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: rgba(10,10,10,0.72);
+    padding: 0 40px 24px 0;
+    margin: 0;
+  }
+
+  .faq-a a { color: var(--red); text-decoration: none; border-bottom: 1px solid rgba(218,12,26,0.3); }
+
+  @media (max-width: 700px) {
+    #faq { padding: 64px 24px 72px; }
+    .faq-q { font-size: 15.5px; padding: 18px 32px 18px 0; }
+    .faq-a p { font-size: 13.5px; padding-right: 12px; }
   }
 
   /* text h1 kept for crawlers + as the mobile/fallback headline */
@@ -959,9 +1094,8 @@
 
     /* hero: the mark stays 3D on mobile too — it's the whole point of the page now */
     .hero-dragonfly { width: 88vw; height: 62vw; }
-    .hero-wordmark { width: 62vw; height: 9vw; }
-    .hero-tagline { font-size: 10px; letter-spacing: 0.3em; }
-    .nav-logo-3d { width: 106px; height: 16px; }
+    .hero-wordmark { width: 74vw; height: calc(74vw / 11); }
+    .nav-logo-3d { width: 118px; height: 11px; }
     .live-label { left: 24px; bottom: 32px; }
     .hero-img, .about-img img { animation: none !important; }
 
@@ -1122,7 +1256,9 @@
       src="models/wordmark-v2.glb"
       alt=""
       aria-hidden="true"
+      data-fit-w="1.899" data-fit-h="0.141" data-fit-pad="1.02"
       camera-orbit="0deg 88deg auto"
+      field-of-view="30deg"
       exposure="1.35"
       shadow-intensity="0"
       environment-image="env/sunrise.jpg"
@@ -1162,7 +1298,9 @@
     auto-rotate
     auto-rotate-delay="0"
     rotation-per-second="12deg"
+    data-fit-w="1.899" data-fit-h="1.146" data-fit-pad="1.10"
     camera-orbit="0deg 82deg auto"
+    field-of-view="30deg"
     exposure="1.35"
     shadow-intensity="0"
     environment-image="env/sunrise.jpg"
@@ -1179,7 +1317,9 @@
     src="models/wordmark-v2.glb"
     alt="Ferrand"
     aria-hidden="true"
+    data-fit-w="1.899" data-fit-h="0.141" data-fit-pad="1.04"
     camera-orbit="0deg 88deg auto"
+    field-of-view="30deg"
     exposure="1.3"
     shadow-intensity="0"
     environment-image="env/sunrise.jpg"
@@ -1187,8 +1327,6 @@
     disable-tap
     interaction-prompt="none"
     loading="eager"></model-viewer>
-
-  <p class="hero-tagline">Köln · Trance &amp; Hard Dance</p>
 
   <div class="scroll-hint" aria-hidden="true">
     <span>Scroll</span>
@@ -1330,6 +1468,43 @@
   </div>
 </section>
 
+<!-- FAQ — plain answers, easy for search engines and AI to quote -->
+<section id="faq">
+  <div class="faq-inner">
+    <p class="faq-label">FAQ</p>
+
+    <div class="faq-item">
+      <button class="faq-q" type="button">Who is Ferrand?</button>
+      <div class="faq-a"><p>Ferrand is a DJ and producer based in Cologne, Germany, making trance and hard dance built for peak time — Loveparade synths and hard house weight pulled into something that belongs right now, not in 1998.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" type="button">What genres does Ferrand play?</button>
+      <div class="faq-a"><p>Trance, hard dance and eurodance revival, played at around 150–155 BPM.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" type="button">Which DJs play Ferrand's tracks?</button>
+      <div class="faq-a"><p>Ferrand's music has been supported by Marlon Hoffstadt, Armin van Buuren, KI/KI and Hannah Laing.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" type="button">Where has Ferrand played?</button>
+      <div class="faq-a"><p>From Grelle Forelle in Vienna to Odonien in Cologne.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" type="button">Where can I listen to Ferrand?</button>
+      <div class="faq-a"><p>On <a href="https://open.spotify.com/intl-de/artist/7kmof3cSe8IMOpTNQQEHwt" target="_blank" rel="noopener">Spotify</a> and <a href="https://soundcloud.com/ferrand_ferrari" target="_blank" rel="noopener">SoundCloud</a>. Tour dates are listed on <a href="https://de.ra.co/dj/ferrand" target="_blank" rel="noopener">Resident Advisor</a>.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" type="button">How can I book Ferrand?</button>
+      <div class="faq-a"><p>Booking enquiries go to <a href="mailto:info.ferrand@gmail.com">info.ferrand@gmail.com</a>.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- BOOKING -->
 <section id="booking">
   <div class="booking-overlay"></div>
@@ -1392,6 +1567,72 @@
     }
   });
 
+  /* Aspect-aware framing.
+     model-viewer's own framing fits the model's bounding SPHERE, which for a
+     13.5:1 wordmark means the sphere (1.9 across) gets fitted to the box HEIGHT
+     — so the text renders a few pixels tall. We compute the camera distance from
+     the element's real aspect ratio instead, and redo it whenever it changes. */
+  (function fitModels(){
+    const FOV = 30;                                   // must match field-of-view
+    const T = Math.tan(FOV * Math.PI / 360);          // tan(fov/2)
+
+    function fit(mv){
+      const mw = parseFloat(mv.dataset.fitW);
+      const mh = parseFloat(mv.dataset.fitH);
+      const pad = parseFloat(mv.dataset.fitPad || '1.05');
+      if (!mw || !mh) return;
+
+      const r = mv.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      const A = r.width / r.height;
+
+      // visible width must cover the model's width AND its height once scaled
+      const visW = Math.max(mw * pad, mh * pad * A);
+      const visH = visW / A;
+      const dist = visH / (2 * T);
+
+      const parts = (mv.getAttribute('camera-orbit') || '0deg 90deg auto').split(/\s+/);
+      mv.setAttribute('camera-orbit', `${parts[0]} ${parts[1]} ${dist.toFixed(3)}m`);
+    }
+
+    const all = () => document.querySelectorAll('model-viewer[data-fit-w]').forEach(fit);
+
+    all();
+    window.addEventListener('resize', () => { clearTimeout(window.__fitT); window.__fitT = setTimeout(all, 120); });
+    document.querySelectorAll('model-viewer[data-fit-w]').forEach(mv => {
+      mv.addEventListener('load', () => fit(mv), { once: true });
+    });
+    window.__refitModels = all;
+  })();
+
+  // FAQ accordion
+  (function faqAccordion(){
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const btn = item.querySelector('.faq-q');
+      const ans = item.querySelector('.faq-a');
+      if (!btn || !ans) return;
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        // close others — keeps the section compact
+        document.querySelectorAll('.faq-item.open').forEach(o => {
+          o.classList.remove('open');
+          o.querySelector('.faq-a').style.maxHeight = null;
+          o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('open');
+          ans.style.maxHeight = ans.scrollHeight + 'px';
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    window.addEventListener('resize', () => {
+      const open = document.querySelector('.faq-item.open .faq-a');
+      if (open) open.style.maxHeight = open.scrollHeight + 'px';
+    });
+  })();
+
   // Live photo: fade in once decoded
   (function livePhotoFade(){
     const img = document.querySelector('#live img');
@@ -1400,12 +1641,11 @@
     else img.addEventListener('load', () => img.classList.add('loaded'), { once: true });
   })();
 
-  // Hero reveal — dragonfly, then wordmark, then tagline
+  // Hero reveal — dragonfly, then wordmark
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.querySelector('.hero-dragonfly')?.classList.add('visible');
       document.querySelector('.hero-wordmark')?.classList.add('visible');
-      document.querySelector('.hero-tagline')?.classList.add('visible');
     }, 300);
   });
 
@@ -1425,7 +1665,8 @@
         const r = hero.getBoundingClientRect();
         const py = (e.clientY - r.top) / r.height - 0.5;
         const phi = (82 + py * 14).toFixed(1);   // pitch only; yaw is the auto-rotate
-        dfly.setAttribute('camera-orbit', `${dfly.getAttribute('camera-orbit').split(' ')[0]} ${phi}deg auto`);
+        const cur = dfly.getAttribute('camera-orbit').split(/\s+/);
+        dfly.setAttribute('camera-orbit', `${cur[0]} ${phi}deg ${cur[2] || 'auto'}`);
         raf = null;
       });
     });
