@@ -232,8 +232,8 @@
   /* Camera framing is left to model-viewer (radius: auto). Fixing the radius
      by hand is what made the wordmark tiny and cropped the dragonfly's wings. */
   .hero-dragonfly {
-    width: min(660px, 84vw);
-    height: min(440px, 56vw);
+    width: min(700px, 88vw);
+    height: min(520px, 66vw);
     z-index: 1;
     background: transparent;
     --poster-color: transparent;
@@ -246,8 +246,8 @@
   .hero-dragonfly.visible { opacity: 1; transform: scale(1); }
 
   .hero-wordmark {
-    width: min(520px, 64vw);
-    height: calc(min(520px, 64vw) / 11);
+    width: min(680px, 82vw);
+    height: calc(min(680px, 82vw) / 9.5);
     display: block;
     background: transparent;
     --poster-color: transparent;
@@ -265,8 +265,22 @@
 
 
 
+
+  .nav-logo-text {
+    font-family: 'NYXERIN', 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.82;
+    display: block;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+  }
+  .nav-logo:hover .nav-logo-text { opacity: 1; }
+  .nav-logo-3d { display: none; }
   /* nav wordmark — same letterforms as the hero */
-  .nav-logo-3d {
+  .nav-logo-3d-unused {
     width: 150px;
     height: 14px;
     display: block;
@@ -1251,20 +1265,7 @@
 
 <nav id="mainNav">
   <a href="#" class="nav-logo" aria-label="Ferrand">
-    <model-viewer
-      class="nav-logo-3d"
-      src="models/wordmark-v2.glb"
-      alt=""
-      aria-hidden="true"
-      data-fit-w="1.899" data-fit-h="0.141" data-fit-pad="1.02"
-      camera-orbit="0deg 88deg auto"
-      field-of-view="30deg"
-      exposure="1.35"
-      shadow-intensity="0"
-      environment-image="env/sunrise.jpg"
-      disable-zoom
-      disable-tap
-      interaction-prompt="none"></model-viewer>
+    <span class="nav-logo-text" aria-hidden="true">Ferrand</span>
   </a>
   <ul class="nav-links">
     <li><a href="#about" data-section="about">About</a></li>
@@ -1298,8 +1299,10 @@
     auto-rotate
     auto-rotate-delay="0"
     rotation-per-second="12deg"
-    data-fit-w="1.899" data-fit-h="1.146" data-fit-pad="1.10"
-    camera-orbit="0deg 82deg auto"
+    data-fit-w="1.899" data-fit-h="1.146" data-fit-pad="1.08"
+    camera-orbit="0deg 90deg 2.5m"
+    min-field-of-view="1deg"
+    min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
     exposure="1.35"
     shadow-intensity="0"
@@ -1318,7 +1321,9 @@
     alt="Ferrand"
     aria-hidden="true"
     data-fit-w="1.899" data-fit-h="0.141" data-fit-pad="1.04"
-    camera-orbit="0deg 88deg auto"
+    camera-orbit="0deg 88deg 2.5m"
+    min-field-of-view="1deg"
+    min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
     exposure="1.3"
     shadow-intensity="0"
@@ -1568,40 +1573,61 @@
   });
 
   /* Aspect-aware framing.
-     model-viewer's own framing fits the model's bounding SPHERE, which for a
-     13.5:1 wordmark means the sphere (1.9 across) gets fitted to the box HEIGHT
-     — so the text renders a few pixels tall. We compute the camera distance from
-     the element's real aspect ratio instead, and redo it whenever it changes. */
+     Two of model-viewer's defaults fight a wide flat model:
+       - camera-orbit "auto" frames the bounding SPHERE, so a 13.5:1 wordmark
+         (sphere 1.9 across) gets fitted to the box HEIGHT and renders tiny;
+       - min-camera-orbit clamps the radius so the camera can't come closer,
+         which silently ignores a computed short distance.
+     So we park the camera at a safe fixed radius and compute the FIELD OF VIEW
+     instead — min-field-of-view is lifted to 1deg to allow it. At ~4deg the
+     wordmark is effectively orthographic, which suits a logo. */
   (function fitModels(){
-    const FOV = 30;                                   // must match field-of-view
-    const T = Math.tan(FOV * Math.PI / 360);          // tan(fov/2)
+    const R = 2.5;
 
     function fit(mv){
       const mw = parseFloat(mv.dataset.fitW);
       const mh = parseFloat(mv.dataset.fitH);
       const pad = parseFloat(mv.dataset.fitPad || '1.05');
       if (!mw || !mh) return;
-
       const r = mv.getBoundingClientRect();
       if (!r.width || !r.height) return;
       const A = r.width / r.height;
-
-      // visible width must cover the model's width AND its height once scaled
       const visW = Math.max(mw * pad, mh * pad * A);
       const visH = visW / A;
-      const dist = visH / (2 * T);
-
+      const fov = 2 * Math.atan(visH / (2 * R)) * 180 / Math.PI;
       const parts = (mv.getAttribute('camera-orbit') || '0deg 90deg auto').split(/\s+/);
-      mv.setAttribute('camera-orbit', `${parts[0]} ${parts[1]} ${dist.toFixed(3)}m`);
+      mv.setAttribute('camera-orbit', `${parts[0]} ${parts[1]} ${R}m`);
+      mv.setAttribute('field-of-view', `${fov.toFixed(2)}deg`);
     }
 
     const all = () => document.querySelectorAll('model-viewer[data-fit-w]').forEach(fit);
 
+    // model-viewer resets field-of-view internally after load — we must re-apply
+    // on camera-change (fires after the internal reset settles) and on a rAF delay
+    document.querySelectorAll('model-viewer[data-fit-w]').forEach(mv => {
+      let applied = false;
+      function applyFit(){
+        fit(mv);
+        // freeze the computed fov so model-viewer stops overriding it
+        mv.minFieldOfView = mv.fieldOfView;
+        mv.maxFieldOfView = mv.fieldOfView;
+        applied = true;
+      }
+      mv.addEventListener('load', () => {
+        // try once immediately, then after rAF, then on camera-change once
+        fit(mv);
+        requestAnimationFrame(() => {
+          fit(mv);
+          mv.addEventListener('camera-change', function onCC(){
+            if(!applied) applyFit();
+            mv.removeEventListener('camera-change', onCC);
+          });
+        });
+      }, { once: true });
+    });
+
     all();
     window.addEventListener('resize', () => { clearTimeout(window.__fitT); window.__fitT = setTimeout(all, 120); });
-    document.querySelectorAll('model-viewer[data-fit-w]').forEach(mv => {
-      mv.addEventListener('load', () => fit(mv), { once: true });
-    });
     window.__refitModels = all;
   })();
 
