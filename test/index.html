@@ -1426,9 +1426,9 @@
     min-field-of-view="1deg"
     min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
-    exposure="1.3"
+    exposure="2.5"
     shadow-intensity="0"
-    environment-image="env/sunrise.jpg"
+    environment-image="env/strobe-max.jpg"
     disable-zoom
     disable-tap
     interaction-prompt="none"
@@ -1821,49 +1821,31 @@
 
 
   // Strobe — flashes the dragonfly's exposure at the chosen tempo.
-  // Off: exposure sits at 2.50. On: exposure starts at 0 and blinks up on each beat.
+  // Single fixed environment (env/strobe-max.jpg, set in the markup) — no env swap.
   (function strobe(){
     const mv = document.getElementById('heroDragonfly');
     const toggle = document.getElementById('strobeToggle');
     const tempo = document.getElementById('strobeTempo');
     if (!mv || !toggle || !tempo) return;
 
-    const BASE_ENV = 'env/sunrise.jpg';
-    const BASE_EXP = 1.35;               // normal look
-    const STROBE_ENV = 'env/strobe-max.jpg';
+    const BASE_EXP = 2.5;   // exposure without strobe
+    const PEAK = 2.5;       // flash brightness
     let timer = null;
-
-    // Preload the strobe env ONCE. Only if it truly loads do we swap to it —
-    // a failed environment-image renders the scene unlit (pure black),
-    // which is exactly the "schwarz statt flackern" symptom.
-    let strobeEnvOk = null;
-    const probe = new Image();
-    probe.onload = () => { strobeEnvOk = true; };
-    probe.onerror = () => { strobeEnvOk = false; console.warn('strobe-max.jpg not loadable — strobing on sunrise env instead'); };
-    probe.src = STROBE_ENV;
 
     function start(){
       if (timer) { clearInterval(timer); timer = null; }
-      const useStrobeEnv = strobeEnvOk === true;
-      mv.environmentImage = useStrobeEnv ? STROBE_ENV : BASE_ENV;
-      const PEAK = useStrobeEnv ? 8 : 5;   // dark env needs a higher flash peak
       const bpm = parseFloat(tempo.value) || 150;
       const beat = 60000 / bpm;
       let on = false;
-      // brief grace period so a swapped env can initialize before the first flash
-      setTimeout(() => {
-        if (!toggle.checked) return;
-        mv.exposure = 0;
-        timer = setInterval(() => {
-          on = !on;
-          mv.exposure = on ? PEAK : 0;
-        }, beat / 2);    // half-period so each beat gets one full flash
-      }, useStrobeEnv ? 400 : 0);
+      mv.exposure = 0;
+      timer = setInterval(() => {
+        on = !on;
+        mv.exposure = on ? PEAK : 0;
+      }, beat / 2);      // half-period so each beat gets one full flash
     }
 
     function stop(){
       if (timer) { clearInterval(timer); timer = null; }
-      mv.environmentImage = BASE_ENV;
       mv.exposure = BASE_EXP;
     }
 
