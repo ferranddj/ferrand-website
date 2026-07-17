@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Ferrand — Club Reflections</title>
+<script type="module" src="model-viewer.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#07070a;color:#bbb;font-family:sans-serif;min-height:100vh;
+       display:flex;flex-direction:column;align-items:center;justify-content:center;
+       gap:.75rem;padding:1.2rem}
+  .stage{position:relative;width:min(820px,95vw);height:min(460px,50vh);
+       background:radial-gradient(ellipse at 50% 40%,#1a1a20,#07070a 72%);
+       border:1px solid #1c1c22;display:flex;flex-direction:column;
+       align-items:center;justify-content:center;gap:.5rem;overflow:hidden}
+  #dfly{width:74%;height:64%;background:transparent;--poster-color:transparent}
+  #wm{width:52%;height:5%;background:transparent;--poster-color:transparent}
+  .lbl{font-size:.6rem;color:#4c4c54;letter-spacing:.14em;text-transform:uppercase;margin-top:.25rem}
+  .row{display:flex;gap:.32rem;flex-wrap:wrap;justify-content:center}
+  button{background:#101014;color:#8d8d95;border:1px solid #27272d;padding:.36rem .74rem;
+       font-size:.64rem;letter-spacing:.07em;text-transform:uppercase;cursor:pointer}
+  button:hover,button.on{border-color:#DA0C1A;color:#fff}
+  .ctrl{display:flex;align-items:center;gap:.5rem;font-size:.63rem;color:#76767e;letter-spacing:.05em}
+  input[type=range]{width:120px;accent-color:#DA0C1A}
+  .warn{font-size:.6rem;color:#5a5a62;max-width:520px;text-align:center;line-height:1.5;margin-top:.3rem}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <model-viewer id="dfly" src="models/dragonfly-v2.glb" alt="Ferrand"
+    data-fit-w="1.899" data-fit-h="1.146" data-fit-pad="1.14"
+    auto-rotate auto-rotate-delay="0" rotation-per-second="12deg"
+    camera-orbit="0deg 82deg 2.5m" min-field-of-view="1deg" min-camera-orbit="auto auto 0m"
+    exposure="1.4" shadow-intensity="0" disable-zoom disable-tap
+    interaction-prompt="none" environment-image="env/club-strobe.jpg"></model-viewer>
+
+  <model-viewer id="wm" src="models/wordmark-chrome.glb" alt="Ferrand"
+    data-fit-w="1.899" data-fit-h="0.141" data-fit-pad="1.04"
+    camera-orbit="0deg 88deg 2.5m" min-field-of-view="1deg" min-camera-orbit="auto auto 0m"
+    exposure="1.4" shadow-intensity="0" disable-zoom disable-tap
+    interaction-prompt="none" environment-image="env/club-strobe.jpg"></model-viewer>
+</div>
+
+<span class="lbl">Umgebung / Spiegelung</span>
+<div class="row" id="envs">
+  <button data-env="env/club-strobe.jpg" class="on">Strobe</button>
+  <button data-env="env/club-laser.jpg">Laser</button>
+  <button data-env="env/club-mix.jpg">Club</button>
+  <button data-env="env/club-rig.jpg">Rig</button>
+  <button data-env="env/sunrise.jpg">Sunrise (alt)</button>
+</div>
+
+<span class="lbl">Wortmarke</span>
+<div class="row" id="mats">
+  <button data-src="models/wordmark-chrome.glb" class="on">Chrome</button>
+  <button data-src="models/wordmark-holo.glb">Holo</button>
+</div>
+
+<div class="ctrl">
+  <span>Exposure</span>
+  <input type="range" id="exp" min="0.4" max="3" step="0.05" value="1.4">
+  <span id="expv">1.40</span>
+  <button id="strobeBtn" style="margin-left:.7rem">Strobe 150 BPM</button>
+</div>
+
+<p class="warn">Strobe-Test blinkt mit 2,5 Hz (= 150 BPM). Wer lichtempfindlich ist, lässt den Knopf besser aus.</p>
+
+<script>
+  const dfly=document.getElementById('dfly'), wm=document.getElementById('wm');
+
+  // aspect-aware framing (same logic as the site)
+  (function fitModels(){
+    const R=2.5;
+    function fit(mv){
+      const mw=parseFloat(mv.dataset.fitW), mh=parseFloat(mv.dataset.fitH);
+      const pad=parseFloat(mv.dataset.fitPad||'1.05');
+      const r=mv.getBoundingClientRect(); if(!r.width||!r.height) return;
+      const A=r.width/r.height;
+      const visW=Math.max(mw*pad, mh*pad*A), visH=visW/A;
+      const fov=2*Math.atan(visH/(2*R))*180/Math.PI;
+      const p=(mv.getAttribute('camera-orbit')||'0deg 90deg auto').split(/\s+/);
+      mv.setAttribute('camera-orbit',`${p[0]} ${p[1]} ${R}m`);
+      mv.setAttribute('field-of-view',`${fov.toFixed(2)}deg`);
+    }
+    const all=()=>document.querySelectorAll('model-viewer[data-fit-w]').forEach(fit);
+    all();
+    addEventListener('resize',()=>{clearTimeout(window.__t);window.__t=setTimeout(all,120);});
+    document.querySelectorAll('model-viewer[data-fit-w]').forEach(mv=>
+      mv.addEventListener('load',()=>fit(mv),{once:true}));
+  })();
+
+  document.querySelectorAll('#envs button').forEach(b=>b.onclick=()=>{
+    dfly.environmentImage=b.dataset.env; wm.environmentImage=b.dataset.env;
+    document.querySelectorAll('#envs button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+  });
+  document.querySelectorAll('#mats button').forEach(b=>b.onclick=()=>{
+    wm.src=b.dataset.src;
+    document.querySelectorAll('#mats button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+  });
+
+  const exp=document.getElementById('exp'), expv=document.getElementById('expv');
+  let baseExp=1.4;
+  exp.oninput=()=>{ baseExp=+exp.value; dfly.exposure=baseExp; wm.exposure=baseExp; expv.textContent=baseExp.toFixed(2); };
+
+  // 150 BPM = 400ms per beat — Ferrand's actual tempo
+  let strobe=null;
+  document.getElementById('strobeBtn').onclick=(e)=>{
+    if(strobe){ clearInterval(strobe); strobe=null; e.target.classList.remove('on');
+      dfly.exposure=baseExp; wm.exposure=baseExp; return; }
+    e.target.classList.add('on');
+    strobe=setInterval(()=>{
+      dfly.exposure=baseExp*2.4; wm.exposure=baseExp*2.4;
+      setTimeout(()=>{ dfly.exposure=baseExp*0.55; wm.exposure=baseExp*0.55; }, 55);
+    }, 400);
+  };
+</script>
+</body>
+</html>
