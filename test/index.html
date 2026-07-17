@@ -278,15 +278,95 @@
     transition: opacity 0.2s ease;
   }
   .nav-logo:hover .nav-logo-text { opacity: 1; }
-  .nav-logo-3d { display: none; }
-  /* nav wordmark — same letterforms as the hero */
-  .nav-logo-3d-unused {
-    width: 150px;
-    height: 14px;
-    display: block;
+
+  /* ---- STROBE CONTROL ---- */
+  .strobe-ctrl {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-cond);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+  .strobe-ctrl:hover { opacity: 1; }
+
+  .strobe-toggle {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 34px;
+    height: 18px;
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 999px;
     background: transparent;
-    --poster-color: transparent;
+    position: relative;
+    cursor: pointer;
+    outline-offset: 3px;
+    flex: none;
+  }
+  .strobe-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--white);
+    transition: transform 0.15s ease;
+  }
+  .strobe-toggle:checked { border-color: var(--red); }
+  .strobe-toggle:checked::after { transform: translateX(16px); background: var(--red); }
+
+  .strobe-tempo {
+    font-family: var(--font-cond);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 4px 6px;
+    cursor: pointer;
+  }
+  .strobe-tempo option { color: #000; }
+
+  .strobe-warn {
+    position: relative;
+    cursor: help;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+  .strobe-warn .strobe-tip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    right: -8px;
+    width: 230px;
+    background: rgba(0,0,0,0.92);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--white);
+    font-family: var(--font-main, sans-serif);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    line-height: 1.5;
+    padding: 10px 12px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease;
     pointer-events: none;
+  }
+  .strobe-warn:hover .strobe-tip,
+  .strobe-warn:focus-visible .strobe-tip { opacity: 1; visibility: visible; }
+
+  @media (max-width: 700px) {
+    .strobe-ctrl { bottom: 20px; right: 16px; gap: 10px; }
   }
 
   /* ---- LIVE — the crowd shot as a full-bleed break ---- */
@@ -675,12 +755,28 @@
 
 
   .about-content {
+    position: relative;
+    overflow: hidden;
     padding: 120px 80px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     border-left: 1px solid var(--light-gray);
   }
+
+  /* Dot globe — inverted (dark dots on the light about background), soft + faint */
+  .about-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('../images/dot-globe.png') center / contain no-repeat;
+    filter: invert(1) blur(1.5px);
+    opacity: 0.15;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .about-content > * { position: relative; z-index: 1; }
 
   .about-label {
     font-family: var(--font-cond);
@@ -1109,7 +1205,6 @@
     /* hero: the mark stays 3D on mobile too — it's the whole point of the page now */
     .hero-dragonfly { width: 88vw; height: 62vw; }
     .hero-wordmark { width: 74vw; height: calc(74vw / 11); }
-    .nav-logo-3d { width: 118px; height: 11px; }
     .live-label { left: 24px; bottom: 32px; }
     .hero-img, .about-img img { animation: none !important; }
 
@@ -1304,9 +1399,9 @@
     min-field-of-view="1deg"
     min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
-    exposure="1.35"
+    exposure="2.50"
     shadow-intensity="0"
-    environment-image="env/sunrise.jpg"
+    environment-image="env/strobe-max.jpg"
     disable-zoom
     disable-tap
     interaction-prompt="none"
@@ -1336,6 +1431,21 @@
   <div class="scroll-hint" aria-hidden="true">
     <span>Scroll</span>
     <div class="scroll-hint-line"></div>
+  </div>
+
+  <div class="strobe-ctrl">
+    <label for="strobeToggle">Strobe</label>
+    <input type="checkbox" class="strobe-toggle" id="strobeToggle" aria-label="Strobe an/aus">
+    <select class="strobe-tempo" id="strobeTempo" aria-label="Strobe-Tempo">
+      <option value="120">120 BPM</option>
+      <option value="150" selected>150 BPM</option>
+      <option value="155">155 BPM</option>
+      <option value="180">180 BPM</option>
+      <option value="300">300 BPM</option>
+    </select>
+    <span class="strobe-warn" tabindex="0" aria-label="Epilepsie-Warnung">&#9888;
+      <span class="strobe-tip" role="tooltip">Warning: flashing lights. May trigger seizures in people with photosensitive epilepsy. Viewer discretion advised.</span>
+    </span>
   </div>
 </section>
 
@@ -1690,7 +1800,7 @@
       raf = requestAnimationFrame(() => {
         const r = hero.getBoundingClientRect();
         const py = (e.clientY - r.top) / r.height - 0.5;
-        const phi = (82 + py * 14).toFixed(1);   // pitch only; yaw is the auto-rotate
+        const phi = (90 + py * 10).toFixed(1);   // pitch only, around head-on 90deg; yaw is the auto-rotate
         const cur = dfly.getAttribute('camera-orbit').split(/\s+/);
         dfly.setAttribute('camera-orbit', `${cur[0]} ${phi}deg ${cur[2] || 'auto'}`);
         raf = null;
@@ -1698,6 +1808,47 @@
     });
   })();
 
+
+  // Strobe — flashes the dragonfly's exposure at the chosen tempo.
+  // Off: exposure sits at 2.50. On: exposure starts at 0 and blinks up on each beat.
+  (function strobe(){
+    const mv = document.getElementById('heroDragonfly');
+    const toggle = document.getElementById('strobeToggle');
+    const tempo = document.getElementById('strobeTempo');
+    if (!mv || !toggle || !tempo) return;
+
+    const BASE = 2.50;   // exposure without strobe
+    const PEAK = 2.50;   // flash brightness
+    let timer = null;
+
+    function start(){
+      stop();
+      mv.exposure = 0;   // start dark — the flashes do the work
+      const bpm = parseFloat(tempo.value) || 150;
+      const beat = 60000 / bpm;
+      let on = false;
+      timer = setInterval(() => {
+        on = !on;
+        mv.exposure = on ? PEAK : 0;
+      }, beat / 2);      // half-period so each beat gets one full flash
+    }
+
+    function stop(){
+      if (timer) { clearInterval(timer); timer = null; }
+      mv.exposure = BASE;
+    }
+
+    toggle.addEventListener('change', () => toggle.checked ? start() : stop());
+    tempo.addEventListener('change', () => { if (toggle.checked) start(); });
+
+    // auto-stop when the tab is hidden
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && toggle.checked) {
+        toggle.checked = false;
+        stop();
+      }
+    });
+  })();
 
   // Nav + active section highlighting — all devices
   const nav = document.getElementById('mainNav');
