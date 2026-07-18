@@ -495,8 +495,6 @@
     inset: 0;
     z-index: 0;
     background: url('images/hero-bg.jpg') center bottom / cover no-repeat;
-    filter: blur(2.5px) saturate(0.92);
-    transform: scale(1.03); /* avoid blurred edge fringing at the viewport border */
   }
 
   .hero-scrim {
@@ -846,7 +844,8 @@
     inset: 0;
     background: url('images/about-concrete.jpg') center / cover no-repeat;
     mix-blend-mode: multiply;
-    opacity: 0.32;
+    opacity: 0.88;
+    filter: blur(1.2px);
     pointer-events: none;
     z-index: 0;
   }
