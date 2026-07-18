@@ -509,6 +509,36 @@
     z-index: 2;
   }
 
+  /* drifting pollen/dust — a little bit of life over the flower patch */
+  .hero-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .hero-particle {
+    position: absolute;
+    bottom: 14vh;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: rgba(245,242,237,0.55);
+    box-shadow: 0 0 4px 1px rgba(245,242,237,0.25);
+    opacity: 0;
+    animation: particleFloat linear infinite;
+  }
+  @keyframes particleFloat {
+    0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
+    8%   { opacity: 0.8; }
+    85%  { opacity: 0.5; }
+    100% { transform: translate(var(--drift, 40px), -46vh) scale(1); opacity: 0; }
+  }
+
+  @media (max-width: 700px), (prefers-reduced-motion: reduce) {
+    .hero-particles { display: none; }
+  }
+
   /* soft contact shadow — grounds the dragonfly on the flower patch below it */
   .hero-shadow {
     position: absolute;
@@ -1400,9 +1430,9 @@
     min-field-of-view="1deg"
     min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
-    exposure="1.35"
+    exposure="2.2"
     shadow-intensity="0"
-    environment-image="env/sunrise.jpg"
+    environment-image="env/strobe-max.jpg"
     disable-zoom
     disable-tap
     interaction-prompt="none"
@@ -1437,6 +1467,7 @@
 <!-- HERO — the mark, alone -->
 <section id="hero">
   <div class="hero-shadow" id="heroShadow" aria-hidden="true"></div>
+  <div class="hero-particles" id="heroParticles" aria-hidden="true"></div>
   <model-viewer
     class="hero-dragonfly"
     id="heroDragonfly"
@@ -1836,6 +1867,25 @@
     }
     const shadowEl = document.getElementById('heroShadow');
     revealWhenReady(dflyEl, 0, () => { if (shadowEl) shadowEl.classList.add('visible'); });
+
+    // drifting pollen — a handful of soft dots rising over the flower patch
+    const particleWrap = document.getElementById('heroParticles');
+    if (particleWrap && getComputedStyle(particleWrap).display !== 'none') {
+      const count = 14;
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'hero-particle';
+        const left = 30 + Math.random() * 40;         // stay roughly over the flower patch
+        const duration = 9 + Math.random() * 7;
+        const delay = Math.random() * 12;
+        const drift = (Math.random() * 60 - 30).toFixed(0) + 'px';
+        p.style.left = left + '%';
+        p.style.setProperty('--drift', drift);
+        p.style.animationDuration = duration + 's';
+        p.style.animationDelay = delay + 's';
+        particleWrap.appendChild(p);
+      }
+    }
 
     // mobile: no 3D dragonfly loaded at all, just fade the static wordmark in
     if (mobileName && getComputedStyle(mobileName).position === 'static') {
