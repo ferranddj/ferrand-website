@@ -479,19 +479,36 @@
     height: 100svh;
     position: relative;
     overflow: hidden;
-    background:
-      linear-gradient(to bottom,
-        rgba(6,6,8,0.62) 0%,
-        rgba(6,6,8,0.40) 45%,
-        rgba(6,6,8,0.12) 75%,
-        rgba(6,6,8,0) 100%),
-      url('images/hero-bg.jpg') center bottom / cover no-repeat,
-      #060608;
+    background: #060608;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 2.2vh;
+  }
+
+  /* the photo, slightly out of focus — a sharp CG dragonfly on top of an
+     equally sharp photo read as two flat cut-out layers; softening the photo
+     gives real depth-of-field separation instead */
+  .hero-bg-photo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: url('images/hero-bg.jpg') center bottom / cover no-repeat;
+    filter: blur(2.5px) saturate(0.92);
+    transform: scale(1.03); /* avoid blurred edge fringing at the viewport border */
+  }
+
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(to bottom,
+      rgba(6,6,8,0.62) 0%,
+      rgba(6,6,8,0.40) 45%,
+      rgba(6,6,8,0.12) 75%,
+      rgba(6,6,8,0) 100%);
+    pointer-events: none;
   }
 
   /* vignette — pulls focus toward the centre instead of the empty concrete
@@ -520,19 +537,19 @@
   .hero-particle {
     position: absolute;
     bottom: 14vh;
-    width: 3px;
-    height: 3px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: rgba(245,242,237,0.55);
-    box-shadow: 0 0 4px 1px rgba(245,242,237,0.25);
+    background: rgba(250,248,244,0.9);
+    box-shadow: 0 0 9px 2.5px rgba(250,248,244,0.55);
     opacity: 0;
     animation: particleFloat linear infinite;
   }
   @keyframes particleFloat {
     0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
-    8%   { opacity: 0.8; }
-    85%  { opacity: 0.5; }
-    100% { transform: translate(var(--drift, 40px), -46vh) scale(1); opacity: 0; }
+    8%   { opacity: 1; }
+    85%  { opacity: 0.75; }
+    100% { transform: translate(var(--drift, 40px), -50vh) scale(1); opacity: 0; }
   }
 
   @media (max-width: 700px), (prefers-reduced-motion: reduce) {
@@ -829,7 +846,7 @@
     inset: 0;
     background: url('images/about-concrete.jpg') center / cover no-repeat;
     mix-blend-mode: multiply;
-    opacity: 0.1;
+    opacity: 0.32;
     pointer-events: none;
     z-index: 0;
   }
@@ -1466,6 +1483,8 @@
 
 <!-- HERO — the mark, alone -->
 <section id="hero">
+  <div class="hero-bg-photo" aria-hidden="true"></div>
+  <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-shadow" id="heroShadow" aria-hidden="true"></div>
   <div class="hero-particles" id="heroParticles" aria-hidden="true"></div>
   <model-viewer
@@ -1871,7 +1890,7 @@
     // drifting pollen — a handful of soft dots rising over the flower patch
     const particleWrap = document.getElementById('heroParticles');
     if (particleWrap && getComputedStyle(particleWrap).display !== 'none') {
-      const count = 14;
+      const count = 26;
       for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'hero-particle';
