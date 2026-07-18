@@ -760,6 +760,19 @@
     border-left: 1px solid var(--light-gray);
   }
 
+  /* concrete texture, same material as the hero backdrop — ties the two
+     sections together instead of the flat cream cutting off abruptly */
+  .about-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('images/about-concrete.jpg') center / cover no-repeat;
+    mix-blend-mode: multiply;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   .about-content > * { position: relative; z-index: 1; }
 
   .about-label {
