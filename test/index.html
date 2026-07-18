@@ -232,8 +232,8 @@
   /* Camera framing is left to model-viewer (radius: auto). Fixing the radius
      by hand is what made the wordmark tiny and cropped the dragonfly's wings. */
   .hero-dragonfly {
-    width: min(900px, 94vw);
-    height: min(660px, 76vw);
+    width: min(1100px, 96vw);
+    height: min(800px, 82vw);
     z-index: 1;
     background: transparent;
     --poster-color: transparent;
@@ -481,10 +481,10 @@
     overflow: hidden;
     background:
       linear-gradient(to bottom,
-        rgba(6,6,8,0.92) 0%,
-        rgba(6,6,8,0.72) 45%,
-        rgba(6,6,8,0.28) 75%,
-        rgba(6,6,8,0.05) 100%),
+        rgba(6,6,8,0.62) 0%,
+        rgba(6,6,8,0.40) 45%,
+        rgba(6,6,8,0.12) 75%,
+        rgba(6,6,8,0) 100%),
       url('images/hero-bg.jpg') center bottom / cover no-repeat,
       #060608;
     display: flex;
@@ -493,6 +493,37 @@
     justify-content: center;
     gap: 2.2vh;
   }
+
+  /* vignette — pulls focus toward the centre instead of the empty concrete
+     on either side */
+  /* vignette — pulls focus toward the centre instead of the empty concrete
+     on either side */
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 65% at center,
+      transparent 45%,
+      rgba(6,6,8,0.55) 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* soft contact shadow — grounds the dragonfly on the flower patch below it */
+  .hero-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 17vh;
+    width: min(420px, 46vw);
+    height: 46px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 72%);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.6s ease 0.6s;
+  }
+  .hero-shadow.visible { opacity: 1; }
 
   /* subtle film-grain texture so the hero isn't a flat black void */
   #hero::after {
@@ -1405,6 +1436,7 @@
 
 <!-- HERO — the mark, alone -->
 <section id="hero">
+  <div class="hero-shadow" id="heroShadow" aria-hidden="true"></div>
   <model-viewer
     class="hero-dragonfly"
     id="heroDragonfly"
@@ -1792,14 +1824,18 @@
     const dflyEl = document.querySelector('.hero-dragonfly');
     const mobileName = document.querySelector('.hero-name.seo-only');
 
-    function revealWhenReady(el, extraDelay){
+    function revealWhenReady(el, extraDelay, onShow){
       if (!el) return;
       let done = false;
-      const show = () => { if (done) return; done = true; setTimeout(() => el.classList.add('visible'), extraDelay || 0); };
+      const show = () => {
+        if (done) return; done = true;
+        setTimeout(() => { el.classList.add('visible'); if (onShow) onShow(); }, extraDelay || 0);
+      };
       el.addEventListener('fitready', show, { once: true });
       setTimeout(show, 1200); // safety net if the model never fires (slow load, error)
     }
-    revealWhenReady(dflyEl, 0);
+    const shadowEl = document.getElementById('heroShadow');
+    revealWhenReady(dflyEl, 0, () => { if (shadowEl) shadowEl.classList.add('visible'); });
 
     // mobile: no 3D dragonfly loaded at all, just fade the static wordmark in
     if (mobileName && getComputedStyle(mobileName).position === 'static') {
