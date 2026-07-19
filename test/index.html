@@ -459,7 +459,26 @@
        rotation-depth FOV fix) that solved the desktop clipping issue — that
        fix is resolution-independent, so it also holds up at mobile sizes.
        No more text fallback; the mark stays 3D everywhere. */
-    .hero-dragonfly { width: 92vw; height: 62vw; }
+    .hero-dragonfly { width: 96vw; height: 64vw; }
+
+    /* the desktop flex-end + padding-bottom tuning leaves a huge empty gap
+       above the dragonfly on tall narrow screens (the box is short relative
+       to viewport height here, the opposite of desktop) — centre it instead
+       so the empty space splits evenly instead of stacking up at the top */
+    #hero { justify-content: center; padding-bottom: 0; }
+
+    /* the photo has a faint "FERRAND" ghosted into the concrete texture —
+       on mobile it sits awkwardly right under the nav bar and gets cropped.
+       A stronger, taller top scrim fully hides that zone and reads as an
+       intentional fade from the nav into the scene, not a glitch. */
+    .hero-scrim {
+      background: linear-gradient(to bottom,
+        rgba(6,6,8,0.97) 0%,
+        rgba(6,6,8,0.90) 20%,
+        rgba(6,6,8,0.55) 42%,
+        rgba(6,6,8,0.18) 65%,
+        rgba(6,6,8,0) 85%);
+    }
   }
 
   /* HERO — the dragonfly floats above a soft studio floor */
@@ -1335,6 +1354,7 @@
 
     /* Hero — dragonfly stays 3D here too (landscape / short-height phones) */
     .hero-dragonfly { width: 70vw; height: 58vh; }
+    #hero { justify-content: center; padding-bottom: 0; }
     .live-label { left: 24px; bottom: 32px; }
 
     /* on narrow/tall screens "cover" zooms the photo in hard — keep the
