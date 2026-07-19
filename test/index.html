@@ -483,7 +483,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    padding-bottom: 9vh;
     gap: 2.2vh;
   }
 
@@ -571,6 +572,68 @@
     transition: opacity 1.6s ease 0.6s;
   }
   .hero-shadow.visible { opacity: 1; }
+
+  /* spotlight — a light cone falling from a fixture above, onto the dragonfly */
+  .hero-spotlight {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: min(560px, 60vw);
+    height: 62vh;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom,
+      rgba(250,248,244,0.16) 0%,
+      rgba(250,248,244,0.07) 40%,
+      rgba(250,248,244,0.02) 75%,
+      transparent 100%);
+    clip-path: polygon(44% 0%, 56% 0%, 100% 100%, 0% 100%);
+    mix-blend-mode: screen;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.8s ease 0.3s;
+  }
+  .hero-spotlight.visible { opacity: 1; }
+
+  /* the pendant lamp fixture — cord + dome shade the light cone hangs from */
+  .hero-lamp {
+    position: absolute;
+    left: 50%;
+    top: -30px;
+    width: min(420px, 48vw);
+    transform: translateX(-50%);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.6s ease 0.1s;
+  }
+  .hero-lamp.visible { opacity: 1; }
+  .hero-lamp svg { width: 100%; height: auto; display: block; }
+
+  @media (max-width: 700px) {
+    .hero-lamp { display: none; }
+  }
+
+  /* the fixture itself — a small bright source at the top the beam emanates from */
+  .hero-spotlight-source {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    width: 140px;
+    height: 90px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(250,248,244,0.55) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.8s ease 0.3s;
+  }
+  .hero-spotlight-source.visible { opacity: 1; }
+
+  @media (max-width: 700px) {
+    .hero-spotlight, .hero-spotlight-source { display: none; }
+  }
+
 
   /* subtle film-grain texture so the hero isn't a flat black void */
   #hero::after {
@@ -1472,6 +1535,42 @@
 <section id="hero">
   <div class="hero-bg-photo" aria-hidden="true"></div>
   <div class="hero-scrim" aria-hidden="true"></div>
+  <div class="hero-lamp" id="heroLamp" aria-hidden="true"><svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="ambientBloom" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#fffdf8" stop-opacity="0.55"/>
+      <stop offset="45%" stop-color="#f5f0e6" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#f5f0e6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="discGlow" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="35%" stop-color="#fffaf0" stop-opacity="0.98"/>
+      <stop offset="70%" stop-color="#efe8da" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#efe8da" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bezelShade" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8a8378"/>
+      <stop offset="45%" stop-color="#57524a"/>
+      <stop offset="100%" stop-color="#2c2a26"/>
+    </linearGradient>
+    <filter id="softBlurLg"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="softBlurSm"><feGaussianBlur stdDeviation="2.2"/></filter>
+  </defs>
+
+  <!-- ambient bloom spreading onto the surrounding ceiling -->
+  <ellipse cx="160" cy="55" rx="200" ry="70" fill="url(#ambientBloom)" filter="url(#softBlurLg)"/>
+
+  <!-- outer bezel ring, subtle metallic top-to-bottom shade -->
+  <ellipse cx="160" cy="42" rx="148" ry="32" fill="url(#bezelShade)"/>
+  <!-- inset shadow line where bezel meets the light disc -->
+  <ellipse cx="160" cy="43" rx="128" ry="25" fill="#1c1a17" opacity="0.5" filter="url(#softBlurSm)"/>
+
+  <!-- the glowing disc itself -->
+  <ellipse cx="160" cy="41" rx="122" ry="22" fill="url(#discGlow)"/>
+  <ellipse cx="160" cy="38" rx="80" ry="12" fill="#ffffff" opacity="0.5" filter="url(#softBlurSm)"/>
+</svg></div>
+  <div class="hero-spotlight-source" id="heroSpotlightSrc" aria-hidden="true"></div>
+  <div class="hero-spotlight" id="heroSpotlight" aria-hidden="true"></div>
   <div class="hero-shadow" id="heroShadow" aria-hidden="true"></div>
   <div class="hero-particles" id="heroParticles" aria-hidden="true"></div>
   <model-viewer
@@ -1882,8 +1981,14 @@
       setTimeout(show, 1200); // safety net if the model never fires (slow load, error)
     }
     const shadowEl = document.getElementById('heroShadow');
+    const spotlightEl = document.getElementById('heroSpotlight');
+    const spotlightSrcEl = document.getElementById('heroSpotlightSrc');
+    const lampEl = document.getElementById('heroLamp');
     revealWhenReady(dflyEl, 0, () => {
       if (shadowEl) shadowEl.classList.add('visible');
+      if (spotlightEl) spotlightEl.classList.add('visible');
+      if (spotlightSrcEl) spotlightSrcEl.classList.add('visible');
+      if (lampEl) lampEl.classList.add('visible');
     });
 
     // drifting pollen — a handful of soft dots rising over the flower patch
