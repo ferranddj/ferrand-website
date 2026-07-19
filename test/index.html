@@ -2003,29 +2003,6 @@
     setTimeout(finishIntro, 4000);
   })();
 
-  // Subtle cursor parallax on the 3D wordmark (desktop, pointer devices only)
-  // Subtle cursor parallax on the hero dragonfly (desktop, pointer devices only).
-  // Radius stays 'auto' — writing a fixed radius here would re-break the framing.
-  (function heroParallax(){
-    if (!window.matchMedia('(hover: hover) and (min-width: 701px)').matches) return;
-    const dfly = document.querySelector('.hero-dragonfly');
-    const hero = document.getElementById('hero');
-    if (!dfly || !hero) return;
-
-    let raf = null;
-    hero.addEventListener('mousemove', e => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        const r = hero.getBoundingClientRect();
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        const phi = (90 + py * 10).toFixed(1);   // pitch only, around head-on 90deg; yaw is the auto-rotate
-        const cur = dfly.getAttribute('camera-orbit').split(/\s+/);
-        dfly.setAttribute('camera-orbit', `${cur[0]} ${phi}deg ${cur[2] || 'auto'}`);
-        raf = null;
-      });
-    });
-  })();
-
 
   // Nav + active section highlighting — all devices
   const nav = document.getElementById('mainNav');
