@@ -181,9 +181,14 @@
     border-bottom: 1px solid rgba(240,237,232,0.07);
     opacity: 1;
     pointer-events: all;
+    transition: opacity 0.6s ease;
   }
 
   nav.visible { opacity: 1; }
+
+  /* fades out after a few seconds of mouse inactivity, reappears on
+     movement — keeps the bar out of the way while reading/watching */
+  nav.nav-idle { opacity: 0; pointer-events: none; }
 
   .nav-links a {
     position: relative;
@@ -450,27 +455,11 @@
   }
 
   @media (max-width: 700px) {
-    /* The 3D dragonfly reliably clips its wings on small/narrow viewports —
-       rather than fight the framing on every phone size, drop the 3D pieces
-       here and show a plain styled wordmark instead. */
-    .hero-dragonfly { display: none; }
-
-    .hero-name.seo-only {
-      position: static;
-      width: auto; height: auto;
-      overflow: visible;
-      clip: auto;
-      white-space: normal;
-      font-family: var(--font-display);
-      font-size: clamp(52px, 16vw, 84px);
-      letter-spacing: 0.02em;
-      color: var(--white);
-      text-align: center;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1);
-    }
-    .hero-name.seo-only.visible { opacity: 1; transform: translateY(0); }
+    /* the 3D dragonfly now uses the same dynamic fit() sizing (with the
+       rotation-depth FOV fix) that solved the desktop clipping issue — that
+       fix is resolution-independent, so it also holds up at mobile sizes.
+       No more text fallback; the mark stays 3D everywhere. */
+    .hero-dragonfly { width: 92vw; height: 62vw; }
   }
 
   /* HERO — the dragonfly floats above a soft studio floor */
@@ -1344,11 +1333,8 @@
     .mob-menu-btn { background: none !important; border: none; padding: 4px; }
     .mob-menu-btn span { background: #f0ede8 !important; }
 
-    /* Hero — 3D dragonfly is hidden on mobile (see the dedicated mobile
-       rule further up); this used to also show/size it here, which is
-       exactly why it only appeared after rotating to landscape — this
-       combined media query didn't inherit that display:none. */
-    .hero-dragonfly { display: none !important; }
+    /* Hero — dragonfly stays 3D here too (landscape / short-height phones) */
+    .hero-dragonfly { width: 70vw; height: 58vh; }
     .live-label { left: 24px; bottom: 32px; }
 
     /* on narrow/tall screens "cover" zooms the photo in hard — keep the
@@ -1955,7 +1941,6 @@
   // the raw pre-fit framing (too big) and then snap to the correct size mid-transition.
   window.addEventListener('load', () => {
     const dflyEl = document.querySelector('.hero-dragonfly');
-    const mobileName = document.querySelector('.hero-name.seo-only');
 
     function revealWhenReady(el, extraDelay, onShow){
       if (!el) return;
@@ -2005,10 +1990,6 @@
       }
     }
 
-    // mobile: no 3D dragonfly loaded at all, just fade the static wordmark in
-    if (mobileName && getComputedStyle(mobileName).position === 'static') {
-      setTimeout(() => mobileName.classList.add('visible'), 200);
-    }
   });
 
   // PAGE INTRO — the chrome wordmark makes one entrance on load, holds briefly,
@@ -2066,6 +2047,22 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('visible', window.scrollY > 10);
   }, { passive: true });
+
+  // auto-hide the nav after a few seconds without mouse activity
+  (function navIdle(){
+    if (!window.matchMedia('(hover: hover)').matches) return; // touch devices: skip
+    let idleTimer = null;
+    function wake(){
+      nav.classList.remove('nav-idle');
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => nav.classList.add('nav-idle'), 3000);
+    }
+    document.addEventListener('mousemove', wake, { passive: true });
+    document.addEventListener('scroll', wake, { passive: true });
+    nav.addEventListener('mouseenter', () => { clearTimeout(idleTimer); nav.classList.remove('nav-idle'); });
+    nav.addEventListener('mouseleave', wake);
+    wake();
+  })();
 
   // Active section highlighting — all devices
   const allSectionIds = ['hero', 'about', 'live', 'music', 'socials', 'booking'];
