@@ -454,32 +454,6 @@
     white-space: nowrap;
   }
 
-  @media (max-width: 700px) {
-    /* the 3D dragonfly now uses the same dynamic fit() sizing (with the
-       rotation-depth FOV fix) that solved the desktop clipping issue — that
-       fix is resolution-independent, so it also holds up at mobile sizes.
-       No more text fallback; the mark stays 3D everywhere. */
-    .hero-dragonfly { width: 96vw; height: 64vw; }
-
-    /* the desktop flex-end + padding-bottom tuning leaves a huge empty gap
-       above the dragonfly on tall narrow screens (the box is short relative
-       to viewport height here, the opposite of desktop) — centre it instead
-       so the empty space splits evenly instead of stacking up at the top */
-    #hero { justify-content: center; padding-bottom: 0; }
-
-    /* the photo has a faint "FERRAND" ghosted into the concrete texture —
-       on mobile it sits awkwardly right under the nav bar and gets cropped.
-       A stronger, taller top scrim fully hides that zone and reads as an
-       intentional fade from the nav into the scene, not a glitch. */
-    .hero-scrim {
-      background: linear-gradient(to bottom,
-        rgba(6,6,8,0.97) 0%,
-        rgba(6,6,8,0.90) 20%,
-        rgba(6,6,8,0.55) 42%,
-        rgba(6,6,8,0.18) 65%,
-        rgba(6,6,8,0) 85%);
-    }
-  }
 
   /* HERO — the dragonfly floats above a soft studio floor */
   #hero {
@@ -1352,14 +1326,31 @@
     .mob-menu-btn { background: none !important; border: none; padding: 4px; }
     .mob-menu-btn span { background: #f0ede8 !important; }
 
-    /* Hero — dragonfly stays 3D here too (landscape / short-height phones) */
-    .hero-dragonfly { width: 70vw; height: 58vh; }
-    #hero { justify-content: center; padding-bottom: 0; }
-    .live-label { left: 24px; bottom: 32px; }
 
-    /* on narrow/tall screens "cover" zooms the photo in hard — keep the
-       flower patch as the visual anchor and don't drift toward the vines */
-    .hero-bg-photo { background-position: center 100%; }
+    /* PORTRAIT ART DIRECTION — dedicated 9:16 image instead of cropping
+       the desktop photo: island centred at the bottom, wall extended
+       upward, dark top baked in so the nav blends seamlessly. Desktop
+       keeps its own image untouched. */
+    .hero-bg-photo {
+      background-image: url('images/hero-bg-mobile.jpg');
+      background-size: cover;
+      background-position: center bottom;
+    }
+
+    /* the dark top is baked into the mobile image — scrim barely needed */
+    .hero-scrim {
+      background: linear-gradient(to bottom,
+        rgba(6,6,8,0.35) 0%,
+        rgba(6,6,8,0) 45%);
+    }
+
+    /* anchor the dragonfly just above the flower island (which now sits in
+       the bottom ~56vw of the screen), not floating in the void above it */
+    #hero { justify-content: flex-end; padding-bottom: 20vw; }
+    .hero-dragonfly { width: 88vw; height: 58vw; }
+    .hero-shadow { bottom: 24vw; width: 52vw; height: 30px; }
+
+    .live-label { left: 24px; bottom: 32px; }
     .hero-img, .about-img img { animation: none !important; }
 
     /* About — full width image on top */
@@ -1398,6 +1389,19 @@
 
   /* Landscape phones — two-column about so image isn't a short wide strip */
   @media (max-height: 500px) and (orientation: landscape) {
+    /* landscape phones: photo aspect roughly matches the screen again —
+       cover works here, and the dragonfly re-centres (the portrait
+       bottom-anchor rules above would misplace it in landscape) */
+    .hero-bg-photo {
+      background-size: cover;
+      background-position: center bottom;
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    #hero { justify-content: center; padding-bottom: 0; }
+    .hero-dragonfly { width: 70vw; height: 58vh; }
+    .hero-shadow { bottom: 12vh; width: 40vw; height: 34px; }
+
     #about {
       grid-template-columns: 1fr 1fr;
       min-height: 100svh;
