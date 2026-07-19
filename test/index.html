@@ -1795,10 +1795,16 @@
       mv.addEventListener('load', () => {
         fit(mv); // immediate best-effort so there's no fully-unframed flash
 
-        // dial back the material from mirror-chrome to a brushed/satin metal —
-        // a perfect mirror finish reads as too clean/synthetic against the
-        // photographed concrete-and-flowers scene; some roughness lets it
-        // pick up soft, broken reflections instead of a hard mirror image
+        // force a neutral base colour — chrome amplifies even a faint tint
+        // baked into the material itself, so any warm/red cast baked into
+        // the GLB shows up strongly no matter how neutral the environment is
+        try {
+          (mv.model?.materials || []).forEach(mat => {
+            mat.pbrMetallicRoughness?.setBaseColorFactor([1, 1, 1, 1]);
+            mat.setEmissiveFactor?.([0, 0, 0]);
+          });
+        } catch (e) { /* material API not ready yet — safe to skip */ }
+
         let frames = 0;
         function tick(){
           fit(mv);
