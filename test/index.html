@@ -1799,13 +1799,6 @@
         // a perfect mirror finish reads as too clean/synthetic against the
         // photographed concrete-and-flowers scene; some roughness lets it
         // pick up soft, broken reflections instead of a hard mirror image
-        try {
-          (mv.model?.materials || []).forEach(mat => {
-            mat.pbrMetallicRoughness?.setRoughnessFactor(0.55);
-            mat.pbrMetallicRoughness?.setMetallicFactor(1.0);
-          });
-        } catch (e) { /* material API not ready yet — safe to skip */ }
-
         let frames = 0;
         function tick(){
           fit(mv);
