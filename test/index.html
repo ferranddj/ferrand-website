@@ -539,8 +539,8 @@
     width: var(--size, 3px);
     height: var(--size, 3px);
     border-radius: 50%;
-    background: rgba(250,248,244,0.75);
-    box-shadow: 0 0 5px 1px rgba(250,248,244,0.2);
+    background: rgba(250,248,244,0.85);
+    box-shadow: 0 0 6px 1.5px rgba(250,248,244,0.3);
     filter: blur(var(--soft, 0px));
     opacity: 0;
     animation: particleFloat linear infinite;
@@ -1801,7 +1801,7 @@
         // pick up soft, broken reflections instead of a hard mirror image
         try {
           (mv.model?.materials || []).forEach(mat => {
-            mat.pbrMetallicRoughness?.setRoughnessFactor(0.38);
+            mat.pbrMetallicRoughness?.setRoughnessFactor(0.55);
             mat.pbrMetallicRoughness?.setMetallicFactor(1.0);
           });
         } catch (e) { /* material API not ready yet — safe to skip */ }
@@ -1896,7 +1896,7 @@
         // depth: 0 = far away (small, dim, slow, soft), 1 = close (large, bright, fast, sharp)
         const depth = Math.random();
         const size = (1.5 + depth * 4.5).toFixed(1) + 'px';
-        const peak = (0.18 + depth * 0.55).toFixed(2);
+        const peak = (0.26 + depth * 0.62).toFixed(2);
         const soft = (1 - depth) * 1.6; // far particles get a soft blur, near ones stay crisp
         const duration = 16 - depth * 9 + Math.random() * 3;   // near = faster, far = slower drift
         const delay = Math.random() * 14;
