@@ -524,6 +524,40 @@
     z-index: 2;
   }
 
+  /* chrome sparkle glints — small star flares over the dragonfly's likely
+     highlight zones (wingtips, head), twinkling like the reference photo */
+  .hero-sparkles {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(1100px, 96vw);
+    height: min(800px, 82vw);
+    transform: translate(-50%, -58%);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.2s ease 0.4s;
+  }
+  .hero-sparkles.visible { opacity: 1; }
+  .sparkle {
+    position: absolute;
+    width: var(--sp-size, 16px);
+    height: var(--sp-size, 16px);
+    opacity: 0;
+    animation: sparkleTwinkle var(--sp-dur, 3.4s) ease-in-out infinite;
+    animation-delay: var(--sp-delay, 0s);
+    mix-blend-mode: screen;
+  }
+  .sparkle svg { width: 100%; height: 100%; display: block; }
+  @keyframes sparkleTwinkle {
+    0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+    50%      { opacity: var(--sp-peak, 0.9); transform: scale(1) rotate(8deg); }
+  }
+
+  @media (max-width: 700px), (prefers-reduced-motion: reduce) {
+    .hero-sparkles { display: none; }
+  }
+
   /* drifting pollen/dust — a little bit of life over the flower patch */
   .hero-particles {
     position: absolute;
@@ -1473,6 +1507,13 @@
   <div class="hero-bg-photo" aria-hidden="true"></div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-shadow" id="heroShadow" aria-hidden="true"></div>
+  <div class="hero-sparkles" id="heroSparkles" aria-hidden="true">
+    <span class="sparkle" style="left:14%; top:22%; --sp-size:14px; --sp-dur:3.1s; --sp-delay:0.2s; --sp-peak:0.85;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L58 42 L100 50 L58 58 L50 100 L42 58 L0 50 L42 42 Z" fill="white"/></svg></span>
+    <span class="sparkle" style="left:82%; top:20%; --sp-size:18px; --sp-dur:3.8s; --sp-delay:1.1s; --sp-peak:0.9;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L58 42 L100 50 L58 58 L50 100 L42 58 L0 50 L42 42 Z" fill="white"/></svg></span>
+    <span class="sparkle" style="left:20%; top:40%; --sp-size:10px; --sp-dur:2.6s; --sp-delay:0.7s; --sp-peak:0.7;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L58 42 L100 50 L58 58 L50 100 L42 58 L0 50 L42 42 Z" fill="white"/></svg></span>
+    <span class="sparkle" style="left:78%; top:42%; --sp-size:12px; --sp-dur:3.4s; --sp-delay:1.8s; --sp-peak:0.75;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L58 42 L100 50 L58 58 L50 100 L42 58 L0 50 L42 42 Z" fill="white"/></svg></span>
+    <span class="sparkle" style="left:49%; top:14%; --sp-size:20px; --sp-dur:4.2s; --sp-delay:0.4s; --sp-peak:1;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L58 42 L100 50 L58 58 L50 100 L42 58 L0 50 L42 42 Z" fill="white"/></svg></span>
+  </div>
   <div class="hero-particles" id="heroParticles" aria-hidden="true"></div>
   <model-viewer
     class="hero-dragonfly"
@@ -1876,7 +1917,11 @@
       setTimeout(show, 1200); // safety net if the model never fires (slow load, error)
     }
     const shadowEl = document.getElementById('heroShadow');
-    revealWhenReady(dflyEl, 0, () => { if (shadowEl) shadowEl.classList.add('visible'); });
+    const sparklesEl = document.getElementById('heroSparkles');
+    revealWhenReady(dflyEl, 0, () => {
+      if (shadowEl) shadowEl.classList.add('visible');
+      if (sparklesEl) sparklesEl.classList.add('visible');
+    });
 
     // drifting pollen — a handful of soft dots rising over the flower patch
     const particleWrap = document.getElementById('heroParticles');
