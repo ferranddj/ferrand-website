@@ -507,38 +507,6 @@
     z-index: 2;
   }
 
-  /* drifting pollen/dust — a little bit of life over the flower patch */
-  .hero-particles {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .hero-particle {
-    position: absolute;
-    bottom: var(--start-y, 14vh);
-    left: var(--start-x, 50%);
-    width: var(--size, 3px);
-    height: var(--size, 3px);
-    border-radius: 50%;
-    background: rgba(250,248,244,0.85);
-    box-shadow: 0 0 6px 1.5px rgba(250,248,244,0.3);
-    filter: blur(var(--soft, 0px));
-    opacity: 0;
-    animation: particleFloat linear infinite;
-  }
-  @keyframes particleFloat {
-    0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
-    8%   { opacity: var(--peak, 0.5); }
-    85%  { opacity: calc(var(--peak, 0.5) * 0.6); }
-    100% { transform: translate(var(--drift, 40px), -50vh) scale(1); opacity: 0; }
-  }
-
-  @media (max-width: 700px), (prefers-reduced-motion: reduce) {
-    .hero-particles { display: none; }
-  }
-
   /* soft contact shadow — grounds the dragonfly on the flower patch below it */
   .hero-shadow {
     position: absolute;
@@ -1346,9 +1314,9 @@
 
     /* anchor the dragonfly just above the flower island (which now sits in
        the bottom ~56vw of the screen), not floating in the void above it */
-    #hero { justify-content: flex-end; padding-bottom: 20vw; }
-    .hero-dragonfly { width: 88vw; height: 58vw; }
-    .hero-shadow { bottom: 24vw; width: 52vw; height: 30px; }
+    #hero { justify-content: flex-end; padding-bottom: 30vw; }
+    .hero-dragonfly { width: 100vw; height: 78vw; }
+    .hero-shadow { bottom: 28vw; width: 62vw; height: 34px; }
 
     .live-label { left: 24px; bottom: 32px; }
     .hero-img, .about-img img { animation: none !important; }
@@ -1530,9 +1498,9 @@
     min-field-of-view="1deg"
     min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
-    exposure="2.2"
+    exposure="1.0"
     shadow-intensity="0"
-    environment-image="env/strobe-max.jpg"
+    environment-image="env/studio_small_04.jpg"
     disable-zoom
     disable-tap
     interaction-prompt="none"
@@ -1569,11 +1537,10 @@
   <div class="hero-bg-photo" aria-hidden="true"></div>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-shadow" id="heroShadow" aria-hidden="true"></div>
-  <div class="hero-particles" id="heroParticles" aria-hidden="true"></div>
   <model-viewer
     class="hero-dragonfly"
     id="heroDragonfly"
-    src="models/dragonfly-v2.glb"
+    src="models/dragonfly-kuko.glb"
     alt="Ferrand"
     aria-hidden="true"
     auto-rotate
@@ -1584,9 +1551,9 @@
     min-field-of-view="1deg"
     min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
-    exposure="2.5"
+    exposure="1.0"
     shadow-intensity="0"
-    environment-image="env/strobe-max.jpg"
+    environment-image="env/studio_small_04.jpg"
     disable-zoom
     disable-tap
     interaction-prompt="none"
@@ -1980,39 +1947,6 @@
     revealWhenReady(dflyEl, 0, () => {
       if (shadowEl) shadowEl.classList.add('visible');
     });
-
-    // drifting pollen — a handful of soft dots rising over the flower patch
-    const particleWrap = document.getElementById('heroParticles');
-    if (particleWrap && getComputedStyle(particleWrap).display !== 'none') {
-      const count = 18;
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'hero-particle';
-
-        // depth: 0 = far away (small, dim, slow, soft), 1 = close (large, bright, fast, sharp)
-        const depth = Math.random();
-        const size = (1.5 + depth * 4.5).toFixed(1) + 'px';
-        const peak = (0.26 + depth * 0.62).toFixed(2);
-        const soft = (1 - depth) * 1.6; // far particles get a soft blur, near ones stay crisp
-        const duration = 16 - depth * 9 + Math.random() * 3;   // near = faster, far = slower drift
-        const delay = Math.random() * 14;
-        const drift = (Math.random() * 70 - 35).toFixed(0) + 'px';
-
-        const left = 22 + Math.random() * 56;           // wider spread across the flower patch
-        const startY = (10 + Math.random() * 10).toFixed(1) + 'vh'; // scattered starting heights
-
-        p.style.setProperty('--start-x', left + '%');
-        p.style.setProperty('--start-y', startY);
-        p.style.setProperty('--size', size);
-        p.style.setProperty('--peak', peak);
-        p.style.setProperty('--soft', soft.toFixed(2) + 'px');
-        p.style.setProperty('--drift', drift);
-        p.style.animationDuration = duration.toFixed(1) + 's';
-        p.style.animationDelay = delay.toFixed(1) + 's';
-        p.style.zIndex = Math.round(depth * 2); // near particles can drift in front of the shadow/flowers a touch
-        particleWrap.appendChild(p);
-      }
-    }
 
   });
 
