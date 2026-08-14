@@ -461,36 +461,19 @@
     height: 100svh;
     position: relative;
     overflow: hidden;
-    background: #060608;
+    background: #f4f3f1;   /* clean off-white, Kuko-style */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
-    padding-bottom: 7vh;
+    justify-content: center;   /* dragonfly centred in the empty white space */
     gap: 2.2vh;
   }
 
-  /* the photo, slightly out of focus — a sharp CG dragonfly on top of an
-     equally sharp photo read as two flat cut-out layers; softening the photo
-     gives real depth-of-field separation instead */
-  .hero-bg-photo {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: url('images/hero-bg.jpg') center bottom / cover no-repeat;
-  }
-
-  .hero-scrim {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: linear-gradient(to bottom,
-      rgba(6,6,8,0.62) 0%,
-      rgba(6,6,8,0.40) 45%,
-      rgba(6,6,8,0.12) 75%,
-      rgba(6,6,8,0) 100%);
-    pointer-events: none;
-  }
+  /* white hero — no photo, no scrim; just the chrome mark on clean white */
+  .hero-bg-photo { display: none; }
+  .hero-scrim { display: none; }
+  .hero-shadow { display: none; }
+  .hero-spotlight, .hero-spotlight-source, .hero-lamp { display: none; }
 
   /* vignette — pulls focus toward the centre instead of the empty concrete
      on either side */
@@ -500,9 +483,9 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 70% 65% at center,
-      transparent 45%,
-      rgba(6,6,8,0.55) 100%);
+    background: radial-gradient(ellipse 75% 70% at center,
+      transparent 55%,
+      rgba(0,0,0,0.06) 100%);
     pointer-events: none;
     z-index: 2;
   }
@@ -604,18 +587,8 @@
   }
 
 
-  /* subtle film-grain texture so the hero isn't a flat black void */
-  #hero::after {
-    content: '';
-    position: absolute;
-    inset: -20%;
-    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj4KPGZpbHRlciBpZD0ibiI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHR5cGU9InNhdHVyYXRlIiB2YWx1ZXM9IjAiLz48L2ZpbHRlcj4KPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI24pIi8+Cjwvc3ZnPg==');
-    background-size: 300px 300px;
-    opacity: 0.05;
-    mix-blend-mode: overlay;
-    pointer-events: none;
-    z-index: 0;
-  }
+  /* film grain removed on the white hero — reads as dirt on a clean bg */
+  #hero::after { display: none; }
 
   #about {
     overflow: hidden;
@@ -1305,18 +1278,9 @@
       background-position: center bottom;
     }
 
-    /* the dark top is baked into the mobile image — scrim barely needed */
-    .hero-scrim {
-      background: linear-gradient(to bottom,
-        rgba(6,6,8,0.35) 0%,
-        rgba(6,6,8,0) 45%);
-    }
-
-    /* anchor the dragonfly just above the flower island (which now sits in
-       the bottom ~56vw of the screen), not floating in the void above it */
-    #hero { justify-content: flex-end; padding-bottom: 30vw; }
-    .hero-dragonfly { width: 100vw; height: 78vw; }
-    .hero-shadow { bottom: 28vw; width: 62vw; height: 34px; }
+    /* clean white hero on mobile too — centred chrome mark, no photo */
+    #hero { justify-content: center; padding-bottom: 0; }
+    .hero-dragonfly { width: 96vw; height: 72vw; }
 
     .live-label { left: 24px; bottom: 32px; }
     .hero-img, .about-img img { animation: none !important; }
@@ -1540,7 +1504,7 @@
   <model-viewer
     class="hero-dragonfly"
     id="heroDragonfly"
-    src="models/dragonfly-kuko.glb"
+    src="models/dragonfly-fingerprints.glb"
     alt="Ferrand"
     aria-hidden="true"
     auto-rotate
