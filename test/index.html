@@ -461,11 +461,11 @@
     height: 100svh;
     position: relative;
     overflow: hidden;
-    background: #f4f3f1;   /* clean off-white, Kuko-style */
+    background: #060608;   /* clean near-black */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;   /* dragonfly centred in the empty white space */
+    justify-content: center;   /* dragonfly centred */
     gap: 2.2vh;
   }
 
@@ -484,8 +484,8 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(ellipse 75% 70% at center,
-      transparent 55%,
-      rgba(0,0,0,0.06) 100%);
+      transparent 50%,
+      rgba(0,0,0,0.55) 100%);
     pointer-events: none;
     z-index: 2;
   }
@@ -1268,17 +1268,7 @@
     .mob-menu-btn span { background: #f0ede8 !important; }
 
 
-    /* PORTRAIT ART DIRECTION — dedicated 9:16 image instead of cropping
-       the desktop photo: island centred at the bottom, wall extended
-       upward, dark top baked in so the nav blends seamlessly. Desktop
-       keeps its own image untouched. */
-    .hero-bg-photo {
-      background-image: url('images/hero-bg-mobile.jpg');
-      background-size: cover;
-      background-position: center bottom;
-    }
-
-    /* clean white hero on mobile too — centred chrome mark, no photo */
+    /* clean black hero on mobile too — centred chrome mark, no photo */
     #hero { justify-content: center; padding-bottom: 0; }
     .hero-dragonfly { width: 96vw; height: 72vw; }
 
