@@ -1503,7 +1503,7 @@
     rotation-per-second="12deg"
     data-fit-w="1.899" data-fit-h="1.448" data-fit-d="1.899" data-fit-pad="1.05"
     camera-target="0m 0.72m 0m"
-    camera-orbit="0deg 78deg 2.5m"
+    camera-orbit="0deg 100deg 2.5m"
     min-field-of-view="1deg"
     min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
@@ -1812,6 +1812,13 @@
         mv.dispatchEvent(new CustomEvent('fitready'));
       }
       mv.addEventListener('load', () => {
+        // Hyper3D models aren't centred at the origin (this one sits at
+        // y=0.72), so without an explicit target the orbit angle looks wrong.
+        // Re-assert the target from the attribute after load, since
+        // model-viewer resets it internally.
+        const tgt = mv.getAttribute('camera-target');
+        if (tgt) mv.cameraTarget = tgt;
+
         fit(mv); // immediate best-effort so there's no fully-unframed flash
 
         // force a neutral base colour — chrome amplifies even a faint tint
