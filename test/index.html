@@ -461,7 +461,7 @@
     height: 100svh;
     position: relative;
     overflow: hidden;
-    background: #060608;   /* clean near-black */
+    background: #f4f3f1;   /* clean off-white */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -483,9 +483,9 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 75% 70% at center,
-      transparent 50%,
-      rgba(0,0,0,0.55) 100%);
+    background: radial-gradient(ellipse 78% 72% at center,
+      transparent 60%,
+      rgba(0,0,0,0.05) 100%);
     pointer-events: none;
     z-index: 2;
   }
@@ -1454,7 +1454,7 @@
     field-of-view="30deg"
     exposure="1.0"
     shadow-intensity="0"
-    environment-image="env/hdri_studio_hc.jpg"
+    environment-image="env/hdri_studio_white.jpg"
     disable-zoom
     disable-tap
     interaction-prompt="none"
@@ -1495,19 +1495,21 @@
     class="hero-dragonfly"
     id="heroDragonfly"
     src="models/dragonfly-fingerprints.glb"
+    max-device-pixel-ratio="3"
     alt="Ferrand"
     aria-hidden="true"
     auto-rotate
     auto-rotate-delay="0"
     rotation-per-second="12deg"
     data-fit-w="1.899" data-fit-h="1.448" data-fit-d="1.899" data-fit-pad="1.05"
+    camera-target="0m 0.72m 0m"
     camera-orbit="0deg 78deg 2.5m"
     min-field-of-view="1deg"
     min-camera-orbit="auto auto 0m"
     field-of-view="30deg"
     exposure="1.0"
     shadow-intensity="0"
-    environment-image="env/hdri_studio_hc.jpg"
+    environment-image="env/hdri_studio_white.jpg"
     disable-zoom
     disable-tap
     interaction-prompt="none"
