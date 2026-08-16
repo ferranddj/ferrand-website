@@ -455,6 +455,64 @@
   }
 
 
+  /* ============ ENTRANCE OVERLAY ============ */
+  .entrance {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #f4f3f1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 1s ease, visibility 1s ease;
+  }
+  .entrance.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .entrance-dragonfly {
+    width: min(1100px, 92vw);
+    height: min(740px, 74vw);
+    z-index: 1;
+    background: transparent;
+    --poster-color: transparent;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.97);
+    transition: opacity 1.6s ease, transform 1.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .entrance-dragonfly.visible { opacity: 1; transform: scale(1); }
+
+  .entrance-enter {
+    position: absolute;
+    bottom: 12vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    font-family: var(--font-display, sans-serif);
+    font-size: 15px;
+    letter-spacing: 0.42em;
+    color: #0a0a0a;
+    background: transparent;
+    border: 1px solid rgba(10,10,10,0.35);
+    padding: 14px 40px 14px 46px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 1.2s ease 0.6s, background 0.3s ease, color 0.3s ease, letter-spacing 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .entrance-enter.visible { opacity: 1; }
+  .entrance-enter:hover {
+    background: #0a0a0a;
+    color: #f4f3f1;
+    letter-spacing: 0.52em;
+  }
+
+  @media (max-width: 700px) {
+    .entrance-dragonfly { width: 96vw; height: 74vw; }
+    .entrance-enter { bottom: 9vh; font-size: 13px; padding: 12px 32px 12px 38px; }
+  }
+
   /* HERO — the dragonfly floats above a soft studio floor */
   #hero {
     width: 100%;
@@ -1438,6 +1496,33 @@
 </head>
 <body>
 
+<!-- ============ ENTRANCE OVERLAY ============ -->
+<div class="entrance" id="entrance">
+  <model-viewer
+    class="entrance-dragonfly"
+    id="entranceDragonfly"
+    src="models/dragonfly-fingerprints.glb"
+    alt="Ferrand"
+    aria-hidden="true"
+    camera-target="0m 0.71m 0m"
+    camera-orbit="0deg 100deg 2.5m"
+    min-camera-orbit="auto auto 0m"
+    max-camera-orbit="auto auto Infinity"
+    field-of-view="34deg"
+    min-field-of-view="1deg"
+    max-field-of-view="34deg"
+    exposure="1.0"
+    shadow-intensity="0"
+    max-device-pixel-ratio="3"
+    environment-image="env/hdri_studio_white.jpg"
+    disable-zoom
+    disable-tap
+    interaction-prompt="none"
+    loading="eager"></model-viewer>
+  <button class="entrance-enter" id="entranceEnter" aria-label="Enter site">[ ENTER ]</button>
+</div>
+
+
 <!-- PAGE INTRO — the chrome wordmark makes a one-time entrance, then fades out
      to reveal the site. Desktop/pointer only; mobile skips straight to the site
      (see .page-intro display:none in the mobile media query below). -->
@@ -1501,7 +1586,7 @@
     auto-rotate
     auto-rotate-delay="0"
     rotation-per-second="12deg"
-    data-fit-w="1.899" data-fit-h="1.448" data-fit-d="1.899" data-fit-pad="1.05"
+    data-fit-w="1.899" data-fit-h="1.418" data-fit-d="1.899" data-fit-pad="1.05"
     camera-target="0m 0.72m 0m"
     camera-orbit="0deg 100deg 2.5m"
     min-field-of-view="1deg"
@@ -1894,6 +1979,58 @@
   // Waits for fit() to actually be applied before fading it in, so we never show
   // the raw pre-fit framing (too big) and then snap to the correct size mid-transition.
   window.addEventListener('load', () => {
+    // ============ ENTRANCE OVERLAY LOGIC ============
+    (function entranceInit(){
+      const overlay = document.getElementById('entrance');
+      const edfly = document.getElementById('entranceDragonfly');
+      const enterBtn = document.getElementById('entranceEnter');
+      if (!overlay || !edfly) return;
+
+      // reveal the dragonfly + button once the model is ready
+      let revealed = false;
+      const reveal = () => {
+        if (revealed) return; revealed = true;
+        const tgt = edfly.getAttribute('camera-target');
+        if (tgt) edfly.cameraTarget = tgt;
+        setTimeout(() => {
+          edfly.classList.add('visible');
+          if (enterBtn) enterBtn.classList.add('visible');
+        }, 150);
+      };
+      edfly.addEventListener('load', reveal);
+      setTimeout(reveal, 2500); // fallback if load event is missed
+
+      // subtle cursor parallax — the dragonfly leans slightly toward the pointer
+      // so the reflections shift, without full rotation
+      if (window.matchMedia('(hover: hover)').matches) {
+        let raf = null;
+        const baseTheta = 0, basePhi = 100; // matches camera-orbit
+        window.addEventListener('mousemove', e => {
+          if (revealed === false) return;
+          if (raf) return;
+          raf = requestAnimationFrame(() => {
+            const nx = (e.clientX / window.innerWidth) - 0.5;   // -0.5..0.5
+            const ny = (e.clientY / window.innerHeight) - 0.5;
+            const theta = baseTheta + nx * 26;   // left/right swing (deg)
+            const phi = basePhi - ny * 16;       // up/down tilt (deg)
+            edfly.cameraOrbit = `${theta.toFixed(1)}deg ${phi.toFixed(1)}deg 2.5m`;
+            raf = null;
+          });
+        });
+      }
+
+      // enter -> fade the overlay out, then remove it
+      const enter = () => {
+        overlay.classList.add('gone');
+        document.body.style.overflow = '';
+        setTimeout(() => { overlay.style.display = 'none'; }, 1100);
+      };
+      if (enterBtn) enterBtn.addEventListener('click', enter);
+
+      // lock scroll while the entrance is up
+      document.body.style.overflow = 'hidden';
+    })();
+
     const dflyEl = document.querySelector('.hero-dragonfly');
 
     function revealWhenReady(el, extraDelay, onShow){
