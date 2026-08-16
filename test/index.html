@@ -513,18 +513,35 @@
     .entrance-enter { bottom: 9vh; font-size: 13px; padding: 12px 32px 12px 38px; }
   }
 
-  /* HERO — the dragonfly floats above a soft studio floor */
+  /* HERO — full-bleed DJ photo */
   #hero {
     width: 100%;
     height: 100svh;
     position: relative;
     overflow: hidden;
-    background: #f4f3f1;   /* clean off-white */
+    background: #060608;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;   /* dragonfly centred */
-    gap: 2.2vh;
+    justify-content: center;
+  }
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: url('images/hero-dj.jpg') center 42% / cover no-repeat;
+  }
+  /* subtle dark gradient bottom + top so nav and scroll hint stay legible */
+  .hero-photo-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to bottom,
+      rgba(6,6,8,0.45) 0%,
+      rgba(6,6,8,0) 22%,
+      rgba(6,6,8,0) 68%,
+      rgba(6,6,8,0.75) 100%);
+    pointer-events: none;
   }
 
   /* white hero — no photo, no scrim; just the chrome mark on clean white */
@@ -1328,7 +1345,7 @@
 
     /* clean black hero on mobile too — centred chrome mark, no photo */
     #hero { justify-content: center; padding-bottom: 0; }
-    .hero-dragonfly { width: 96vw; height: 72vw; }
+    .hero-photo { background-image: url('images/hero-dj-mobile.jpg'); background-position: center center; }
 
     .live-label { left: 24px; bottom: 32px; }
     .hero-img, .about-img img { animation: none !important; }
@@ -1379,7 +1396,6 @@
       mask-image: none;
     }
     #hero { justify-content: center; padding-bottom: 0; }
-    .hero-dragonfly { width: 70vw; height: 58vh; }
     .hero-shadow { bottom: 12vh; width: 40vw; height: 34px; }
 
     #about {
@@ -1504,10 +1520,8 @@
     src="models/dragonfly-fingerprints.glb"
     alt="Ferrand"
     aria-hidden="true"
-    camera-target="0m 0.71m 0m"
-    camera-orbit="0deg 100deg 2.5m"
+    camera-orbit="0deg 90deg 2.5m"
     min-camera-orbit="auto auto 0m"
-    max-camera-orbit="auto auto Infinity"
     field-of-view="34deg"
     min-field-of-view="1deg"
     max-field-of-view="34deg"
@@ -1573,34 +1587,10 @@
 
 <!-- HERO — the mark, alone -->
 <section id="hero">
-  <div class="hero-bg-photo" aria-hidden="true"></div>
-  <div class="hero-scrim" aria-hidden="true"></div>
-  <div class="hero-shadow" id="heroShadow" aria-hidden="true"></div>
-  <model-viewer
-    class="hero-dragonfly"
-    id="heroDragonfly"
-    src="models/dragonfly-fingerprints.glb"
-    max-device-pixel-ratio="3"
-    alt="Ferrand"
-    aria-hidden="true"
-    auto-rotate
-    auto-rotate-delay="0"
-    rotation-per-second="12deg"
-    data-fit-w="1.899" data-fit-h="1.418" data-fit-d="1.899" data-fit-pad="1.05"
-    camera-target="0m 0.72m 0m"
-    camera-orbit="0deg 100deg 2.5m"
-    min-field-of-view="1deg"
-    min-camera-orbit="auto auto 0m"
-    field-of-view="30deg"
-    exposure="1.0"
-    shadow-intensity="0"
-    environment-image="env/hdri_studio_white.jpg"
-    disable-zoom
-    disable-tap
-    interaction-prompt="none"
-    loading="eager"></model-viewer>
+  <div class="hero-photo" aria-hidden="true"></div>
+  <div class="hero-photo-scrim" aria-hidden="true"></div>
 
-  <!-- real h1 stays for crawlers & AI; visually replaced by the 3D wordmark -->
+  <!-- real h1 stays for crawlers & AI -->
   <h1 class="hero-name seo-only">Ferrand</h1>
 
 
@@ -1897,13 +1887,6 @@
         mv.dispatchEvent(new CustomEvent('fitready'));
       }
       mv.addEventListener('load', () => {
-        // Hyper3D models aren't centred at the origin (this one sits at
-        // y=0.72), so without an explicit target the orbit angle looks wrong.
-        // Re-assert the target from the attribute after load, since
-        // model-viewer resets it internally.
-        const tgt = mv.getAttribute('camera-target');
-        if (tgt) mv.cameraTarget = tgt;
-
         fit(mv); // immediate best-effort so there's no fully-unframed flash
 
         // force a neutral base colour — chrome amplifies even a faint tint
@@ -1990,8 +1973,6 @@
       let revealed = false;
       const reveal = () => {
         if (revealed) return; revealed = true;
-        const tgt = edfly.getAttribute('camera-target');
-        if (tgt) edfly.cameraTarget = tgt;
         setTimeout(() => {
           edfly.classList.add('visible');
           if (enterBtn) enterBtn.classList.add('visible');
@@ -2004,7 +1985,7 @@
       // so the reflections shift, without full rotation
       if (window.matchMedia('(hover: hover)').matches) {
         let raf = null;
-        const baseTheta = 0, basePhi = 100; // matches camera-orbit
+        const baseTheta = 0, basePhi = 90; // matches camera-orbit
         window.addEventListener('mousemove', e => {
           if (revealed === false) return;
           if (raf) return;
